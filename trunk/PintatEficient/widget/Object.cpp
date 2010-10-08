@@ -12,9 +12,10 @@ using namespace std;
 
 Object::Object(std::string n):name(n)
 {
-    vertexTriangles = NULL;
-    vertexQuads = NULL;
-    vertices2 = NULL;
+	vertexTriangles = NULL;
+	vertexQuads = NULL;
+	vertices2 = NULL;
+	normals = NULL;
 }
 
 Object::~Object() {}
@@ -101,12 +102,12 @@ void Object::createDisplayList()
 			glBegin (GL_POLYGON);
 				for(unsigned int j=0; j<faces[i].vertices.size(); j++)
 				{ 
-                    glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                        vertices[faces[i].vertices[j]].normal.y,
-                        vertices[faces[i].vertices[j]].normal.z);
+					glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+						vertices[faces[i].vertices[j]].normal.y,
+						vertices[faces[i].vertices[j]].normal.z);
 					glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-						vertices[faces[i].vertices[j]].coord.y,
-						vertices[faces[i].vertices[j]].coord.z);
+					vertices[faces[i].vertices[j]].coord.y,
+					vertices[faces[i].vertices[j]].coord.z);
 				}
 			glEnd();
 		}
@@ -129,7 +130,7 @@ void Object::createVertexArrays()
     if (vertexTriangles != NULL) free(vertexTriangles);
     if (vertexQuads != NULL) free(vertexQuads);
     if (vertices2 != NULL) free(vertices2);
-    //if (normals != NULL) free(normals);
+    if (normals != NULL) free(normals);
     vertexTriangles = (GLuint *)malloc(sizeof(GLuint)*triangles*3);
     vertexQuads = (GLuint *)malloc(sizeof(GLuint)*quads*4);
     
@@ -206,7 +207,7 @@ tindex - second number (texture index)
 nindex - third number (normal vector index)
 ******************************************************************************/
 {
-	char *null = " ";
+	char null[] = {" "};
 	char *ptr;
 	char *tp;
 	char *np;
