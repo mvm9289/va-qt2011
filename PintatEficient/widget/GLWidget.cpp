@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #define _USE_MATH_DEFINES 1
 #include <cmath>
+#include <sys/timeb.h>
+
+#define FRAMERATE_RANGE 100
 
 // Constructora amb format per defecte
 GLWidget::GLWidget(QWidget * parent):QGLWidget(parent)
@@ -30,8 +33,10 @@ void GLWidget::initializeGL()
 	escena.Init();
 	computeCameraInicial();
     
-	remainingFrames = 100;
-	oldTime = clock();
+	remainingFrames = FRAMERATE_RANGE;
+    timeb t;
+    ftime(&t);
+	oldTime = t.time*1000 + t.millitm;
 }
 
 void GLWidget::setModelview()
@@ -102,11 +107,13 @@ void GLWidget::paintGL( void )
 	if (--remainingFrames == 0)
 	{
 		glFinish();
-		clock_t currentTime = clock();
-		double rate = (100.0*(double)CLOCKS_PER_SEC)/(double)(currentTime - oldTime);
+        timeb t;
+        ftime(&t);
+		clock_t currentTime = t.time*1000 + t.millitm;;
+		double rate = (FRAMERATE_RANGE*1000.0)/(double)(currentTime - oldTime);
 		emit framerate(rate);		
 		oldTime = currentTime;
-		remainingFrames = 100;
+		remainingFrames = FRAMERATE_RANGE;
 	}
 }
 

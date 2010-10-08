@@ -38,6 +38,7 @@ class Object
   void clear ();
  
   void createDisplayList();
+  void createVertexArrays();
 
  public:
   vector<Vertex> vertices;  // vector amb els vertexs de l'objecte
@@ -48,6 +49,12 @@ class Object
   Box _boundingBox;   // caixa contenidora de l'objecte.
  
   GLuint DLindex;
+  
+  int triangles;
+  int quads;
+  GLfloat *vertices2;
+  GLuint *vertexTriangles;
+  GLuint *vertexQuads;
 };
 
 
