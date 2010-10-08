@@ -19,8 +19,10 @@ class Face
 	int material;	       // ID del material (index del material)
 	vector<int> vertices;  // vector amb els indexs dels vertexs de la cara
 
-        Vector normal;
-        void updateNormal(vector<Vertex> &);
+    Vector normal;
+    void updateNormal(vector<Vertex> &);
+    void updateNormalVertex(vector<Vertex> &v);
+
 };
 
 

@@ -11,8 +11,9 @@ class Vertex
 
 	// atributs
 	Point coord;		// coordenades del vertex
-
-        Vector normal;  // vector normal al vèrtex (per suavitzat)
+    Vector normal;  // vector normal al vèrtex (per suavitzat)
+    
+    void computeNormal(Vector faceNormal);
 };
 
 
