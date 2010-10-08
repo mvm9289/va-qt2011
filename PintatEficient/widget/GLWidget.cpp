@@ -27,6 +27,7 @@ void GLWidget::initializeGL()
 	glEnable(GL_DEPTH_TEST);
 
 	glEnable(GL_LIGHTING); 
+	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHT0);
 
 	// dimensions escena i camera inicial
