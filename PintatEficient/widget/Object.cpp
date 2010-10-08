@@ -50,24 +50,30 @@ void Object::render(int mode)
 			for(unsigned int i=0; i<faces.size(); i++)
 			{
 				glBegin (GL_POLYGON);
-					glNormal3f(faces[i].normal.x, faces[i].normal.y, faces[i].normal.z);
-					for(unsigned int j=0; j<faces[i].vertices.size(); j++)
-					{ 
-						glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-							vertices[faces[i].vertices[j]].coord.y,
-							vertices[faces[i].vertices[j]].coord.z);
-					}
-				glEnd();
+				    for(unsigned int j=0; j<faces[i].vertices.size(); j++)
+				    { 
+                        glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+                            vertices[faces[i].vertices[j]].normal.y,
+                            vertices[faces[i].vertices[j]].normal.z);
+					    glVertex3f(vertices[faces[i].vertices[j]].coord.x,
+						    vertices[faces[i].vertices[j]].coord.y,
+						    vertices[faces[i].vertices[j]].coord.z);
+				    }
+			    glEnd();
 			}
 			break;
 		case 1:
 			glCallList(DLindex);
 			break;
 		case 2:
-            glEnableClientState(GL_VERTEX_ARRAY);
             glVertexPointer(3, GL_FLOAT, 0, vertices2);
+            glNormalPointer(GL_FLOAT, 0 , normals);
+            
+            glEnableClientState(GL_NORMAL_ARRAY);
+            glEnableClientState(GL_VERTEX_ARRAY);
             glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
             glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
+            glDisableClientState(GL_NORMAL_ARRAY);
             glDisableClientState(GL_VERTEX_ARRAY);
 			break;
 		default:
@@ -78,7 +84,11 @@ void Object::render(int mode)
 void Object::updateNormals()
 {
 	for(unsigned int i=0; i<faces.size(); ++i)
+    {
 		faces[i].updateNormal(vertices);
+        faces[i].updateNormalVertex(vertices);
+    }
+
 }
 
 void Object::createDisplayList()
@@ -89,9 +99,11 @@ void Object::createDisplayList()
 		for(unsigned int i=0; i<faces.size(); i++)
 		{
 			glBegin (GL_POLYGON);
-				glNormal3f(faces[i].normal.x, faces[i].normal.y, faces[i].normal.z);
 				for(unsigned int j=0; j<faces[i].vertices.size(); j++)
 				{ 
+                    glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+                        vertices[faces[i].vertices[j]].normal.y,
+                        vertices[faces[i].vertices[j]].normal.z);
 					glVertex3f(vertices[faces[i].vertices[j]].coord.x,
 						vertices[faces[i].vertices[j]].coord.y,
 						vertices[faces[i].vertices[j]].coord.z);
@@ -117,6 +129,7 @@ void Object::createVertexArrays()
     if (vertexTriangles != NULL) free(vertexTriangles);
     if (vertexQuads != NULL) free(vertexQuads);
     if (vertices2 != NULL) free(vertices2);
+    //if (normals != NULL) free(normals);
     vertexTriangles = (GLuint *)malloc(sizeof(GLuint)*triangles*3);
     vertexQuads = (GLuint *)malloc(sizeof(GLuint)*quads*4);
     
@@ -140,11 +153,16 @@ void Object::createVertexArrays()
     }
     
     vertices2 = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*3);
+    normals = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*3);
     for (unsigned int i = 0; i < vertices.size(); i++)
     {
         vertices2[i*3] = vertices[i].coord.x;
         vertices2[i*3 + 1] = vertices[i].coord.y;
         vertices2[i*3 + 2] = vertices[i].coord.z;
+        
+        normals[i*3] = vertices[i].normal.x;
+        normals[i*3 + 1] = vertices[i].normal.y;
+        normals[i*3 + 2] = vertices[i].normal.z;
     }
 }
 
