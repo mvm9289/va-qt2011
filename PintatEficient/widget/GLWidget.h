@@ -23,6 +23,8 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   
  signals:
   void framerate(double);
+	void numQuads(double);
+	void numTriangles(double);
 
  public slots:
 
@@ -58,6 +60,8 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   void computeCameraInicial(); 
   void setModelview();
   void setProjection();
+
+	void mostrarNumTrianglesQuads_Model();
 
   Point getObs();
   

@@ -108,6 +108,72 @@
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Triangles in the model (K):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLCDNumber" name="lcdNumber_3">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>6</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="segmentStyle">
+        <enum>QLCDNumber::Filled</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Quads in the model (K):</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLCDNumber" name="lcdNumber_2">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>6</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="segmentStyle">
+        <enum>QLCDNumber::Filled</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -153,6 +219,9 @@
        </property>
        <property name="lineWidth">
         <number>1</number>
+       </property>
+       <property name="smallDecimalPoint">
+        <bool>false</bool>
        </property>
        <property name="segmentStyle">
         <enum>QLCDNumber::Filled</enum>
@@ -288,6 +357,38 @@
     <hint type="destinationlabel">
      <x>505</x>
      <y>358</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>numQuads(double)</signal>
+   <receiver>lcdNumber_2</receiver>
+   <slot>display(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>298</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>661</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>numTriangles(double)</signal>
+   <receiver>lcdNumber_3</receiver>
+   <slot>display(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>460</x>
+     <y>166</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>613</x>
+     <y>167</y>
     </hint>
    </hints>
   </connection>
