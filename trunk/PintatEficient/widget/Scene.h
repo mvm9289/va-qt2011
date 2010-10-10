@@ -24,6 +24,8 @@ public:
 	void AddObject(Object &);
 	void OpenModel(const char* filename);
 
+	vector<int> numTrianglesQuads_Model();
+
 	Point Center();
 	float RadiEscena();
 };

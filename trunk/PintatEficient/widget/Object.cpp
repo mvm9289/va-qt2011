@@ -167,6 +167,15 @@ void Object::createVertexArrays()
 	glNormalPointer(GL_FLOAT, 0 , normals);
 }
 
+vector<int> Object::numTrianglesQuads()
+{
+	vector<int> info(2);
+	info[0] = triangles;
+	info[1] = quads;
+
+	return info;
+}
+
 
 /*
 Lectura d'un fitxer OBJ

@@ -11,7 +11,7 @@ void Scene::Init()
 	renderMode = 0;
 
 	Object o("model");
-	o.readObj("../models/queen.obj", matlib);
+	o.readObj("../models/mini_obj.obj", matlib);
 	AddObject(o);
 }
 
@@ -51,6 +51,11 @@ void Scene::OpenModel(const char* filename)
 void Scene::ChangeRenderMode(int mode)
 {
 	renderMode = mode;
+}
+
+vector<int> Scene::numTrianglesQuads_Model()
+{
+	return objects[0].numTrianglesQuads();
 }
 
 

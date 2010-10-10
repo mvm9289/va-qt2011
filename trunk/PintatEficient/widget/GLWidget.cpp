@@ -32,6 +32,7 @@ void GLWidget::initializeGL()
 
 	// dimensions escena i camera inicial
 	escena.Init();
+	mostrarNumTrianglesQuads_Model();
 	computeCameraInicial();
     
 	remainingFrames = FRAMERATE_RANGE;
@@ -273,6 +274,7 @@ void GLWidget::openModel()
     if (filename != "") 
     {
 	    escena.OpenModel(filename.toLatin1().data());
+			mostrarNumTrianglesQuads_Model();
 	    computeCameraInicial();
     }
 }
@@ -280,4 +282,13 @@ void GLWidget::openModel()
 void GLWidget::changeRenderMode(int mode)
 {
 	escena.ChangeRenderMode(mode);
+}
+
+void GLWidget::mostrarNumTrianglesQuads_Model()
+{
+	int tri, quads;
+	tri = escena.numTrianglesQuads_Model()[0];
+	quads = escena.numTrianglesQuads_Model()[1];
+	emit numQuads((double)(quads/1000.0));
+	emit numTriangles((double)(tri/1000.0));
 }

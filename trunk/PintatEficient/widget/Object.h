@@ -33,12 +33,15 @@ class Object
   void render(int mode);
   void updateNormals();
 
+	vector<int> numTrianglesQuads();
+
  private:
   void make_face ( char **words, int nwords, int material );
   void clear ();
  
   void createDisplayList();
   void createVertexArrays();
+
 
  public:
   vector<Vertex> vertices;  // vector amb els vertexs de l'objecte
