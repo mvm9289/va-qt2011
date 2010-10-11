@@ -29,6 +29,7 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
  public slots:
 
   void changeRenderMode(int mode);
+	void startStop();
 
   // help - Ajuda per la terminal des de la que hem  engegat el programa.
   void help(void);
@@ -86,6 +87,8 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   
   clock_t oldTime;
   int remainingFrames;
+
+	bool moviment;
 };
 
 #endif
