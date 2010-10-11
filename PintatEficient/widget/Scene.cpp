@@ -11,7 +11,7 @@ void Scene::Init()
 	renderMode = 0;
 
 	Object o("model");
-	o.readObj("../models/robot.obj", matlib);
+	o.readObj("../models/cotxe.obj", matlib);
 	AddObject(o);
 }
 

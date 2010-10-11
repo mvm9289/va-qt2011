@@ -27,15 +27,13 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   void numTriangles(double);
 
  public slots:
-
-  void changeRenderMode(int mode);
-	void startStop();
-
   // help - Ajuda per la terminal des de la que hem  engegat el programa.
   void help(void);
 
   // Afegiu aquí la declaració dels slots que necessiteu
   void openModel();
+  void changeRenderMode(int mode);
+  void startStop();
 
  protected:
   // initializeGL() - Aqui incluim les inicialitzacions del contexte grafic.
@@ -62,15 +60,17 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   void setModelview();
   void setProjection();
 
-	void mostrarNumTrianglesQuads_Model();
+  void mostrarNumTrianglesQuads_Model();
 
   Point getObs();
   
  private:
+  void computeCuttingPlanes();
+  
   // paràmetres de la camera
   float anglecam;
   float ra;
-  double anterior, posterior; 
+  double anterior, posterior, anteriorAux, posteriorAux, anteriorIni, posteriorIni; 
   Point VRP;
   float dist;
   float angleX, angleY, angleZ;
@@ -87,8 +87,7 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   
   clock_t oldTime;
   int remainingFrames;
-
-	bool moviment;
+  bool moviment;
 };
 
 #endif

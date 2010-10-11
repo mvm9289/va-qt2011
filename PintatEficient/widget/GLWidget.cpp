@@ -75,8 +75,8 @@ void GLWidget::computeCameraInicial()
 
 	dist = 2*radi;
 	anglecam = 60; // 2 * asin (radi/2*radi)
-	anterior = radi;
-	posterior = 3*radi;
+	anteriorIni = anteriorAux = anterior = radi;
+	posteriorIni = posteriorAux = posterior = 3*radi;
 
 	// inicialitzem els angles per a veure-ho des d'un cert punt de vista
 	angleX = 0;
@@ -109,19 +109,19 @@ void GLWidget::paintGL( void )
 
 	if(moviment)
 	{ 
-		if (++angleX >= 360.0) angleX = 0.0;
-		if (++angleY >= 360.0) angleY = 0.0;
-		if (--remainingFrames == 0)
-		{
-			glFinish();
-		      timeb t;
-		      ftime(&t);
-			clock_t currentTime = t.time*1000 + t.millitm;;
-			double rate = (FRAMERATE_RANGE*1000.0)/(double)(currentTime - oldTime);
-			emit framerate(rate);		
-			oldTime = currentTime;
-			remainingFrames = FRAMERATE_RANGE;
-		}
+		if (++angleX >= 360.0) angleX -= 360.0;
+		if (++angleY >= 360.0) angleY -= 360.0;
+	}
+	if (--remainingFrames == 0)
+	{
+		glFinish();
+		timeb t;
+		ftime(&t);
+		clock_t currentTime = t.time*1000 + t.millitm;;
+		double rate = (FRAMERATE_RANGE*1000.0)/(double)(currentTime - oldTime);
+		emit framerate(rate);		
+		oldTime = currentTime;
+		remainingFrames = FRAMERATE_RANGE;
 	}
 }
 
@@ -222,7 +222,14 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
 	}
 	else if(DoingInteractive == ZOOM) 
 	{
-		dist+=(e->y()-yClick)*0.01*escena.RadiEscena();
+		double inc = (e->y()-yClick)*0.01*escena.RadiEscena();
+		dist += inc;
+		
+		anteriorAux += inc;
+		posteriorAux += inc;
+		computeCuttingPlanes();
+		anteriorIni += inc;
+		posteriorIni += inc;
 	}
 	else if (DoingInteractive == PAN)
 	{
@@ -239,12 +246,14 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
 		u.y = m[1][1];
 		u.z = m[2][1];
 		VRP = VRP + x * s + y * u;
+		
+		Point center = escena.Center();
+		double distance = (VRP - center).length();
+		anteriorAux = anteriorIni - distance;
+		posteriorAux = posteriorIni + distance;
 
-		xClick = e->x();
-		yClick = e->y();
+		computeCuttingPlanes();
 	}
-
-	// Actualitzar els plans de retallat
 
 	xClick=e->x();
 	yClick=e->y();
@@ -252,6 +261,19 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
 	updateGL();
 }
 
+void GLWidget::computeCuttingPlanes()
+{
+  if (anteriorAux <= 0.0)
+  {
+    anterior = 0.001;
+    posterior = (posteriorAux - anteriorAux) + posterior;
+  }
+  else
+  {
+    anterior = anteriorAux;
+    posterior = posteriorAux;
+  }
+}
 
 Point GLWidget::getObs()
 {
