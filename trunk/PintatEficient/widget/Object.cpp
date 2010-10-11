@@ -16,6 +16,7 @@ Object::Object(std::string n):name(n)
 	vertexQuads = NULL;
 	vertices2 = NULL;
 	normals = NULL;
+	colors = NULL;
 }
 
 Object::~Object() {}
@@ -39,7 +40,7 @@ void Object::updateBoundingBox()
 void Object::initGL()
 {
 	createDisplayList();
-    createVertexArrays();
+	createVertexArrays();
 }
 
 void Object::render(int mode)
@@ -51,6 +52,8 @@ void Object::render(int mode)
 			for(unsigned int i=0; i<faces.size(); i++)
 			{
 				glBegin (GL_POLYGON);
+					Material material = Scene::matlib.material(faces[i].material);
+					glColor3f(material.kd.r, material.kd.g, material.kd.b);
 					for(unsigned int j=0; j<faces[i].vertices.size(); j++)
 					{ 
 						glNormal3f(vertices[faces[i].vertices[j]].normal.x,
@@ -69,8 +72,10 @@ void Object::render(int mode)
 		case 2:
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glEnableClientState(GL_VERTEX_ARRAY);
+			glEnableClientState(GL_COLOR_ARRAY);
 			glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
 			glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
+			glDisableClientState(GL_COLOR_ARRAY);
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_VERTEX_ARRAY);
 			break;
@@ -97,6 +102,8 @@ void Object::createDisplayList()
 		for(unsigned int i=0; i<faces.size(); i++)
 		{
 			glBegin (GL_POLYGON);
+				Material material = Scene::matlib.material(faces[i].material);
+				glColor3f(material.kd.r, material.kd.g, material.kd.b);
 				for(unsigned int j=0; j<faces[i].vertices.size(); j++)
 				{ 
 					glNormal3f(vertices[faces[i].vertices[j]].normal.x,
@@ -128,25 +135,62 @@ void Object::createVertexArrays()
 	if (vertexQuads != NULL) free(vertexQuads);
 	if (vertices2 != NULL) free(vertices2);
 	if (normals != NULL) free(normals);
+	if (colors != NULL) free(colors);
 	vertexTriangles = (GLuint *)malloc(sizeof(GLuint)*triangles*3);
 	vertexQuads = (GLuint *)malloc(sizeof(GLuint)*quads*4);
 
 	triIdx = 0;
 	quadIdx = 0;
+	colors = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*3);
 	for (unsigned int i = 0; i < faces.size(); i++)
 	{
+		Material material = Scene::matlib.material(faces[i].material);
 		if (faces[i].vertices.size() == 3)
 		{
-			vertexTriangles[triIdx++] = faces[i].vertices[0];
-			vertexTriangles[triIdx++] = faces[i].vertices[1];
-			vertexTriangles[triIdx++] = faces[i].vertices[2];
+			unsigned int v = faces[i].vertices[0];
+			vertexTriangles[triIdx++] = v;
+			colors[3*v] = material.kd.r;
+			colors[3*v + 1] = material.kd.g;
+			colors[3*v + 2] = material.kd.b;
+			
+			v = faces[i].vertices[1];
+			vertexTriangles[triIdx++] = v;
+			colors[3*v] = material.kd.r;
+			colors[3*v + 1] = material.kd.g;
+			colors[3*v + 2] = material.kd.b;
+			
+			v = faces[i].vertices[2];
+			vertexTriangles[triIdx++] = v;
+			colors[3*v] = material.kd.r;
+			colors[3*v + 1] = material.kd.g;
+			colors[3*v + 2] = material.kd.b;
+			
 		}
 		else
 		{
-			vertexQuads[quadIdx++] = faces[i].vertices[0];
-			vertexQuads[quadIdx++] = faces[i].vertices[1];
-			vertexQuads[quadIdx++] = faces[i].vertices[2];
-			vertexQuads[quadIdx++] = faces[i].vertices[3];
+			unsigned int v = faces[i].vertices[0];
+			vertexQuads[quadIdx++] = v;
+			colors[3*v] = material.kd.r;
+			colors[3*v + 1] = material.kd.g;
+			colors[3*v + 2] = material.kd.b;
+			
+			v = faces[i].vertices[1];
+			vertexQuads[quadIdx++] = v;
+			colors[3*v] = material.kd.r;
+			colors[3*v + 1] = material.kd.g;
+			colors[3*v + 2] = material.kd.b;
+			
+			v = faces[i].vertices[2];
+			vertexQuads[quadIdx++] = v;
+			colors[3*v] = material.kd.r;
+			colors[3*v + 1] = material.kd.g;
+			colors[3*v + 2] = material.kd.b;
+			
+			v = faces[i].vertices[3];
+			vertexQuads[quadIdx++] = v;
+			colors[3*v] = material.kd.r;
+			colors[3*v + 1] = material.kd.g;
+			colors[3*v + 2] = material.kd.b;
 		}
 	}
 
@@ -165,6 +209,7 @@ void Object::createVertexArrays()
     
 	glVertexPointer(3, GL_FLOAT, 0, vertices2);
 	glNormalPointer(GL_FLOAT, 0 , normals);
+	glColorPointer(3, GL_FLOAT, 0, colors);
 }
 
 vector<int> Object::numTrianglesQuads()

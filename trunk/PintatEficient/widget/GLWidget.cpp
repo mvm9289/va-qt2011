@@ -29,6 +29,8 @@ void GLWidget::initializeGL()
 	glEnable(GL_LIGHTING); 
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHT0);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
 
 	// dimensions escena i camera inicial
 	escena.Init();
@@ -36,8 +38,8 @@ void GLWidget::initializeGL()
 	computeCameraInicial();
     
 	remainingFrames = FRAMERATE_RANGE;
-    timeb t;
-    ftime(&t);
+	timeb t;
+	ftime(&t);
 	oldTime = t.time*1000 + t.millitm;
 }
 
@@ -267,16 +269,16 @@ Point GLWidget::getObs()
 
 void GLWidget::openModel()
 {
-    // Obrir el dialeg per seleccionar un model
-    QString filename = QFileDialog::getOpenFileName(this, "Selecciona un model...", "../models", "object (*.obj)");
-  
-    // Si s'ha seleccionat algun model, carregar el model
-    if (filename != "") 
-    {
-	    escena.OpenModel(filename.toLatin1().data());
-			mostrarNumTrianglesQuads_Model();
-	    computeCameraInicial();
-    }
+	// Obrir el dialeg per seleccionar un model
+	QString filename = QFileDialog::getOpenFileName(this, "Selecciona un model...", "../models", "object (*.obj)");
+
+	// Si s'ha seleccionat algun model, carregar el model
+	if (filename != "") 
+	{
+		escena.OpenModel(filename.toLatin1().data());
+		mostrarNumTrianglesQuads_Model();
+		computeCameraInicial();
+	}
 }
 
 void GLWidget::changeRenderMode(int mode)

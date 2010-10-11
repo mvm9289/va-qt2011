@@ -57,6 +57,7 @@ class Object
   int quads;
   GLfloat *vertices2;
   GLfloat *normals;
+  GLfloat *colors;
   GLuint *vertexTriangles;
   GLuint *vertexQuads;
 };
