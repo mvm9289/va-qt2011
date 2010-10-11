@@ -36,7 +36,8 @@ void GLWidget::initializeGL()
 	escena.Init();
 	mostrarNumTrianglesQuads_Model();
 	computeCameraInicial();
-    
+
+	moviment = false;
 	remainingFrames = FRAMERATE_RANGE;
 	timeb t;
 	ftime(&t);
@@ -74,8 +75,8 @@ void GLWidget::computeCameraInicial()
 
 	dist = 2*radi;
 	anglecam = 60; // 2 * asin (radi/2*radi)
-	anterior = 0.01;//radi;
-	posterior = 1000.; //3*radi;
+	anterior = radi;
+	posterior = 3*radi;
 
 	// inicialitzem els angles per a veure-ho des d'un cert punt de vista
 	angleX = 0;
@@ -105,19 +106,22 @@ void GLWidget::paintGL( void )
 
 	// Pintem els objectes de l'escena.
 	escena.Render();
-    
-	if (++angleX >= 360.0) angleX = 0.0;
-	if (++angleY >= 360.0) angleY = 0.0;
-	if (--remainingFrames == 0)
-	{
-		glFinish();
-        timeb t;
-        ftime(&t);
-		clock_t currentTime = t.time*1000 + t.millitm;;
-		double rate = (FRAMERATE_RANGE*1000.0)/(double)(currentTime - oldTime);
-		emit framerate(rate);		
-		oldTime = currentTime;
-		remainingFrames = FRAMERATE_RANGE;
+
+	if(moviment)
+	{ 
+		if (++angleX >= 360.0) angleX = 0.0;
+		if (++angleY >= 360.0) angleY = 0.0;
+		if (--remainingFrames == 0)
+		{
+			glFinish();
+		      timeb t;
+		      ftime(&t);
+			clock_t currentTime = t.time*1000 + t.millitm;;
+			double rate = (FRAMERATE_RANGE*1000.0)/(double)(currentTime - oldTime);
+			emit framerate(rate);		
+			oldTime = currentTime;
+			remainingFrames = FRAMERATE_RANGE;
+		}
 	}
 }
 
@@ -284,6 +288,11 @@ void GLWidget::openModel()
 void GLWidget::changeRenderMode(int mode)
 {
 	escena.ChangeRenderMode(mode);
+}
+
+void GLWidget::startStop()
+{
+	moviment = !moviment;
 }
 
 void GLWidget::mostrarNumTrianglesQuads_Model()
