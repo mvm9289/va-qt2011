@@ -11,7 +11,7 @@ void Scene::Init()
 	renderMode = 0;
 
 	Object o("model");
-	o.readObj("../models/mini_obj.obj", matlib);
+	o.readObj("../models/queen.obj", matlib);
 	AddObject(o);
 }
 

@@ -23,8 +23,8 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   
  signals:
   void framerate(double);
-	void numQuads(double);
-	void numTriangles(double);
+  void numQuads(double);
+  void numTriangles(double);
 
  public slots:
 
