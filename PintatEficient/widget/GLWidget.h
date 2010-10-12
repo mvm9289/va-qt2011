@@ -34,6 +34,7 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   void openModel();
   void changeRenderMode(int mode);
   void startStop();
+	void resetCamera();
 
  protected:
   // initializeGL() - Aqui incluim les inicialitzacions del contexte grafic.
