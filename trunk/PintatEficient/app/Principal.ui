@@ -218,6 +218,19 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>35</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Reset camera</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Frames Per Second :</string>
@@ -430,12 +443,28 @@
    <slot>startStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>577</x>
-     <y>434</y>
+     <x>777</x>
+     <y>412</y>
     </hint>
     <hint type="destinationlabel">
      <x>517</x>
      <y>433</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>resetCamera()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>575</x>
+     <y>445</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>508</x>
+     <y>471</y>
     </hint>
    </hints>
   </connection>

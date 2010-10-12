@@ -325,3 +325,8 @@ void GLWidget::mostrarNumTrianglesQuads_Model()
 	emit numQuads((double)(quads/1000.0));
 	emit numTriangles((double)(tri/1000.0));
 }
+
+void GLWidget::resetCamera()
+{
+	computeCameraInicial();
+}
