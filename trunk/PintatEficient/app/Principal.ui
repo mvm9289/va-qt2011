@@ -114,6 +114,11 @@
          <string>Vertex Arrays</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>VBO</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -389,22 +394,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboBox</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>changeRenderMode(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>685</x>
-     <y>111</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>505</x>
-     <y>358</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gLWidget1</sender>
    <signal>numQuads(double)</signal>
    <receiver>lcdNumber_2</receiver>
@@ -465,6 +454,22 @@
     <hint type="destinationlabel">
      <x>508</x>
      <y>471</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>changeRenderMode(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>690</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>492</x>
+     <y>334</y>
     </hint>
    </hints>
   </connection>
