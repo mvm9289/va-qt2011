@@ -32,8 +32,7 @@ class Object
 
   void render(int mode);
   void updateNormals();
-
-	vector<int> numTrianglesQuads();
+  vector<int> numTrianglesQuads();
 
  private:
   void make_face ( char **words, int nwords, int material );
@@ -41,6 +40,7 @@ class Object
  
   void createDisplayList();
   void createVertexArrays();
+  void createVertexBufferObject();
 
 
  public:
@@ -60,6 +60,7 @@ class Object
   GLfloat *colors;
   GLuint *vertexTriangles;
   GLuint *vertexQuads;
+  GLuint vertexBufferObjectsID[3];
 };
 
 
