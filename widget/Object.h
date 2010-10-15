@@ -40,8 +40,6 @@ class Object
  
   void createDisplayList();
   void createVertexArrays();
-  void createVertexBufferObject();
-
 
  public:
   vector<Vertex> vertices;  // vector amb els vertexs de l'objecte
@@ -60,7 +58,6 @@ class Object
   GLfloat *colors;
   GLuint *vertexTriangles;
   GLuint *vertexQuads;
-  GLuint vertexBufferObjectsID[3];
 };
 
 

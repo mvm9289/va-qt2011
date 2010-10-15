@@ -79,27 +79,6 @@ void Object::render(int mode)
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_VERTEX_ARRAY);
 			break;
-		case 3:
-			//~ glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectsID[0]);
-			//~ glEnableClientState(GL_VERTEX_ARRAY);
-			//~ glVertexPointer(3, GL_FLOAT, 0, 0);
-			//~ glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
-			//~ glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
-			//~ glDisableClientState(GL_VERTEX_ARRAY);
-			//~ glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectsID[1]);
-			//~ glEnableClientState(GL_NORMAL_ARRAY);
-			//~ glVertexPointer(3, GL_FLOAT, 0, 0);
-			//~ glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
-			//~ glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
-			//~ glDisableClientState(GL_NORMAL_ARRAY);
-			//~ glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectsID[2]);
-			//~ glEnableClientState(GL_COLOR_ARRAY);
-			//~ glVertexPointer(3, GL_FLOAT, 0, 0);
-			//~ glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
-			//~ glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
-			//~ glDisableClientState(GL_COLOR_ARRAY);
-			//~ glBindBuffer(GL_ARRAY_BUFFER, 0);
-			break;
 		default:
 			break;
 	}
@@ -231,18 +210,6 @@ void Object::createVertexArrays()
 	glVertexPointer(3, GL_FLOAT, 0, vertices2);
 	glNormalPointer(GL_FLOAT, 0 , normals);
 	glColorPointer(3, GL_FLOAT, 0, colors);
-}
-
-void Object::createVertexBufferObject()
-{
-	//~ glGenBuffers(3, vertexBufferObjectsID);
-	//~ glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectsID[0]);
-	//~ glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-	//~ glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectsID[1]);
-	//~ glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW);
-	//~ glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectsID[2]);
-	//~ glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-	//~ glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 vector<int> Object::numTrianglesQuads()
