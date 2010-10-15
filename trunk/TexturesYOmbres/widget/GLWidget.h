@@ -30,6 +30,7 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
 
   // Afegiu aquí la declaració dels slots que necessiteu
   void openModel();
+  void openTexture();
   void changeRenderMode(int mode);
   void startStop();
   void resetCamera();

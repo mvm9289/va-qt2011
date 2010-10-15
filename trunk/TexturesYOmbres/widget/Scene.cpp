@@ -48,6 +48,10 @@ void Scene::OpenModel(const char* filename)
 	objects[0].initGL();
 }
 
+void Scene::setTexture(void* textureData)
+{
+}
+
 void Scene::ChangeRenderMode(int mode)
 {
 	renderMode = mode;

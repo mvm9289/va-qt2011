@@ -308,6 +308,19 @@ void GLWidget::openModel()
 	}
 }
 
+void GLWidget::openTexture()
+{
+	// Obrir el dialeg per seleccionar una textura
+	QString filename = QFileDialog::getOpenFileName(this, "Selecciona una textura...", "../textures", "Image (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
+
+	// Si s'ha seleccionat algun model, carregar el model
+	if (filename != "") 
+	{
+        QImage texture(filename);
+		escena.setTexture((void *)(&texture));
+	}
+}
+
 void GLWidget::changeRenderMode(int mode)
 {
 	escena.ChangeRenderMode(mode);
