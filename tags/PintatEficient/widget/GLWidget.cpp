@@ -29,7 +29,10 @@ void GLWidget::initializeGL()
 	glEnable(GL_LIGHTING); 
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHT0);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+    glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+    
+    glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
 	// dimensions escena i camera inicial
@@ -162,7 +165,7 @@ void GLWidget::keyPressEvent(QKeyEvent *e)
 		updateGL();
 		break;
 
-	case Qt::Key_S: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	case Qt::Key_S: glPolygonMode(GL_FRONT, GL_FILL);
 		updateGL();
 		break;
 

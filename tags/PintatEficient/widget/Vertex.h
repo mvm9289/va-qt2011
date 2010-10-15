@@ -6,6 +6,9 @@
 // Vertex - representa un vertex d'un objecte 3D
 class Vertex
 {
+ private:
+    int normals;
+    
  public:
 	Vertex(const Point& coordenades);
 
@@ -14,6 +17,7 @@ class Vertex
     Vector normal;  // vector normal al vèrtex (per suavitzat)
     
     void computeNormal(Vector faceNormal);
+    void normalize();
 };
 
 
