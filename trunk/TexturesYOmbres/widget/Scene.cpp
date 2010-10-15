@@ -53,9 +53,5 @@ void Scene::ChangeRenderMode(int mode)
 	renderMode = mode;
 }
 
-vector<int> Scene::numTrianglesQuads_Model()
-{
-	return objects[0].numTrianglesQuads();
-}
 
 

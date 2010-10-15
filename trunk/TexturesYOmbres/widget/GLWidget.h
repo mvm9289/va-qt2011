@@ -23,8 +23,6 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   
  signals:
   void framerate(double);
-  void numQuads(double);
-  void numTriangles(double);
 
  public slots:
   // help - Ajuda per la terminal des de la que hem  engegat el programa.
@@ -34,7 +32,7 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   void openModel();
   void changeRenderMode(int mode);
   void startStop();
-	void resetCamera();
+  void resetCamera();
 
  protected:
   // initializeGL() - Aqui incluim les inicialitzacions del contexte grafic.

@@ -29,12 +29,14 @@ void GLWidget::initializeGL()
 	glEnable(GL_LIGHTING); 
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHT0);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    
 	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
 	// dimensions escena i camera inicial
 	escena.Init();
-	mostrarNumTrianglesQuads_Model();
 	computeCameraInicial();
 
 	moviment = false;
@@ -162,7 +164,7 @@ void GLWidget::keyPressEvent(QKeyEvent *e)
 		updateGL();
 		break;
 
-	case Qt::Key_S: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	case Qt::Key_S: glPolygonMode(GL_FRONT, GL_FILL);
 		updateGL();
 		break;
 
@@ -302,7 +304,6 @@ void GLWidget::openModel()
 	if (filename != "") 
 	{
 		escena.OpenModel(filename.toLatin1().data());
-		mostrarNumTrianglesQuads_Model();
 		computeCameraInicial();
 	}
 }
@@ -315,15 +316,6 @@ void GLWidget::changeRenderMode(int mode)
 void GLWidget::startStop()
 {
 	moviment = !moviment;
-}
-
-void GLWidget::mostrarNumTrianglesQuads_Model()
-{
-	int tri, quads;
-	tri = escena.numTrianglesQuads_Model()[0];
-	quads = escena.numTrianglesQuads_Model()[1];
-	emit numQuads((double)(quads/1000.0));
-	emit numTriangles((double)(tri/1000.0));
 }
 
 void GLWidget::resetCamera()
