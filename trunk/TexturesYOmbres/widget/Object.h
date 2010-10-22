@@ -32,7 +32,9 @@ class Object
 
   void render(int mode);
   void updateNormals();
-  vector<int> numTrianglesQuads();
+  
+  void setTexture(void *textureData);
+  
 
  private:
   void make_face ( char **words, int nwords, int material );
@@ -58,6 +60,9 @@ class Object
   GLfloat *colors;
   GLuint *vertexTriangles;
   GLuint *vertexQuads;
+  
+  bool textured;
+  GLuint texture;
 };
 
 

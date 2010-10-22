@@ -50,6 +50,7 @@ void Scene::OpenModel(const char* filename)
 
 void Scene::setTexture(void* textureData)
 {
+    objects[0].setTexture(textureData);
 }
 
 void Scene::ChangeRenderMode(int mode)

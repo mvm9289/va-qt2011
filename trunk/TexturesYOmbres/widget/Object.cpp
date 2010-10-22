@@ -214,13 +214,11 @@ void Object::createVertexArrays()
 	glColorPointer(3, GL_FLOAT, 0, colors);
 }
 
-vector<int> Object::numTrianglesQuads()
+void Object::setTexture(void *textureData)
 {
-	vector<int> info(2);
-	info[0] = triangles;
-	info[1] = quads;
-
-	return info;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, /// AAAAAAAAAAAAAAAA MEDIAAAAAAAAAAAAAAAAAAS
 }
 
 
