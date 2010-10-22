@@ -34,6 +34,7 @@ void GLWidget::initializeGL()
     
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
+    glShadeModel(GL_SMOOTH);
 
 	// dimensions escena i camera inicial
 	escena.Init();
