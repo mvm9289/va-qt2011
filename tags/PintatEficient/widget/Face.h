@@ -21,8 +21,6 @@ class Face
 
     Vector normal;
     void updateNormal(vector<Vertex> &);
-    void updateNormalVertex(vector<Vertex> &v);
-
 };
 
 

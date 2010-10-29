@@ -316,8 +316,10 @@ void GLWidget::openTexture()
 	// Si s'ha seleccionat algun model, carregar el model
 	if (filename != "") 
 	{
-        QImage texture(filename);
-		escena.setTexture((void *)(&texture));
+        QImage texture, buf;
+        buf.load(filename);
+        texture = QGLWidget::convertToGLFormat(buf);
+		escena.setTexture((void *)texture.bits(), texture.width(), texture.height());
 	}
 }
 

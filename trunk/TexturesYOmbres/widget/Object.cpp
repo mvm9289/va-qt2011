@@ -45,20 +45,31 @@ void Object::initGL()
 
 void Object::render(int mode)
 {
+    Point center = boundingBox().Center();
 	switch (mode)
 	{
 		case 0:
 			// Cal recorrer l'estructura de l'objecte per a pintar les seves cares
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            
 			for(unsigned int i=0; i<faces.size(); i++)
 			{
 				glBegin (GL_POLYGON);
-					Material material = Scene::matlib.material(faces[i].material);
-					glColor3f(material.kd.r, material.kd.g, material.kd.b);
+					//Material material = Scene::matlib.material(faces[i].material);
+					//glColor3f(material.kd.r, material.kd.g, material.kd.b);
 					for(unsigned int j=0; j<faces[i].vertices.size(); j++)
 					{ 
 						glNormal3f(vertices[faces[i].vertices[j]].normal.x,
 							vertices[faces[i].vertices[j]].normal.y,
 							vertices[faces[i].vertices[j]].normal.z);
+                            
+                        Vector P = vertices[faces[i].vertices[j]].coord - center;
+                        P.normalize();
+                        
+                        glTexCoord2f(atan2(P.x, P.z)/(2*M_PI), asin(P.y)/M_PI + 0.5);
+                            
 						glVertex3f(vertices[faces[i].vertices[j]].coord.x,
 							vertices[faces[i].vertices[j]].coord.y,
 							vertices[faces[i].vertices[j]].coord.z);
@@ -214,11 +225,15 @@ void Object::createVertexArrays()
 	glColorPointer(3, GL_FLOAT, 0, colors);
 }
 
-void Object::setTexture(void *textureData)
+void Object::setTexture(void *textureData, int width, int height)
 {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, /// AAAAAAAAAAAAAAAA MEDIAAAAAAAAAAAAAAAAAAS
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 1);
 }
 
 

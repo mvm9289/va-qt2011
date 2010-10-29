@@ -48,9 +48,9 @@ void Scene::OpenModel(const char* filename)
 	objects[0].initGL();
 }
 
-void Scene::setTexture(void* textureData)
+void Scene::setTexture(void* textureData, int width, int height)
 {
-    objects[0].setTexture(textureData);
+    objects[0].setTexture(textureData, width, height);
 }
 
 void Scene::ChangeRenderMode(int mode)

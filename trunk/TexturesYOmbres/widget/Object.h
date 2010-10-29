@@ -33,7 +33,7 @@ class Object
   void render(int mode);
   void updateNormals();
   
-  void setTexture(void *textureData);
+  void setTexture(void *textureData, int width, int height);
   
 
  private:

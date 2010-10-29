@@ -23,7 +23,7 @@ public:
 	void Render();
 	void AddObject(Object &);
 	void OpenModel(const char* filename);
-    void setTexture(void* textureData);
+    void setTexture(void* textureData, int width, int height);
 
 	Point Center();
 	float RadiEscena();

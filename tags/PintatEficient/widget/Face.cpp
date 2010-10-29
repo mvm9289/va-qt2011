@@ -44,10 +44,4 @@ void Face::updateNormal(vector<Vertex> &v)
   normal.normalize();
 }
 
-void Face::updateNormalVertex(vector<Vertex> &v)
-{
-  unsigned int n = vertices.size();
-  for (unsigned int i = 0; i < n; i++)
-    v[vertices[i]].computeNormal(normal);
-}
 
