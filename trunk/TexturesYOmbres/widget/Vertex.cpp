@@ -1,19 +1,9 @@
 #include "Vertex.h"
 
 Vertex::Vertex(const Point& coordenades)
-: coord(coordenades),normals(0), normal(0)
-{}
-
-void Vertex::computeNormal(Vector faceNormal)
+: coord(coordenades)
 {
-  normal += faceNormal;
-  normals++;
+	normal.x = 0;
+	normal.y = 0;
+	normal.z = 0;
 }
-
-void Vertex::normalize()
-{
-  normal /= normals;
-  normal.normalize();
-}
-
-

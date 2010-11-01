@@ -88,22 +88,6 @@ void Object::updateNormals()
 {
 	for(unsigned int i=0; i<faces.size(); ++i)
 		faces[i].updateNormal(vertices);
-     
-    for (long i =0; i<vertices.size(); ++i) {
-        vertices[i].normal.x = 0;
-        vertices[i].normal.y = 0;
-        vertices[i].normal.z = 0;
-    }
-
-    for (long i =0; i<faces.size(); ++i) {
-        for (long j = 0; j < faces[i].vertices.size();j++){
-            vertices[faces[i].vertices[j]].normal.x += faces[i].normal.x;
-            vertices[faces[i].vertices[j]].normal.y += faces[i].normal.y;
-            vertices[faces[i].vertices[j]].normal.z += faces[i].normal.z;
-
-            vertices[faces[i].vertices[j]].normal.normalize();
-        }
-    }
 }
 
 void Object::createDisplayList()

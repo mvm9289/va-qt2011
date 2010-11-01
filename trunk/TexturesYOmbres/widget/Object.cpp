@@ -98,12 +98,7 @@ void Object::render(int mode)
 void Object::updateNormals()
 {
 	for(unsigned int i=0; i<faces.size(); ++i)
-	{
 		faces[i].updateNormal(vertices);
-		faces[i].updateNormalVertex(vertices);
-	}
-    for(unsigned int i=0; i<vertices.size(); ++i)
-        vertices[i].normalize();
 
 }
 
