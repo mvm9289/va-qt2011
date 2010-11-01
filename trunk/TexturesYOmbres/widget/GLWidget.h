@@ -60,8 +60,6 @@ class  QDESIGNER_WIDGET_EXPORT GLWidget : public QGLWidget  // CAG
   void setModelview();
   void setProjection();
 
-  void mostrarNumTrianglesQuads_Model();
-
   Point getObs();
   
  private:
