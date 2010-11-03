@@ -1,3 +1,4 @@
+
 #ifndef _BOX_H_
 #define _BOX_H_
 
@@ -11,28 +12,20 @@
 #undef max
 #endif
 
-// Box - permet representar una capsa aliniada amb els eixos
-// (ex. capsa englobant)
 class Box
 {
-private:
-	void Render(double r, double g, double b);
+    public:
+        Point minb, maxb;
+        
+    private:
+        void Render(double r, double g, double b);
 
-public:
-	Box(const Point& minimum=Point(), const Point& maximum=Point());
-
-	// update - expandeix la capsa per que inclogui el punt donat
-	void update(const Point& p);
-	// init - inicialitza la capsa amb el punt donat
-	void init(const Point& p);
-
-	// atributs
-	Point minb, maxb;	// extrems mínim i màxim de la capsa
-
-	void Render();
-	Point Center();
+    public:
+        Box(const Point& minimum=Point(), const Point& maximum=Point());
+        void init(const Point& p);
+        void update(const Point& p);
+        void Render();
+        Point center();
 };
-
-
 
 #endif

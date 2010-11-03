@@ -1,51 +1,48 @@
+
 #include "Scene.h"
 
 MaterialLib Scene::matlib;
 
-Scene::Scene()
-{
-}
+Scene::Scene() {}
 
 void Scene::Init()
-{  
-	renderMode = 0;
-
-	Object o("model");
-	o.readObj("../models/cotxe.obj", matlib);
-	AddObject(o);
+{
+    renderMode = 0;
+    
+    Object o("Model");
+    o.readObj("../models/cotxe.obj", matlib);
+    AddObject(o);
 }
 
-// Mètode que pinta l'escena: el terra, els objectes i el vehicle
 void Scene::Render()
 {
-	// Pintar tots els objectes de l'escena 
-	std::vector<Object>::iterator ito;
-	for (ito=objects.begin(); ito!=objects.end(); ito++)
-		(*ito).render(renderMode); 
+    std::vector<Object>::iterator ito;
+    for (ito = objects.begin(); ito != objects.end(); ito++)
+        (*ito).render(renderMode);
 }
 
 void Scene::AddObject(Object &o)
 {
-	o.initGL();
-	objects.push_back(o);
+    o.initGL();
+    objects.push_back(o);
 }
 
-Point Scene::Center()
+Point Scene::center()
 {
-	// Se tienen que tener en cuenta todos los objetos!!
-	return (objects[0].boundingBox().Center());
+    return objects[0].boundingBox().center();
 }
 
-float Scene::RadiEscena()
+float Scene::radius()
 {
-	Vector rad = objects[0].boundingBox().maxb - objects[0].boundingBox().Center();
-	return (rad.length());
+    Vector rad = objects[0].boundingBox().maxb - objects[0].boundingBox().center();
+    
+    return (rad.length());
 }
 
 void Scene::OpenModel(const char* filename)
 {
-	objects[0].readObj(filename, matlib);
-	objects[0].initGL();
+    objects[0].readObj(filename, matlib);
+    objects[0].initGL();
 }
 
 void Scene::setTexture(void* textureData, int width, int height)
@@ -55,8 +52,10 @@ void Scene::setTexture(void* textureData, int width, int height)
 
 void Scene::ChangeRenderMode(int mode)
 {
-	renderMode = mode;
+    renderMode = mode;
 }
 
-
-
+vector<int> Scene::numTrianglesQuads_Model()
+{
+    return objects[0].numTrianglesQuads();
+}

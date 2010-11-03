@@ -1,3 +1,3 @@
-TEMPLATE = subdirs
-SUBDIRS = widget app
-CONFIG += ordered
+TEMPLATE		= subdirs
+SUBDIRS		= widget app
+CONFIG		+= ordered

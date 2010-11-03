@@ -1,102 +1,80 @@
-#include "GLWidget.h"
-//--------------------
-#include "GLWidgetPlugin.h"
-//---------------------------
 
 #include <QtPlugin>
 
-GLWidgetPlugin::GLWidgetPlugin(QObject *parent)
-//--------------------------------
-     : QObject(parent)
- {
-     initialized = false;
- }
+#include "GLWidget.h"
+#include "GLWidgetPlugin.h"
 
-void GLWidgetPlugin::initialize(QDesignerFormEditorInterface * /* core */)
-//   -----------------
- {
-     if (initialized)
-         return;
+GLWidgetPlugin::GLWidgetPlugin(QObject *parent):QObject(parent)
+{
+    initialized = false;
+}
 
-     initialized = true;
- }
+void GLWidgetPlugin::initialize(QDesignerFormEditorInterface *)
+{
+    if (initialized) return;
+    initialized = true;
+}
 
- bool GLWidgetPlugin::isInitialized() const
- //   ----------------
- {
-     return initialized;
- }
+bool GLWidgetPlugin::isInitialized() const
+{
+    return initialized;
+}
 
+QWidget *GLWidgetPlugin::createWidget(QWidget *parent)
+{
+    return new GLWidget(parent);
+}
 
- QWidget *GLWidgetPlugin::createWidget(QWidget *parent)
- //       ----------------
- {
-     return new GLWidget(parent);
-     //         ----------
- }
+QString GLWidgetPlugin::name() const
+{
+    return "GLWidget";
+}
 
- QString GLWidgetPlugin::name() const
- //      ----------------
- {
-     return "GLWidget";
-     //      ----------
- }
+QString GLWidgetPlugin::group() const
+{
+    return "Display Widgets [Examples]";
+}
 
- QString GLWidgetPlugin::group() const
- //      ----------------
- {
-     return "Display Widgets [Examples]";
-     //     --------------------------- (opcional)
- }
+QIcon GLWidgetPlugin::icon() const
+{
+    return QIcon();
+}
 
- QIcon GLWidgetPlugin::icon() const
- //    ----------------
- {
-     return QIcon();
- }
+QString GLWidgetPlugin::toolTip() const
+{
+    return "";
+}
 
- QString GLWidgetPlugin::toolTip() const
- //      ----------------
- {
-     return "";
- }
+QString GLWidgetPlugin::whatsThis() const
+{
+    return "";
+}
 
- QString GLWidgetPlugin::whatsThis() const
- //      ----------------
- {
-     return "";
- }
+bool GLWidgetPlugin::isContainer() const
+{
+    return false;
+}
 
- bool GLWidgetPlugin::isContainer() const
- //   ----------------
- {
-     return false;
- }
+QString GLWidgetPlugin::domXml() const
+{
+    return "<widget class=\"GLWidget\" name=\"GLWidget\">\n"
+        " <property name=\"geometry\">\n"
+        "  <rect>\n"
+        "   <x>0</x>\n"
+        "   <y>0</y>\n"
+        "   <width>100</width>\n"
+        "   <height>10</height>\n"
+        "  </rect>\n"
+        " </property>\n"
+        " <property name=\"toolTip\" >\n"
+        "  <string>Adapted GLWidget</string>\n"
+        " </property>\n"
+        "</widget>\n";
+}
 
- QString GLWidgetPlugin::domXml() const
- //      ----------------
- {
-     return "<widget class=\"GLWidget\" name=\"GLWidget\">\n"
-       //                    ----------          --------
-            " <property name=\"geometry\">\n"
-            "  <rect>\n"
-            "   <x>0</x>\n"
-            "   <y>0</y>\n"
-            "   <width>100</width>\n"
-            "   <height>10</height>\n"
-       //               --(opcional)
-            "  </rect>\n"
-            " </property>\n"
-            " <property name=\"toolTip\" >\n"
-            "  <string>Adapted GLWidget</string>\n"
-           " </property>\n"
-            "</widget>\n";
- }
+QString GLWidgetPlugin::includeFile() const
+{
+    return "GLWidget.h";
+}
 
- QString GLWidgetPlugin::includeFile() const
- {
-     return "GLWidget.h";
- }
-
- Q_EXPORT_PLUGIN2(pluginGLWidget, GLWidgetPlugin)
- //               ----------------  ----------------
+Q_EXPORT_PLUGIN2(pluginGLWidget, GLWidgetPlugin)

@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>Principal</class>
- <widget class="QWidget" name="Principal" >
-  <property name="geometry" >
+ <widget class="QWidget" name="Principal">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,254 +10,380 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>VA Pintat Eficient</string>
+  <property name="windowTitle">
+   <string>Visualització Avançada</string>
   </property>
-  <layout class="QHBoxLayout" >
-   <property name="spacing" >
-    <number>6</number>
-   </property>
-   <property name="margin" >
-    <number>11</number>
-   </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="GLWidget" name="gLWidget1" >
-     <property name="sizePolicy" >
-      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+    <widget class="GLWidget" name="gLWidget1">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize" >
+     <property name="minimumSize">
       <size>
-       <width>100</width>
-       <height>100</height>
+       <width>300</width>
+       <height>300</height>
       </size>
      </property>
-     <property name="cursor" >
+     <property name="cursor">
       <cursorShape>OpenHandCursor</cursorShape>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="margin" >
+    <layout class="QVBoxLayout" name="menuContainer" stretch="0,0">
+     <property name="margin">
       <number>11</number>
      </property>
      <item>
-      <widget class="QPushButton" name="openmodel" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+      <widget class="QTabWidget" name="tabMenu">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize" >
+       <property name="minimumSize">
         <size>
-         <width>0</width>
-         <height>35</height>
+         <width>240</width>
+         <height>490</height>
         </size>
        </property>
-       <property name="cursor" >
-        <cursorShape>PointingHandCursor</cursorShape>
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
        </property>
-       <property name="text" >
-        <string>Open model...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="text" >
-        <string>Open texture...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer" >
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Minimum</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2" >
-       <property name="text" >
-        <string>Rendering Mode:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBox" >
-       <property name="sizePolicy" >
-        <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="cursor" >
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="currentIndex" >
+       <property name="currentIndex">
         <number>0</number>
        </property>
-       <property name="maxVisibleItems" >
-        <number>3</number>
-       </property>
-       <item>
-        <property name="text" >
-         <string>Immediate</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Display Lists</string>
-        </property>
-       </item>
-       <item>
-        <property name="text" >
-         <string>Vertex Arrays</string>
-        </property>
-       </item>
+       <widget class="QWidget" name="mainTab">
+        <attribute name="title">
+         <string>Main</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget_6">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>211</width>
+           <height>441</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="submenuContainer" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMaximumSize</enum>
+          </property>
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="openModelButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Open model...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Minimum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="renderingModeLabel">
+            <property name="text">
+             <string>Rendering mode:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="renderingModeSelector">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <property name="maxVisibleItems">
+             <number>3</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>Immediate</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Display List</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Vertex Arrays</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="trianglesLabel">
+            <property name="text">
+             <string>Triangles in the model (K):</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLCDNumber" name="trianglesLCD">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>6</pointsize>
+             </font>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Filled</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="quadsLabel">
+            <property name="text">
+             <string>Quads in the model (K):</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLCDNumber" name="quadsLCD">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>6</pointsize>
+             </font>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Filled</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>365</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="movementCheckbox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Movement</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="resetButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Reset camera</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="framerateLabel">
+            <property name="text">
+             <string>Frames per second:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLCDNumber" name="framerateLCD">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>6</pointsize>
+             </font>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="segmentStyle">
+             <enum>QLCDNumber::Filled</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="textureTab">
+        <attribute name="title">
+         <string>Textures</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget_7">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>211</width>
+           <height>441</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="submenuCountainer_2" stretch="0,0">
+          <property name="margin">
+           <number>11</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="openTextureButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Open texture...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>365</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
      </item>
      <item>
-      <spacer>
-       <property name="orientation" >
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType" >
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0" >
-        <size>
-         <width>20</width>
-         <height>365</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox" >
-       <property name="enabled" >
-        <bool>true</bool>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="cursor" >
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text" >
-        <string>Animation</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton" >
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="cursor" >
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text" >
-        <string>Reset camera</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label" >
-       <property name="text" >
-        <string>Frames Per Second :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLCDNumber" name="lcdNumber" >
-       <property name="enabled" >
-        <bool>false</bool>
-       </property>
-       <property name="minimumSize" >
-        <size>
-         <width>0</width>
-         <height>35</height>
-        </size>
-       </property>
-       <property name="font" >
-        <font>
-         <pointsize>6</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth" >
-        <number>1</number>
-       </property>
-       <property name="smallDecimalPoint" >
-        <bool>false</bool>
-       </property>
-       <property name="segmentStyle" >
-        <enum>QLCDNumber::Filled</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" >
-       <property name="spacing" >
+      <layout class="QHBoxLayout" name="exitContainer" stretch="0,0">
+       <property name="spacing">
         <number>6</number>
        </property>
-       <property name="margin" >
+       <property name="margin">
         <number>11</number>
        </property>
        <item>
-        <spacer>
-         <property name="orientation" >
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType" >
+         <property name="sizeType">
           <enum>QSizePolicy::Fixed</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>101</width>
            <height>31</height>
@@ -265,27 +392,27 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton1" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+        <widget class="QPushButton" name="exitButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="minimumSize" >
+         <property name="minimumSize">
           <size>
-           <width>75</width>
-           <height>0</height>
+           <width>0</width>
+           <height>35</height>
           </size>
          </property>
-         <property name="cursor" >
+         <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
-         <property name="text" >
+         <property name="text">
           <string>&amp;Exit</string>
          </property>
-         <property name="shortcut" >
-          <string>Alt+S</string>
+         <property name="shortcut">
+          <string>Alt+E, Ctrl+S</string>
          </property>
         </widget>
        </item>
@@ -295,7 +422,7 @@
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
    <class>GLWidget</class>
@@ -307,119 +434,151 @@
   </customwidget>
  </customwidgets>
  <includes>
-  <include location="local" >../widget/GLWidget.h</include>
+  <include location="local">../widget/GLWidget.h</include>
  </includes>
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton1</sender>
-   <signal>clicked()</signal>
+   <sender>exitButton</sender>
+   <signal>pressed()</signal>
    <receiver>Principal</receiver>
    <slot>close()</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>766</x>
-     <y>563</y>
+    <hint type="sourcelabel">
+     <x>707</x>
+     <y>559</y>
     </hint>
-    <hint type="destinationlabel" >
-     <x>20</x>
-     <y>20</y>
+    <hint type="destinationlabel">
+     <x>798</x>
+     <y>515</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resetButton</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>resetCamera()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>618</x>
+     <y>406</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>425</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>movementCheckbox</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>startStop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>595</x>
+     <y>368</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>432</x>
+     <y>376</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>renderingModeSelector</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>changeRenderMode(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>594</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>428</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openModelButton</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>openModel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>621</x>
+     <y>88</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>119</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>gLWidget1</sender>
    <signal>framerate(double)</signal>
-   <receiver>lcdNumber</receiver>
+   <receiver>framerateLCD</receiver>
    <slot>display(double)</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>434</x>
-     <y>491</y>
+    <hint type="sourcelabel">
+     <x>493</x>
+     <y>522</y>
     </hint>
-    <hint type="destinationlabel" >
-     <x>777</x>
-     <y>518</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openmodel</sender>
-   <signal>clicked()</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>openModel()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>660</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>516</x>
-     <y>211</y>
+    <hint type="destinationlabel">
+     <x>642</x>
+     <y>472</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
-   <signal>clicked()</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>startStop()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>777</x>
-     <y>412</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>517</x>
-     <y>433</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>resetCamera()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>575</x>
-     <y>445</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>508</x>
-     <y>471</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>comboBox</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>changeRenderMode(int)</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>777</x>
-     <y>186</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>492</x>
-     <y>334</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
+   <sender>openTextureButton</sender>
    <signal>pressed()</signal>
    <receiver>gLWidget1</receiver>
    <slot>openTexture()</slot>
    <hints>
-    <hint type="sourcelabel" >
-     <x>697</x>
-     <y>92</y>
+    <hint type="sourcelabel">
+     <x>647</x>
+     <y>96</y>
     </hint>
-    <hint type="destinationlabel" >
-     <x>377</x>
-     <y>110</y>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>numTriangles(double)</signal>
+   <receiver>trianglesLCD</receiver>
+   <slot>display(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>493</x>
+     <y>298</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>635</x>
+     <y>233</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>numQuads(double)</signal>
+   <receiver>quadsLCD</receiver>
+   <slot>display(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>437</x>
+     <y>337</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>677</x>
+     <y>303</y>
     </hint>
    </hints>
   </connection>
