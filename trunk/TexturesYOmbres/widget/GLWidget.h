@@ -26,7 +26,7 @@ class GLWidget:public QGLWidget
     
         Scene scene;
 
-        typedef  enum {NONE, ROTATE, ZOOM, PAN} InteractiveAction;
+        typedef  enum {NONE, ROTATE, ZOOM, PAN, SELECT} InteractiveAction;
         InteractiveAction DoingInteractive;
 
         int   xClick, yClick;
@@ -36,6 +36,8 @@ class GLWidget:public QGLWidget
         clock_t oldTime;
         int remainingFrames;
         bool movement;
+
+				bool selection;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -69,6 +71,7 @@ class GLWidget:public QGLWidget
         void changeRenderMode(int mode);
         void startStop();
         void resetCamera();
+				void selectionMode();
 };
 
 #endif

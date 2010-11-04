@@ -34,6 +34,7 @@ void GLWidget::initializeGL()
     showNumTrianglesQuads();
     
     movement = false;
+		selection = false;
     remainingFrames = FRAMERATE_RANGE;
     timeb t;
     ftime(&t);
@@ -128,12 +129,25 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
     xClick = e->x();
     yClick = e->y();
 
-    if (e->button()&Qt::LeftButton && !(e->modifiers()&(Qt::ShiftModifier|Qt::AltModifier|Qt::ControlModifier)))
-        DoingInteractive = ROTATE;
-    else if (e->button()&Qt::LeftButton &&  e->modifiers()&Qt::ShiftModifier)
-        DoingInteractive = ZOOM;
-    else if (e->button()&Qt::RightButton)
-        DoingInteractive = PAN;
+		if(!selection)
+		{
+		  if (e->button()&Qt::LeftButton && !(e->modifiers()&(Qt::ShiftModifier|Qt::AltModifier|Qt::ControlModifier)))
+		      DoingInteractive = ROTATE;
+		  else if (e->button()&Qt::LeftButton &&  e->modifiers()&Qt::ShiftModifier)
+		      DoingInteractive = ZOOM;
+		  else if (e->button()&Qt::RightButton)
+		      DoingInteractive = PAN;
+		}
+		else {
+
+		  else if (e->button()&Qt::LeftButton)
+		      DoingInteractive = SELECT;
+					//mover una copia o mover el original guardando una copia con la posicion original?
+		  else if (e->button()&Qt::RightButton)
+		      //cancelar el movimiento
+		}
+	
+
 }
 
 void GLWidget::keyPressEvent(QKeyEvent *e)
@@ -168,7 +182,12 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *e)
 {
-    if (DoingInteractive == ROTATE)
+
+		if(DoingInteractive == SELECT)
+		{
+				//selectionRender
+		}
+    else if (DoingInteractive == ROTATE)
     {
         angleY-=e->x()-xClick;
         angleX+=e->y()-yClick;
@@ -239,6 +258,9 @@ void GLWidget::openModel()
 void GLWidget::openTexture()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Select a texture...", "../textures", "Image (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
+
+		//filename = "../models/paper_texture.jpg";
+
     if (filename != "") 
     {
         QImage texture, buf;
@@ -271,4 +293,10 @@ void GLWidget::resetCamera()
 {
     computeInitialCamera();
 }
+
+void GLWidget::selectionMode()
+{
+		selection = !selection;
+}
+
 

@@ -26,5 +26,4 @@ class Texture
         void setWrapMode(int wrapS, int wrapT);
         void sendToGL();
 }
-
 #endif

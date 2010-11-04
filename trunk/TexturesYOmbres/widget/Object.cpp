@@ -105,22 +105,37 @@ void Object::createDisplayList()
 {
     DLindex = glGenLists(1);
     glNewList(DLindex, GL_COMPILE_AND_EXECUTE);
+
+    		Box bbox = boundingBox();
+				Point center = bbox.center();
+				float radius = (bbox.maxb - center).length();				
         for(unsigned int i=0; i<faces.size(); i++)
         {
             glBegin (GL_POLYGON);
-                Material material = Scene::matlib.material(faces[i].material);
-                glColor3f(material.kd.r, material.kd.g, material.kd.b);
-                for(unsigned int j=0; j<faces[i].vertices.size(); j++)
-                { 
-                    glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                    vertices[faces[i].vertices[j]].normal.y,
-                    vertices[faces[i].vertices[j]].normal.z);
-                    glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-                    vertices[faces[i].vertices[j]].coord.y,
-                    vertices[faces[i].vertices[j]].coord.z);
-                }
+                    Material material = Scene::matlib.material(faces[i].material);
+                    glColor3f(material.kd.r, material.kd.g, material.kd.b);
+                    for(unsigned int j=0; j<faces[i].vertices.size(); j++)
+                    { 
+                        glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+                        vertices[faces[i].vertices[j]].normal.y,
+                        vertices[faces[i].vertices[j]].normal.z);
+
+                        Vector P2 = vertices[faces[i].vertices[j]].coord - center;
+                        P2.normalize();
+                        P2 = P2*radius;
+                        Point P = vertices[faces[i].vertices[j]].coord + P2;
+                        Vector P3 = P - center;
+
+                        glTexCoord2f((acos(P.z/sqrt(P.x*P.x + P.y*P.y + P.z*P.z))/M_PI), (atan2(P3.y, P3.x)/(2*M_PI) + 0.5));
+                        //glTexCoord2f((atan2(P.x, P.y)/(2*M_PI)), (asin(P.y)/M_PI + 0.5));
+
+                        glVertex3f(vertices[faces[i].vertices[j]].coord.x,
+                        vertices[faces[i].vertices[j]].coord.y,
+                        vertices[faces[i].vertices[j]].coord.z);
+                    }
             glEnd();
         }
+
     glEndList();
 }
 

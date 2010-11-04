@@ -35,3 +35,4 @@ void Texture::setWrapMode(int wrapS, int wrapT)
 void Texture::sendToGL()
 {
 }
+
