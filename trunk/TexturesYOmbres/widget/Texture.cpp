@@ -1,38 +1,74 @@
 
 #include "Texture.h"
 
-Texture::Texture():bitMap(NULL), doMipMap(false), minificationFilter(-1), magnificationFilter(-1), wrappingS(-1), wrappingT(-1) {}
+Texture::Texture():bitMap(NULL), textureFilename(""), textureID(-1), doMipMap(false), minificationFilter(-1), magnificationFilter(-1), wrappingS(-1), wrappingT(-1) {}
 
 Texture::~Texture()
 {
     if (bitMap != NULL) delete bitMap;
 }
 
-static int Texture::getTextureID(string filename)
+int Textures::getTextureID(string filename)
 {
     map<string, unsigned int>::iterator it = loadedTextures.find(filename);
-    if (it != NULL) return it->second;
+    if (it != NULL) return (int)(it->second);
     
     return -1;
 }
 
+int Texture::getTextureID()
+{
+    return textureID;
+}
+
 string Texture::loadTexture(QString filename)
 {
+    bitMap = new QImage();
+    
+    if (bitMap->load(filename))
+    {
+        textureFilename = string(filename.toLatin1().data());
+        *bitMap = QGLWidget::convertToGLFormat(*bitMap);
+        return textureFilename;
+    }
+    else
+    {
+        delete bitMap;
+        bitMap = NULL;
+        return "";
+    }
 }
 
 void Texture::doMipMapping()
 {
+    doMipMap = true;
 }
 
 void Texture::setMinMagFilter(int minFilter, int magFilter)
 {
+    minificationFilter = minFilter;
+    magnificationFilter = magFilter;
 }
 
 void Texture::setWrapMode(int wrapS, int wrapT)
 {
+    wrappingS = wrapS;
+    wrappingT = wrapT;
 }
 
 void Texture::sendToGL()
 {
+    glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitMap->width(), bitMap->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, bitMap->bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrappingS);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrappingT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minificationFilter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnificationFilter);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    
+    Textures::loadedTextures[textureFilename] = textureID;
+	delete bitMap;
+	bitMap = NULL;
 }
 
