@@ -6,7 +6,7 @@
 #include "Box.h"
 #include "Scene.h"
 
-Object::Object(std::string n):name(n)
+Object::Object(std::string n):name(n), triangles(0), quads(0), texture(-1)
 {
     vertexTriangles = NULL;
     vertexQuads = NULL;
@@ -39,89 +39,11 @@ void Object::initGL()
     createVertexArrays();
 }
 
-void Object::render(int mode)
-{
-    Point center = boundingBox().center();
-    switch (mode)
-    {
-        case 0:
-            glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, texture);
-
-            for(unsigned int i=0; i<faces.size(); i++)
-            {
-                glBegin (GL_POLYGON);
-                        Material material = Scene::matlib.material(faces[i].material);
-                        glColor3f(material.kd.r, material.kd.g, material.kd.b);
-                        for(unsigned int j=0; j<faces[i].vertices.size(); j++)
-                        { 
-                            glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                            vertices[faces[i].vertices[j]].normal.y,
-                            vertices[faces[i].vertices[j]].normal.z);
-
-                            Vector P = vertices[faces[i].vertices[j]].coord - center;
-                            P.normalize();
-                            glTexCoord2f((atan2(P.x, P.z)/(2*M_PI)), ((asin(P.y)/M_PI) + 0.5));
-
-                            glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-                            vertices[faces[i].vertices[j]].coord.y,
-                            vertices[faces[i].vertices[j]].coord.z);
-                        }
-                glEnd();
-            }
-            break;
-        case 1:
-            glCallList(DLindex);
-            break;
-        case 2:
-            glEnableClientState(GL_VERTEX_ARRAY);
-            glEnableClientState(GL_NORMAL_ARRAY);
-            glEnableClientState(GL_COLOR_ARRAY);
-            glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
-            glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
-            glDisableClientState(GL_COLOR_ARRAY);
-            glDisableClientState(GL_NORMAL_ARRAY);
-            glDisableClientState(GL_VERTEX_ARRAY);
-            break;
-        default:
-            break;
-    }
-}
-
-void Object::updateNormals()
-{
-    for(unsigned int i=0; i<faces.size(); ++i)
-        faces[i].computeNormal(vertices);
-}
-
 void Object::createDisplayList()
 {
     DLindex = glGenLists(1);
     glNewList(DLindex, GL_COMPILE_AND_EXECUTE);
-
-    	Point center = boundingBox().center();
-        for(unsigned int i=0; i<faces.size(); i++)
-        {
-            glBegin (GL_POLYGON);
-                    Material material = Scene::matlib.material(faces[i].material);
-                    glColor3f(material.kd.r, material.kd.g, material.kd.b);
-                    for(unsigned int j=0; j<faces[i].vertices.size(); j++)
-                    { 
-                        glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                        vertices[faces[i].vertices[j]].normal.y,
-                        vertices[faces[i].vertices[j]].normal.z);
-
-                        Vector P = vertices[faces[i].vertices[j]].coord - center;
-                        P.normalize();
-                        glTexCoord2f((atan2(P.x, P.z)/(2*M_PI)), ((asin(P.y)/M_PI) + 0.5));
-
-                        glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-                        vertices[faces[i].vertices[j]].coord.y,
-                        vertices[faces[i].vertices[j]].coord.z);
-                    }
-            glEnd();
-        }
-
+        immediateRender();
     glEndList();
 }
 
@@ -218,6 +140,75 @@ void Object::createVertexArrays()
     glColorPointer(3, GL_FLOAT, 0, colors);
 }
 
+void Object::render(int mode)
+{
+    Point center = boundingBox().center();
+    switch (mode)
+    {
+        case IMMEDIATE:
+            immediateRender();
+            break;
+        case DISPLAY_LIST:
+            glCallList(DLindex);
+            break;
+        case VERTEX_ARRAYS:
+            vertexArraysRender();
+            break;
+        default:
+            break;
+    }
+}
+
+inline void Object::immediateRender()
+{
+    if (texture != -1)
+    {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, (GLuint)texture);
+    }
+    Point center = boundingBox().center();
+    for(unsigned int i=0; i<faces.size(); i++)
+    {
+        glBegin (GL_POLYGON);
+                Material material = Scene::matlib.material(faces[i].material);
+                glColor3f(material.kd.r, material.kd.g, material.kd.b);
+                for(unsigned int j=0; j<faces[i].vertices.size(); j++)
+                { 
+                    glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+                    vertices[faces[i].vertices[j]].normal.y,
+                    vertices[faces[i].vertices[j]].normal.z);
+
+                    Vector P = vertices[faces[i].vertices[j]].coord - center;
+                    P.normalize();
+                    glTexCoord2f((atan2(P.x, P.z)/(2*M_PI)), ((asin(P.y)/M_PI) + 0.5));
+
+                    glVertex3f(vertices[faces[i].vertices[j]].coord.x,
+                    vertices[faces[i].vertices[j]].coord.y,
+                    vertices[faces[i].vertices[j]].coord.z);
+                }
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+    }
+}
+
+inline void Object::vertexArraysRender()
+{
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
+    glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
+    glDisableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+void Object::updateNormals()
+{
+    for(unsigned int i=0; i<faces.size(); ++i)
+        faces[i].computeNormal(vertices);
+}
+
 vector<int> Object::numTrianglesQuads()
 {
     vector<int> info(2);
@@ -229,7 +220,7 @@ vector<int> Object::numTrianglesQuads()
 
 void Object::setTexture(int textureID)
 {
-    texture = (GLuint)textureID;
+    texture = textureID;
 }
 
 

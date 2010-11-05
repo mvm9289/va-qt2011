@@ -11,6 +11,10 @@
 #include "Box.h"
 #include "MaterialLib.h"
 
+#define IMMEDIATE 0
+#define DISPLAY_LIST 1
+#define VERTEX_ARRAYS 2
+
 using namespace std;
 
 class Object
@@ -28,8 +32,7 @@ class Object
         GLuint *vertexTriangles;
         GLuint *vertexQuads;
     
-        bool textured;
-        GLuint texture;
+        int texture;
     
     public:
         vector<Vertex> vertices;
@@ -41,6 +44,8 @@ class Object
     
         void createDisplayList();
         void createVertexArrays();
+	void immediateRender();
+	void vertexArraysRender();
     
     public:
         Object(std::string);

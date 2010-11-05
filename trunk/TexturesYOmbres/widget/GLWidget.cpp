@@ -248,7 +248,10 @@ void GLWidget::computeClippingPlanes()
 
 void GLWidget::openModel()
 {
+    timer.stop();
     QString filename = QFileDialog::getOpenFileName(this, "Select a model...", "../models", "object (*.obj)");
+    timer.start(0);
+
     if (filename != "") 
     {
         scene.OpenModel(filename.toLatin1().data());
@@ -258,7 +261,9 @@ void GLWidget::openModel()
 
 void GLWidget::openTexture()
 {
+    timer.stop();
     QString filename = QFileDialog::getOpenFileName(this, "Select a texture...", "../textures", "Image (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
+    timer.start(0);
 
     if (filename != "") 
     {
