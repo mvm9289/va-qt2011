@@ -9,16 +9,7 @@
 
 using namespace std;
 
-static class Textures
-{
-        friend class Texture;
-    
-    private:
-        static map<string, unsigned int> loadedTextures;
-    
-    public:
-        int getTextureID(string filename);
-};
+static map<string, unsigned int> loadedTextures;
 
 class Texture
 {
@@ -36,6 +27,8 @@ class Texture
         Texture();
         ~Texture();
     
+        int getTextureID(string filename);
+        
         int getTextureID();
         string loadTexture(QString filename);
         void doMipMapping();

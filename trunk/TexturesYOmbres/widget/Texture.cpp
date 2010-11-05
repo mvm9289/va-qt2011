@@ -8,10 +8,10 @@ Texture::~Texture()
     if (bitMap != NULL) delete bitMap;
 }
 
-int Textures::getTextureID(string filename)
+int Texture::getTextureID(string filename)
 {
     map<string, unsigned int>::iterator it = loadedTextures.find(filename);
-    if (it != NULL) return (int)(it->second);
+    if (it != loadedTextures.end()) return (int)(it->second);
     
     return -1;
 }
@@ -58,16 +58,16 @@ void Texture::setWrapMode(int wrapS, int wrapT)
 
 void Texture::sendToGL()
 {
-    glGenTextures(1, &textureID);
+    glGenTextures(1, (GLuint *)(&textureID));
 	glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, bitMap->width(), bitMap->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, bitMap->bits());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitMap->width(), bitMap->height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, bitMap->bits());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrappingS);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrappingT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minificationFilter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnificationFilter);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     
-    Textures::loadedTextures[textureFilename] = textureID;
+    loadedTextures[textureFilename] = textureID;
 	delete bitMap;
 	bitMap = NULL;
 }

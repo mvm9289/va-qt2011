@@ -4,6 +4,7 @@
 #include <sys/timeb.h>
 
 #include "GLWidget.h"
+#include "Texture.h"
 
 #define FRAMERATE_RANGE 100
 
@@ -34,7 +35,7 @@ void GLWidget::initializeGL()
     showNumTrianglesQuads();
     
     movement = false;
-		selection = false;
+	//	selection = false;
     remainingFrames = FRAMERATE_RANGE;
     timeb t;
     ftime(&t);
@@ -129,15 +130,15 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
     xClick = e->x();
     yClick = e->y();
 
-		if(!selection)
-		{
+		/*if(!selection)
+		{*/
 		  if (e->button()&Qt::LeftButton && !(e->modifiers()&(Qt::ShiftModifier|Qt::AltModifier|Qt::ControlModifier)))
 		      DoingInteractive = ROTATE;
 		  else if (e->button()&Qt::LeftButton &&  e->modifiers()&Qt::ShiftModifier)
 		      DoingInteractive = ZOOM;
 		  else if (e->button()&Qt::RightButton)
 		      DoingInteractive = PAN;
-		}
+		/*}
 		else {
 
 		  else if (e->button()&Qt::LeftButton)
@@ -145,7 +146,7 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 					//mover una copia o mover el original guardando una copia con la posicion original?
 		  else if (e->button()&Qt::RightButton)
 		      //cancelar el movimiento
-		}
+		}*/
 	
 
 }
@@ -259,14 +260,17 @@ void GLWidget::openTexture()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Select a texture...", "../textures", "Image (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
 
-		//filename = "../models/paper_texture.jpg";
-
     if (filename != "") 
     {
-        QImage texture, buf;
-        buf.load(filename);
-        texture = QGLWidget::convertToGLFormat(buf);
-        scene.setTexture((void *)texture.bits(), texture.width(), texture.height());
+        Texture texture;
+        if (texture.loadTexture(filename) == string(filename.toLatin1().data()))
+        {
+            texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
+            texture.setWrapMode(GL_REPEAT, GL_REPEAT);
+            texture.sendToGL();
+            scene.setTexture(texture.getTextureID());
+        }
+        else cout << "Error: Can not open the texture" << endl;
     }
 }
 
@@ -294,9 +298,9 @@ void GLWidget::resetCamera()
     computeInitialCamera();
 }
 
-void GLWidget::selectionMode()
+/*void GLWidget::selectionMode()
 {
 		selection = !selection;
-}
+}*/
 
 

@@ -41,9 +41,7 @@ void Object::initGL()
 
 void Object::render(int mode)
 {
-    Box bbox = boundingBox();
-    Point center = bbox.center();
-    float radius = (bbox.maxb - center).length();
+    Point center = boundingBox().center();
     switch (mode)
     {
         case 0:
@@ -53,27 +51,22 @@ void Object::render(int mode)
             for(unsigned int i=0; i<faces.size(); i++)
             {
                 glBegin (GL_POLYGON);
-                    Material material = Scene::matlib.material(faces[i].material);
-                    glColor3f(material.kd.r, material.kd.g, material.kd.b);
-                    for(unsigned int j=0; j<faces[i].vertices.size(); j++)
-                    { 
-                        glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                        vertices[faces[i].vertices[j]].normal.y,
-                        vertices[faces[i].vertices[j]].normal.z);
+                        Material material = Scene::matlib.material(faces[i].material);
+                        glColor3f(material.kd.r, material.kd.g, material.kd.b);
+                        for(unsigned int j=0; j<faces[i].vertices.size(); j++)
+                        { 
+                            glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+                            vertices[faces[i].vertices[j]].normal.y,
+                            vertices[faces[i].vertices[j]].normal.z);
 
-                        Vector P2 = vertices[faces[i].vertices[j]].coord - center;
-                        P2.normalize();
-                        P2 = P2*radius;
-                        Point P = vertices[faces[i].vertices[j]].coord + P2;
-                        Vector P3 = P - center;
+                            Vector P = vertices[faces[i].vertices[j]].coord - center;
+                            P.normalize();
+                            glTexCoord2f((atan2(P.x, P.z)/(2*M_PI)), ((asin(P.y)/M_PI) + 0.5));
 
-                        glTexCoord2f((acos(P.z/sqrt(P.x*P.x + P.y*P.y + P.z*P.z))/M_PI), (atan2(P3.y, P3.x)/(2*M_PI) + 0.5));
-                        //glTexCoord2f((atan2(P.x, P.y)/(2*M_PI)), (asin(P.y)/M_PI + 0.5));
-
-                        glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-                        vertices[faces[i].vertices[j]].coord.y,
-                        vertices[faces[i].vertices[j]].coord.z);
-                    }
+                            glVertex3f(vertices[faces[i].vertices[j]].coord.x,
+                            vertices[faces[i].vertices[j]].coord.y,
+                            vertices[faces[i].vertices[j]].coord.z);
+                        }
                 glEnd();
             }
             break;
@@ -106,9 +99,7 @@ void Object::createDisplayList()
     DLindex = glGenLists(1);
     glNewList(DLindex, GL_COMPILE_AND_EXECUTE);
 
-    		Box bbox = boundingBox();
-				Point center = bbox.center();
-				float radius = (bbox.maxb - center).length();				
+    	Point center = boundingBox().center();
         for(unsigned int i=0; i<faces.size(); i++)
         {
             glBegin (GL_POLYGON);
@@ -120,14 +111,9 @@ void Object::createDisplayList()
                         vertices[faces[i].vertices[j]].normal.y,
                         vertices[faces[i].vertices[j]].normal.z);
 
-                        Vector P2 = vertices[faces[i].vertices[j]].coord - center;
-                        P2.normalize();
-                        P2 = P2*radius;
-                        Point P = vertices[faces[i].vertices[j]].coord + P2;
-                        Vector P3 = P - center;
-
-                        glTexCoord2f((acos(P.z/sqrt(P.x*P.x + P.y*P.y + P.z*P.z))/M_PI), (atan2(P3.y, P3.x)/(2*M_PI) + 0.5));
-                        //glTexCoord2f((atan2(P.x, P.y)/(2*M_PI)), (asin(P.y)/M_PI + 0.5));
+                        Vector P = vertices[faces[i].vertices[j]].coord - center;
+                        P.normalize();
+                        glTexCoord2f((atan2(P.x, P.z)/(2*M_PI)), ((asin(P.y)/M_PI) + 0.5));
 
                         glVertex3f(vertices[faces[i].vertices[j]].coord.x,
                         vertices[faces[i].vertices[j]].coord.y,
@@ -241,16 +227,9 @@ vector<int> Object::numTrianglesQuads()
     return info;
 }
 
-void Object::setTexture(void *textureData, int width, int height)
+void Object::setTexture(int textureID)
 {
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    texture = (GLuint)textureID;
 }
 
 

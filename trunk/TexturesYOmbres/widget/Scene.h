@@ -31,7 +31,7 @@ class Scene
     
         void ChangeRenderMode(int mode);
         void OpenModel(const char* filename);
-        void setTexture(void *textureData, int width, int height);
+        void setTexture(int textureID);
 };
 
 #endif

@@ -54,7 +54,7 @@ class Object
         void initGL();
         void render(int mode);
         void updateNormals();
-        void setTexture(void *textureData, int width, int height);
+        void setTexture(int textureID);
 };
 
 #endif

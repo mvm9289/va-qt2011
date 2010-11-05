@@ -37,7 +37,7 @@ class GLWidget:public QGLWidget
         int remainingFrames;
         bool movement;
 
-				bool selection;
+		//		bool selection;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -55,7 +55,7 @@ class GLWidget:public QGLWidget
         void computeInitialCamera();
         void setModelview();
         void setProjection();
-	void computeClippingPlanes();
+        void computeClippingPlanes();
     
         void showNumTrianglesQuads();
 
@@ -71,7 +71,7 @@ class GLWidget:public QGLWidget
         void changeRenderMode(int mode);
         void startStop();
         void resetCamera();
-				void selectionMode();
+		//		void selectionMode();
 };
 
 #endif
