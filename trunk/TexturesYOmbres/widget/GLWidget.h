@@ -37,7 +37,11 @@ class GLWidget:public QGLWidget
         int remainingFrames;
         bool movement;
 
-		//		bool selection;
+        int polMode;
+
+        bool selection;
+        bool rubber_banding;
+        int idRB;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -59,10 +63,14 @@ class GLWidget:public QGLWidget
     
         void showNumTrianglesQuads();
 
+        void selectRender();
+        void cancelaCopia();
+
     signals:
         void framerate(double);
         void numTriangles(double);
         void numQuads(double);
+				void setEnabled(bool);
     
     public slots:
         void help();
@@ -71,7 +79,7 @@ class GLWidget:public QGLWidget
         void changeRenderMode(int mode);
         void startStop();
         void resetCamera();
-		//		void selectionMode();
+        void selectionMode();
 };
 
 #endif

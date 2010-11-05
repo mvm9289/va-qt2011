@@ -22,6 +22,9 @@ class Object
     private:
         std::string name;
         Box _boundingBox;
+
+        Point pos;
+				Point center;
         
         GLuint DLindex;
         int triangles;
@@ -44,8 +47,8 @@ class Object
     
         void createDisplayList();
         void createVertexArrays();
-	void immediateRender();
-	void vertexArraysRender();
+	      void immediateRender();
+	      void vertexArraysRender();
     
     public:
         Object(std::string);
@@ -54,12 +57,15 @@ class Object
         void computeBoundingBox();
         Box boundingBox() const;
     
-	vector<int> numTrianglesQuads();
+	      vector<int> numTrianglesQuads();
         
         void initGL();
         void render(int mode);
         void updateNormals();
         void setTexture(int textureID);
+
+				Point getPos();
+				void setPos(Point p);
 };
 
 #endif

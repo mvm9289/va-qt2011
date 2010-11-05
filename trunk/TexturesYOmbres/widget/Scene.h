@@ -32,6 +32,14 @@ class Scene
         void ChangeRenderMode(int mode);
         void OpenModel(const char* filename);
         void setTexture(int textureID);
+
+
+  void novaRef(int idRef);
+  void esborraNovaRef(int id);
+  void RenderNovaRef();
+  void cancelaMoviment();
+  void IncPosNovaRef(float incX, float incY);
+
 };
 
 #endif

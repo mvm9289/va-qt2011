@@ -37,6 +37,8 @@ void Object::initGL()
 {
     createDisplayList();
     createVertexArrays();
+
+		pos = center = boundingBox().center();
 }
 
 void Object::createDisplayList()
@@ -142,7 +144,13 @@ void Object::createVertexArrays()
 
 void Object::render(int mode)
 {
-    Point center = boundingBox().center();
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+
+    glTranslatef(pos.x,pos.y,pos.z);
+    glTranslatef(-center.x,-center.y,-center.z);
+
     switch (mode)
     {
         case IMMEDIATE:
@@ -157,6 +165,8 @@ void Object::render(int mode)
         default:
             break;
     }
+
+		glPopMatrix();
 }
 
 inline void Object::immediateRender()
@@ -166,7 +176,7 @@ inline void Object::immediateRender()
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, (GLuint)texture);
     }
-    Point center = boundingBox().center();
+    center = boundingBox().center();
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
@@ -224,6 +234,15 @@ void Object::setTexture(int textureID)
 }
 
 
+void Object::setPos(Point p)
+{
+    pos = p;
+}
+
+Point Object::getPos()
+{
+    return pos;
+}
 
 
 
