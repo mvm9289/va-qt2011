@@ -56,7 +56,7 @@
         <cursorShape>ArrowCursor</cursorShape>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="mainTab">
         <attribute name="title">
@@ -323,12 +323,15 @@
            <height>441</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="submenuCountainer_2" stretch="0,0">
+         <layout class="QVBoxLayout" name="submenuCountainer_2" stretch="0,0,0">
           <property name="margin">
            <number>11</number>
           </property>
           <item>
            <widget class="QPushButton" name="openTextureButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -346,6 +349,13 @@
             </property>
             <property name="text">
              <string>Open texture...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox">
+            <property name="text">
+             <string>Selection Mode</string>
             </property>
            </widget>
           </item>
@@ -541,8 +551,8 @@
    <slot>openTexture()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>647</x>
-     <y>96</y>
+     <x>651</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>422</x>
@@ -579,6 +589,38 @@
     <hint type="destinationlabel">
      <x>677</x>
      <y>303</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>selectionMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>572</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>469</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setEnabled(bool)</signal>
+   <receiver>openTextureButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>522</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>604</x>
+     <y>89</y>
     </hint>
    </hints>
   </connection>

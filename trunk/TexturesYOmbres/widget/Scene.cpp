@@ -17,8 +17,14 @@ void Scene::Init()
 void Scene::Render()
 {
     std::vector<Object>::iterator ito;
+		//int count = 0;
+
     for (ito = objects.begin(); ito != objects.end(); ito++)
+		{			
+				//cout<<"Pos del objeto "<<count<<": "<<(*ito).getPos()<<endl;
         (*ito).render(renderMode);
+				//count++;
+		}
 }
 
 void Scene::AddObject(Object &o)
@@ -29,7 +35,17 @@ void Scene::AddObject(Object &o)
 
 Point Scene::center()
 {
-    return objects[0].boundingBox().center();
+    /*std::vector<Object>::iterator ito;
+		Point cent;
+		cent.x = cent.y = cent.z = 0;
+	
+		for (ito = objects.begin(); ito != objects.end(); ito++)
+			cent += (*ito).boundingBox().center();
+
+		cent = cent / objects.size();
+
+    return cent;*/
+		return objects[0].boundingBox().center();
 }
 
 float Scene::radius()
@@ -41,16 +57,18 @@ float Scene::radius()
 
 void Scene::OpenModel(const char* filename)
 {
-		Object o("Model");
-		o.readObj(filename,matlib);
-    o.initGL();
+		cout<<"Filename: "<<filename<<endl;
+		Object o(filename);
+    o.readObj(filename, matlib);
 		o.setPos(objects[0].getPos());
     objects.push_back(o);
 }
 
 void Scene::setTexture(int textureID)
 {
-    objects[0].setTexture(textureID);
+		cout<<"idSel = "<<idSel<<endl;
+    objects[idSel].setTexture(textureID);
+		idSel = -1;
 }
 
 void Scene::ChangeRenderMode(int mode)
@@ -107,5 +125,10 @@ void Scene::IncPosNovaRef(float incX, float incY)
   p.x += incX;
   p.z += incY;
   objects[objects.size()-1].setPos(p);
+}
+
+void Scene::setSelected(int id)
+{
+	idSel = id;
 }
 

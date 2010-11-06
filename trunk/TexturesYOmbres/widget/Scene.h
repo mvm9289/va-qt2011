@@ -14,6 +14,8 @@ class Scene
         vector<Object> objects;
         int renderMode;
 
+				int idSel;
+
     public:
         static MaterialLib matlib;
     
@@ -32,6 +34,8 @@ class Scene
         void ChangeRenderMode(int mode);
         void OpenModel(const char* filename);
         void setTexture(int textureID);
+
+				void setSelected(int id);
 
 
   void novaRef(int idRef);

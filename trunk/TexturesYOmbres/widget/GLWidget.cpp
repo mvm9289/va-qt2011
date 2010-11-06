@@ -150,13 +150,22 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
 		}
 		else {
 
-		  if (DoingInteractive == NONE && e->button()&Qt::LeftButton && e->modifiers() &Qt::ShiftModifier)
+		  if (e->button()&Qt::LeftButton && e->modifiers() &Qt::ShiftModifier)
 				{
           selectRender();
 		      DoingInteractive = SELECT;
 
 					cout<<DoingInteractive<<endl;
 
+				}
+			else if(e->button()&Qt::LeftButton)
+				{
+					selectObj();
+					if(idRB != -1)
+					{
+						scene.setSelected(idRB);
+						emit setEnabled(true);
+					}
 				}
 			else if (DoingInteractive == SELECT && e->button()&Qt::LeftButton)
 				{
@@ -211,7 +220,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *)
 	cout<<"MouseRelease: "<<DoingInteractive<<endl;
 
   if(DoingInteractive != SELECT) DoingInteractive = NONE;
-	if(selection)
+	/*if(selection)
 		if(DoingInteractive == NONE){
           scene.esborraNovaRef(idRB);
           glLogicOp(GL_COPY);
@@ -222,7 +231,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *)
           glPolygonMode(GL_FRONT_AND_BACK, polMode);
           rubber_banding = false;
           DoingInteractive = NONE;
-	  }
+	  }*/
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *e)
@@ -230,7 +239,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
 
 		cout<<"HOLA?"<<endl;
 
-	 if(selection && DoingInteractive != NONE)
+	 if(DoingInteractive == SELECT)
 		{
 			cout<<"HOLA222?"<<endl;
       if(idRB != -1)
@@ -241,6 +250,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
         scene.RenderNovaRef();
         scene.IncPosNovaRef((e->x() - xClick)*0.03, (e->y() - yClick)*0.03);
         scene.RenderNovaRef();
+				glFlush();
       }
       else DoingInteractive = NONE;
 		}
@@ -333,6 +343,8 @@ void GLWidget::openTexture()
         }
         else cout << "Error: Can not open the texture" << endl;
     }
+
+		emit setEnabled(false);
 }
 
 void GLWidget::changeRenderMode(int mode)
@@ -435,5 +447,48 @@ void GLWidget::cancelaCopia()
   glEnable(GL_DEPTH_TEST);
   glPolygonMode(GL_FRONT_AND_BACK, polMode);
   rubber_banding = false;
+}
+
+void GLWidget::selectObj()
+{
+  GLuint hbuff [50*4];
+  glSelectBuffer(50*4,hbuff);
+  glDisable(GL_LIGHTING);
+
+  glRenderMode(GL_SELECT);
+  glInitNames();
+
+  glMatrixMode(GL_PROJECTION);
+  GLfloat proj[16];
+  glGetFloatv(GL_PROJECTION_MATRIX, proj);
+  glPushMatrix();
+  glLoadIdentity();
+  int vp[4];
+  glGetIntegerv(GL_VIEWPORT, vp);
+  gluPickMatrix(xClick, vp[3] - yClick, 2, 2, vp);
+  glMultMatrixf(proj);
+
+  scene.Render();
+
+  int nhits = glRenderMode(GL_RENDER);
+
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+
+  if(nhits == 0)idRB = -1;
+  else 
+  {
+    int minZnear = hbuff[1];
+    idRB = hbuff[0];
+    for (int i = 0; nhits > 0; i+=4, nhits--)
+    {
+      if (minZnear > hbuff[i+1]) 
+      {
+        minZnear = hbuff[i+1];
+        idRB = hbuff[i];
+      }
+    }
+  }
+  glEnable(GL_LIGHTING);
 }
 

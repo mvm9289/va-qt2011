@@ -65,6 +65,7 @@ class GLWidget:public QGLWidget
 
         void selectRender();
         void cancelaCopia();
+        void selectObj();
 
     signals:
         void framerate(double);
