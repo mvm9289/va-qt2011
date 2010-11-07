@@ -85,6 +85,7 @@ class GLWidget:public QGLWidget
         void setTexture(QString name);
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
+        void initProjectiveTextureMapping(bool b);
 };
 
 #endif

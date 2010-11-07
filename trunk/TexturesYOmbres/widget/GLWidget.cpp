@@ -73,8 +73,8 @@ void GLWidget::computeInitialCamera()
 
     dist = 2*radius;
     anglecam = 60;
-    anteriorIni = anteriorAux = anterior = radius;
-    posteriorIni = posteriorAux = posterior = 3*radius;
+    anteriorIni = anteriorAux = anterior = 0.1; // =radius;
+    posteriorIni = posteriorAux = posterior = 10*radius; // =3*radius;
 
     angleX = 0;
     angleY = 0;
@@ -153,10 +153,10 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
             else if(e->button()&Qt::LeftButton)
             {
                 selectObj();
-                if(idRB != -1)
+                if(idRB >= 0)
                 {
                     scene.setSelected(idRB);
-                    emit setEnabled(true);
+                    emit setTextureButtonEnabled(true);
                 }
             }
             else if (DoingInteractive == SELECT && e->button()&Qt::LeftButton)
@@ -329,6 +329,8 @@ void GLWidget::openTexture()
         }
         else cout << "Error: Can not open the texture" << endl;
     }
+
+    emit setTextureButtonEnabled(false);
 }
 
 void GLWidget::changeRenderMode(int mode)
@@ -482,4 +484,8 @@ void GLWidget::repeatWrapT(int tWrap)
     scene.repeatWrapT(tWrap);
 }
 
+void GLWidget::initProjectiveTextureMapping(bool b)
+{
+    scene.initProjectiveMode(b);
+}
 

@@ -37,6 +37,7 @@ void Object::computeBoundingBox()
 void Object::initGL()
 {
     pos = center = boundingBox().center();
+		pos.x += 0.5;
     createDisplayList();
     createVertexArrays();
 }
@@ -273,10 +274,6 @@ Point Object::getPos()
 {
     return pos;
 }
-
-
-
-
 
 
 /*

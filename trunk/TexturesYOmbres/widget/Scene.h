@@ -14,6 +14,7 @@ class Scene
         vector<Object> objects;
         int renderMode;
         int idSel;
+				bool projective;
 
     public:
         static MaterialLib matlib;
@@ -37,6 +38,10 @@ class Scene
         void repeatWrapT(int tWrap);
         
         void setSelected(int id);
+        void initProjectiveMode(bool b);
+				void initializeProj();
+        void drawCube();
+
 
         void novaRef(int idRef);
         void esborraNovaRef(int id);

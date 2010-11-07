@@ -56,7 +56,7 @@
         <cursorShape>ArrowCursor</cursorShape>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="mainTab">
         <attribute name="title">
@@ -491,6 +491,43 @@
          </layout>
         </widget>
        </widget>
+       <widget class="QWidget" name="projTab">
+        <attribute name="title">
+         <string>ProTextMap</string>
+        </attribute>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>211</width>
+           <height>441</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QCheckBox" name="checkBox">
+            <property name="text">
+             <string>Projective Mode</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
      </item>
      <item>
@@ -720,8 +757,8 @@
    <slot>repeatWrapS(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>598</x>
-     <y>192</y>
+     <x>651</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
@@ -736,8 +773,8 @@
    <slot>repeatWrapT(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>633</x>
-     <y>243</y>
+     <x>651</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>452</x>
@@ -756,8 +793,8 @@
      <y>370</y>
     </hint>
     <hint type="destinationlabel">
-     <x>623</x>
-     <y>332</y>
+     <x>651</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -768,8 +805,8 @@
    <slot>setTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>568</x>
-     <y>324</y>
+     <x>651</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>412</x>
@@ -784,28 +821,12 @@
    <slot>selectionMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>589</x>
-     <y>370</y>
+     <x>651</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
      <y>473</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gLWidget1</sender>
-   <signal>setTextureButtonEnabled(bool)</signal>
-   <receiver>openTextureButton</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>486</x>
-     <y>421</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>623</x>
-     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -820,8 +841,24 @@
      <y>204</y>
     </hint>
     <hint type="destinationlabel">
-     <x>590</x>
-     <y>192</y>
+     <x>651</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setTextureButtonEnabled(bool)</signal>
+   <receiver>openTextureButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>403</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>611</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -832,12 +869,28 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>498</x>
-     <y>517</y>
+     <x>476</x>
+     <y>236</y>
     </hint>
     <hint type="destinationlabel">
-     <x>678</x>
-     <y>236</y>
+     <x>651</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>initProjectiveTextureMapping(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>614</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>379</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
