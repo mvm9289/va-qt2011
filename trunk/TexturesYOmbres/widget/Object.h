@@ -22,20 +22,22 @@ class Object
     private:
         std::string name;
         Box _boundingBox;
-
         Point pos;
-				Point center;
+        Point center;
         
-        GLuint DLindex;
+        int DLindex;
         int triangles;
         int quads;
         GLfloat *vertices2;
         GLfloat *normals;
         GLfloat *colors;
+        GLfloat *texCoords;
         GLuint *vertexTriangles;
         GLuint *vertexQuads;
     
         int texture;
+        unsigned int wrapS;
+        unsigned int wrapT;
     
     public:
         vector<Vertex> vertices;
@@ -47,8 +49,9 @@ class Object
     
         void createDisplayList();
         void createVertexArrays();
-	      void immediateRender();
-	      void vertexArraysRender();
+        void recreateTexCoordArray();
+        inline void immediateRender();
+        inline void vertexArraysRender();
     
     public:
         Object(std::string);
@@ -56,16 +59,18 @@ class Object
         void readObj(const char* filename, MaterialLib& matlib);
         void computeBoundingBox();
         Box boundingBox() const;
+        
+        Point getPos();
+        void setPos(Point p);
     
-	      vector<int> numTrianglesQuads();
+        vector<int> numTrianglesQuads();
         
         void initGL();
         void render(int mode);
         void updateNormals();
         void setTexture(int textureID);
-
-				Point getPos();
-				void setPos(Point p);
+        void repeatWrapS(int sWrap);
+        void repeatWrapT(int tWrap);
 };
 
 #endif

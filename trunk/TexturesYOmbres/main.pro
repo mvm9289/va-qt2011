@@ -1,3 +1,3 @@
 TEMPLATE		= subdirs
-SUBDIRS		= widget app
+SUBDIRS		= widget qtextureslist app
 CONFIG		+= ordered

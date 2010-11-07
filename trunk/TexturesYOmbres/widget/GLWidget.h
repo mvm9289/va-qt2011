@@ -38,7 +38,6 @@ class GLWidget:public QGLWidget
         bool movement;
 
         int polMode;
-
         bool selection;
         bool rubber_banding;
         int idRB;
@@ -62,7 +61,7 @@ class GLWidget:public QGLWidget
         void computeClippingPlanes();
     
         void showNumTrianglesQuads();
-
+    
         void selectRender();
         void cancelaCopia();
         void selectObj();
@@ -71,7 +70,9 @@ class GLWidget:public QGLWidget
         void framerate(double);
         void numTriangles(double);
         void numQuads(double);
-				void setEnabled(bool);
+        void newTexture(QString name);
+        void setTextureButtonEnabled(bool);
+        void setTextureSpinsEnabled(bool);
     
     public slots:
         void help();
@@ -81,6 +82,9 @@ class GLWidget:public QGLWidget
         void startStop();
         void resetCamera();
         void selectionMode();
+        void setTexture(QString name);
+        void repeatWrapS(int sWrap);
+        void repeatWrapT(int tWrap);
 };
 
 #endif

@@ -13,8 +13,7 @@ class Scene
     private:
         vector<Object> objects;
         int renderMode;
-
-				int idSel;
+        int idSel;
 
     public:
         static MaterialLib matlib;
@@ -29,21 +28,21 @@ class Scene
         Point center();
         float radius();
     
-	vector<int> numTrianglesQuads_Model();
+        vector<int> numTrianglesQuads_Model();
     
         void ChangeRenderMode(int mode);
         void OpenModel(const char* filename);
         void setTexture(int textureID);
+        void repeatWrapS(int sWrap);
+        void repeatWrapT(int tWrap);
+        
+        void setSelected(int id);
 
-				void setSelected(int id);
-
-
-  void novaRef(int idRef);
-  void esborraNovaRef(int id);
-  void RenderNovaRef();
-  void cancelaMoviment();
-  void IncPosNovaRef(float incX, float incY);
-
+        void novaRef(int idRef);
+        void esborraNovaRef(int id);
+        void RenderNovaRef();
+        void cancelaMoviment();
+        void IncPosNovaRef(float incX, float incY);
 };
 
 #endif

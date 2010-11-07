@@ -4,8 +4,8 @@ TARGET 		    = ../bin/VA
 
 QT			        += opengl
 
-LIBS			        += ../widget/libpluginGLWidget.so /usr/lib/libstdc++.so.6
-INCLUDEPATH	+= ../widget
+LIBS			        += ../widget/libpluginGLWidget.so /usr/lib/libstdc++.so.6 ../qtextureslist/libqtextureslist.so
+INCLUDEPATH	+= ../widget ../qtextureslist
 
 HEADERS		    += 	Principal.h
 

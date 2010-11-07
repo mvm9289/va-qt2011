@@ -6,13 +6,14 @@
 #include "Box.h"
 #include "Scene.h"
 
-Object::Object(std::string n):name(n), triangles(0), quads(0), texture(-1)
+Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1)
 {
     vertexTriangles = NULL;
     vertexQuads = NULL;
     vertices2 = NULL;
     normals = NULL;
     colors = NULL;
+    texCoords = NULL;
 }
 
 Object::~Object() {}
@@ -28,21 +29,22 @@ void Object::computeBoundingBox()
     {
         Point p = vertices[0].coord;
         _boundingBox=Box(p, p);
-        for (unsigned int i=1; i<vertices.size(); i++)
+        for (unsigned int i = 1; i<vertices.size(); i++)
             _boundingBox.update(vertices[i].coord);
     }
 }
 
 void Object::initGL()
 {
+    pos = center = boundingBox().center();
     createDisplayList();
     createVertexArrays();
-
-		pos = center = boundingBox().center();
 }
 
 void Object::createDisplayList()
 {
+    if (DLindex != -1) glDeleteLists((GLuint)DLindex, 1);
+    
     DLindex = glGenLists(1);
     glNewList(DLindex, GL_COMPILE_AND_EXECUTE);
         immediateRender();
@@ -53,9 +55,6 @@ void Object::createVertexArrays()
 {
     triangles = 0;
     quads = 0;
-    unsigned int triIdx;
-    unsigned int quadIdx;
-
     for (unsigned int i = 0; i < faces.size(); i++)
     {
         if (faces[i].vertices.size() == 3) triangles++;
@@ -67,65 +66,50 @@ void Object::createVertexArrays()
     if (vertices2 != NULL) free(vertices2);
     if (normals != NULL) free(normals);
     if (colors != NULL) free(colors);
+    if (texCoords != NULL) free(texCoords);
+    
     vertexTriangles = (GLuint *)malloc(sizeof(GLuint)*triangles*3);
     vertexQuads = (GLuint *)malloc(sizeof(GLuint)*quads*4);
-
-    triIdx = 0;
-    quadIdx = 0;
     colors = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*3);
+    memset(colors, 0, sizeof(GLfloat)*vertices.size()*3);
+    vector<int> numColors (vertices.size()*3, 0);
+    unsigned int triIdx = 0;
+    unsigned int quadIdx = 0;
+    
     for (unsigned int i = 0; i < faces.size(); i++)
     {
         Material material = Scene::matlib.material(faces[i].material);
+        float matRGB[] = {material.kd.r, material.kd.g, material.kd.b};
+        
         if (faces[i].vertices.size() == 3)
-        {
-            unsigned int v = faces[i].vertices[0];
-            vertexTriangles[triIdx++] = v;
-            colors[3*v] = material.kd.r;
-            colors[3*v + 1] = material.kd.g;
-            colors[3*v + 2] = material.kd.b;
-
-            v = faces[i].vertices[1];
-            vertexTriangles[triIdx++] = v;
-            colors[3*v] = material.kd.r;
-            colors[3*v + 1] = material.kd.g;
-            colors[3*v + 2] = material.kd.b;
-
-            v = faces[i].vertices[2];
-            vertexTriangles[triIdx++] = v;
-            colors[3*v] = material.kd.r;
-            colors[3*v + 1] = material.kd.g;
-            colors[3*v + 2] = material.kd.b;
-        }
+            for (int j = 0; j < 3; j++)
+            {
+                unsigned int v = faces[i].vertices[j];
+                vertexTriangles[triIdx++] = v;
+                for (int k = 0; k < 3; k++)
+                {
+                    colors[3*v + k] += matRGB[k];
+                    numColors[3*v + k]++;
+                }
+            }
         else
-        {
-            unsigned int v = faces[i].vertices[0];
-            vertexQuads[quadIdx++] = v;
-            colors[3*v] = material.kd.r;
-            colors[3*v + 1] = material.kd.g;
-            colors[3*v + 2] = material.kd.b;
-
-            v = faces[i].vertices[1];
-            vertexQuads[quadIdx++] = v;
-            colors[3*v] = material.kd.r;
-            colors[3*v + 1] = material.kd.g;
-            colors[3*v + 2] = material.kd.b;
-
-            v = faces[i].vertices[2];
-            vertexQuads[quadIdx++] = v;
-            colors[3*v] = material.kd.r;
-            colors[3*v + 1] = material.kd.g;
-            colors[3*v + 2] = material.kd.b;
-
-            v = faces[i].vertices[3];
-            vertexQuads[quadIdx++] = v;
-            colors[3*v] = material.kd.r;
-            colors[3*v + 1] = material.kd.g;
-            colors[3*v + 2] = material.kd.b;
-        }
+            for (int j = 0; j < 4; j++)
+            {
+                unsigned int v = faces[i].vertices[j];
+                vertexQuads[quadIdx++] = v;
+                for (int k = 0; k < 3; k++)
+                {
+                    colors[3*v + k] += matRGB[k];
+                    numColors[3*v + k]++;
+                }
+            }
     }
 
     vertices2 = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*3);
     normals = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*3);
+    texCoords = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*2);
+    
+    Point center = boundingBox().center();
     for (unsigned int i = 0; i < vertices.size(); i++)
     {
         vertices2[i*3] = vertices[i].coord.x;
@@ -135,22 +119,39 @@ void Object::createVertexArrays()
         normals[i*3] = vertices[i].normal.x;
         normals[i*3 + 1] = vertices[i].normal.y;
         normals[i*3 + 2] = vertices[i].normal.z;
+        
+        Vector P = vertices[i].coord - center;
+        P.normalize();
+        if (texture != -1)
+        {
+            texCoords[i*2] = (atan2(P.x, P.z)/(2*M_PI))*wrapS;
+            texCoords[i*2 + 1] = ((asin(P.y)/M_PI) + 0.5)*wrapT;
+        }
     }
+    
+    for (unsigned int i = 0; i < numColors.size(); i++)
+        if (numColors[i]) colors[i] /= numColors[i];
+}
 
-    glVertexPointer(3, GL_FLOAT, 0, vertices2);
-    glNormalPointer(GL_FLOAT, 0 , normals);
-    glColorPointer(3, GL_FLOAT, 0, colors);
+void Object::recreateTexCoordArray()
+{
+    Point center = boundingBox().center();
+    for (unsigned int i = 0; i < vertices.size(); i++)
+    {
+        Vector P = vertices[i].coord - center;
+        P.normalize();
+        texCoords[i*2] = (atan2(P.x, P.z)/(2*M_PI))*wrapS;
+        texCoords[i*2 + 1] = ((asin(P.y)/M_PI) + 0.5)*wrapT;
+    }
 }
 
 void Object::render(int mode)
 {
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-
     glTranslatef(pos.x,pos.y,pos.z);
     glTranslatef(-center.x,-center.y,-center.z);
-
+    
     switch (mode)
     {
         case IMMEDIATE:
@@ -165,8 +166,8 @@ void Object::render(int mode)
         default:
             break;
     }
-
-		glPopMatrix();
+    
+    glPopMatrix();
 }
 
 inline void Object::immediateRender()
@@ -176,7 +177,6 @@ inline void Object::immediateRender()
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, (GLuint)texture);
     }
-    center = boundingBox().center();
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
@@ -190,24 +190,39 @@ inline void Object::immediateRender()
 
                     Vector P = vertices[faces[i].vertices[j]].coord - center;
                     P.normalize();
-                    glTexCoord2f((atan2(P.x, P.z)/(2*M_PI)), ((asin(P.y)/M_PI) + 0.5));
+                    glTexCoord2f((atan2(P.x, P.z)/(2*M_PI))*wrapS, ((asin(P.y)/M_PI) + 0.5)*wrapT);
 
                     glVertex3f(vertices[faces[i].vertices[j]].coord.x,
                     vertices[faces[i].vertices[j]].coord.y,
                     vertices[faces[i].vertices[j]].coord.z);
                 }
         glEnd();
-        glDisable(GL_TEXTURE_2D);
     }
+    glDisable(GL_TEXTURE_2D);
 }
 
 inline void Object::vertexArraysRender()
 {
+    glVertexPointer(3, GL_FLOAT, 0, vertices2);
+    glNormalPointer(GL_FLOAT, 0 , normals);
+    glColorPointer(3, GL_FLOAT, 0, colors);
+    glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
+    
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
+    if (texture != -1)
+    {
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, texture);
+    }
+    else glEnableClientState(GL_COLOR_ARRAY);
+    
     glDrawElements(GL_TRIANGLES, triangles*3, GL_UNSIGNED_INT, vertexTriangles);
     glDrawElements(GL_QUADS, quads*4, GL_UNSIGNED_INT, vertexQuads);
+    
+    glDisable(GL_TEXTURE_2D);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     glDisableClientState(GL_VERTEX_ARRAY);
@@ -231,8 +246,23 @@ vector<int> Object::numTrianglesQuads()
 void Object::setTexture(int textureID)
 {
     texture = textureID;
+    createDisplayList();
+    recreateTexCoordArray();
 }
 
+void Object::repeatWrapS(int sWrap)
+{
+    wrapS = sWrap;
+    createDisplayList();
+    recreateTexCoordArray();
+}
+
+void Object::repeatWrapT(int tWrap)
+{
+    wrapT = tWrap;
+    createDisplayList();
+    recreateTexCoordArray();
+}
 
 void Object::setPos(Point p)
 {
@@ -243,6 +273,7 @@ Point Object::getPos()
 {
     return pos;
 }
+
 
 
 
