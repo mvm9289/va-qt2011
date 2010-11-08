@@ -37,10 +37,9 @@ class GLWidget:public QGLWidget
         int remainingFrames;
         bool movement;
 
-        int polMode;
         bool selection;
-        bool rubber_banding;
-        int idRB;
+        bool redistribution;
+        int selectedObjectID;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -62,8 +61,6 @@ class GLWidget:public QGLWidget
     
         void showNumTrianglesQuads();
     
-        void selectRender();
-        void cancelaCopia();
         void selectObj();
 
     signals:
@@ -71,12 +68,12 @@ class GLWidget:public QGLWidget
         void numTriangles(double);
         void numQuads(double);
         void newTexture(QString name);
-        void setTextureButtonEnabled(bool);
-        void setTextureSpinsEnabled(bool);
+        void objectSelected(bool);
     
     public slots:
         void help();
         void openModel();
+        void deleteModel();
         void openTexture();
         void changeRenderMode(int mode);
         void startStop();
@@ -85,7 +82,6 @@ class GLWidget:public QGLWidget
         void setTexture(QString name);
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
-        void initProjectiveTextureMapping(bool b);
 };
 
 #endif

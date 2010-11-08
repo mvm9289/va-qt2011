@@ -11,10 +11,10 @@ using namespace std;
 class Scene
 {
     private:
+        Box boundingBox;
         vector<Object> objects;
         int renderMode;
-        int idSel;
-				bool projective;
+        int selectedObjectID;
 
     public:
         static MaterialLib matlib;
@@ -26,10 +26,11 @@ class Scene
         void Render();
         void AddObject(Object &);
     
+        void updateBoundingBox();
         Point center();
         float radius();
     
-        vector<int> numTrianglesQuads_Model();
+        vector<int> numTrianglesQuads();
     
         void ChangeRenderMode(int mode);
         void OpenModel(const char* filename);
@@ -38,16 +39,9 @@ class Scene
         void repeatWrapT(int tWrap);
         
         void setSelected(int id);
-        void initProjectiveMode(bool b);
-				void initializeProj();
-        void drawCube();
-
-
-        void novaRef(int idRef);
-        void esborraNovaRef(int id);
-        void RenderNovaRef();
-        void cancelaMoviment();
-        void IncPosNovaRef(float incX, float incY);
+        void setDeselected();
+        void redistributeSelectedObject(float incX, float incY);
+        void deleteSelectedModel();
 };
 
 #endif

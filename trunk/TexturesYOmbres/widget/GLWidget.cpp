@@ -36,9 +36,8 @@ void GLWidget::initializeGL()
     
     movement = false;
     selection = false;
-    rubber_banding = false;
-    idRB = -1;
-    polMode = GL_FILL;
+    redistribution = false;
+    selectedObjectID = -1;
         
     remainingFrames = FRAMERATE_RANGE;
     timeb t;
@@ -66,17 +65,17 @@ void GLWidget::setProjection()
 
 void GLWidget::computeInitialCamera()
 {
+    scene.updateBoundingBox();
     Point center = scene.center();
     double radius = scene.radius();
-
     VRP = center;
 
     dist = 2*radius;
     anglecam = 60;
-    anteriorIni = anteriorAux = anterior = 0.1; // =radius;
-    posteriorIni = posteriorAux = posterior = 10*radius; // =3*radius;
+    anteriorIni = anteriorAux = anterior = radius;
+    posteriorIni = posteriorAux = posterior = 3*radius;
 
-    angleX = 0;
+    angleX = -90;
     angleY = 0;
     angleZ = 0;
 
@@ -104,9 +103,9 @@ void GLWidget::paintGL( void )
     glColor3f(0,0,1); glVertex3f(0,0,0); glVertex3f(0,0,20);
     glEnd();*/
 
-    if(!rubber_banding) scene.Render();
+    scene.Render();
 
-    if(movement) if (++angleY >= 360.0) angleY -= 360.0;
+    if(movement && !selection) if (++angleY >= 360.0) angleY -= 360.0;
     if (--remainingFrames == 0)
     {
         glFinish();
@@ -134,47 +133,38 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
     xClick = e->x();
     yClick = e->y();
 
-        if(!selection)
+    if(!selection)
+    {
+      if (e->button()&Qt::LeftButton && !(e->modifiers()&(Qt::ShiftModifier|Qt::AltModifier|Qt::ControlModifier)))
+          DoingInteractive = ROTATE;
+      else if (e->button()&Qt::LeftButton &&  e->modifiers()&Qt::ShiftModifier)
+          DoingInteractive = ZOOM;
+      else if (e->button()&Qt::RightButton)
+          DoingInteractive = PAN;
+    }
+    else
+    {
+        if (e->button()&Qt::LeftButton)
         {
-          if (e->button()&Qt::LeftButton && !(e->modifiers()&(Qt::ShiftModifier|Qt::AltModifier|Qt::ControlModifier)))
-              DoingInteractive = ROTATE;
-          else if (e->button()&Qt::LeftButton &&  e->modifiers()&Qt::ShiftModifier)
-              DoingInteractive = ZOOM;
-          else if (e->button()&Qt::RightButton)
-              DoingInteractive = PAN;
+            if (selectedObjectID != -1)
+            {
+                scene.setDeselected();
+                emit objectSelected(false);
+            }
+            selectObj();
+            if (selectedObjectID != -1)
+            {
+                scene.setSelected(selectedObjectID);
+                emit objectSelected(true);
+            }
         }
-        else
+        else if (e->button()&Qt::RightButton && selectedObjectID != -1)
         {
-            if (e->button()&Qt::LeftButton && e->modifiers() &Qt::ShiftModifier)
-            {
-                selectRender();
-                DoingInteractive = SELECT;
-            }
-            else if(e->button()&Qt::LeftButton)
-            {
-                selectObj();
-                if(idRB >= 0)
-                {
-                    scene.setSelected(idRB);
-                    emit setTextureButtonEnabled(true);
-                }
-            }
-            else if (DoingInteractive == SELECT && e->button()&Qt::LeftButton)
-            {
-                scene.esborraNovaRef(idRB);
-                glLogicOp(GL_COPY);
-                glDisable(GL_COLOR_LOGIC_OP);
-                glDrawBuffer(GL_BACK);
-                setAutoBufferSwap(true);
-                glEnable(GL_DEPTH_TEST);
-                glPolygonMode(GL_FRONT_AND_BACK, polMode);
-                rubber_banding = false;
-                DoingInteractive = NONE;
-            }
-            else if (DoingInteractive == SELECT && e->button()&Qt::RightButton)
-                cancelaCopia();
-            DoingInteractive = NONE;
+            scene.setDeselected();
+            emit objectSelected(false);
         }
+        DoingInteractive = SELECT;
+    }
 }
 
 void GLWidget::keyPressEvent(QKeyEvent *e)
@@ -182,13 +172,11 @@ void GLWidget::keyPressEvent(QKeyEvent *e)
     switch (e->key())
     {
         case Qt::Key_F:
-            polMode = GL_LINE;
-            glPolygonMode(GL_FRONT_AND_BACK, polMode);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             updateGL();
             break;
         case Qt::Key_S:
-            polMode = GL_FILL;
-            glPolygonMode(GL_FRONT, polMode);
+            glPolygonMode(GL_FRONT, GL_FILL);
             updateGL();
             break;
         case Qt::Key_R:
@@ -206,19 +194,8 @@ void GLWidget::keyPressEvent(QKeyEvent *e)
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *)
 {
-    if(DoingInteractive != SELECT) DoingInteractive = NONE;
-    /*if(selection)
-        if(DoingInteractive == NONE){
-            scene.esborraNovaRef(idRB);
-            glLogicOp(GL_COPY);
-            glDisable(GL_COLOR_LOGIC_OP);
-            glDrawBuffer(GL_BACK);
-            setAutoBufferSwap(true);
-            glEnable(GL_DEPTH_TEST);
-            glPolygonMode(GL_FRONT_AND_BACK, polMode);
-            rubber_banding = false;
-            DoingInteractive = NONE;
-        }*/
+    if (DoingInteractive == SELECT) redistribution = false;
+    DoingInteractive = NONE;
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *e)
@@ -226,17 +203,11 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
 
     if(DoingInteractive == SELECT)
     {
-        if(idRB != -1)
+        if(selectedObjectID != -1)
         {
-            glEnable(GL_COLOR_LOGIC_OP);
-            glLogicOp(GL_XOR);
-
-            scene.RenderNovaRef();
-            scene.IncPosNovaRef((e->x() - xClick)*0.03, (e->y() - yClick)*0.03);
-            scene.RenderNovaRef();
-            glFlush();
+            redistribution = true;
+            scene.redistributeSelectedObject((e->x() - xClick)*0.5, (e->y() - yClick)*-0.5);
         }
-        else DoingInteractive = NONE;
     }
     else if (DoingInteractive == ROTATE)
     {
@@ -309,6 +280,12 @@ void GLWidget::openModel()
     }
 }
 
+void GLWidget::deleteModel()
+{
+    scene.deleteSelectedModel();
+    emit objectSelected(false);
+}
+
 void GLWidget::openTexture()
 {
     timer.stop();
@@ -325,12 +302,9 @@ void GLWidget::openTexture()
             texture.sendToGL();
             scene.setTexture(texture.getTextureID());
             emit newTexture(filename);
-	    emit setTextureSpinsEnabled(true);
         }
         else cout << "Error: Can not open the texture" << endl;
     }
-
-    emit setTextureButtonEnabled(false);
 }
 
 void GLWidget::changeRenderMode(int mode)
@@ -345,9 +319,9 @@ void GLWidget::startStop()
 
 void GLWidget::showNumTrianglesQuads()
 {
-    int tri, quads;
-    tri = scene.numTrianglesQuads_Model()[0];
-    quads = scene.numTrianglesQuads_Model()[1];
+    vector<int> info = scene.numTrianglesQuads();
+    int tri = info[0];
+    int quads = info[1];
     emit numQuads((double)(quads)/1000.0);
     emit numTriangles((double)(tri)/1000.0);
 }
@@ -359,71 +333,12 @@ void GLWidget::resetCamera()
 
 void GLWidget::selectionMode()
 {
-        selection = !selection;
-}
-
-void GLWidget::selectRender()
-{
-    GLuint hbuff [50*4];
-    glSelectBuffer(50*4,hbuff);
-    glDisable(GL_LIGHTING);
-
-    glRenderMode(GL_SELECT);
-    glInitNames();
-
-    glMatrixMode(GL_PROJECTION);
-    GLfloat proj[16];
-    glGetFloatv(GL_PROJECTION_MATRIX, proj);
-    glPushMatrix();
-    glLoadIdentity();
-    int vp[4];
-    glGetIntegerv(GL_VIEWPORT, vp);
-    gluPickMatrix(xClick, vp[3] - yClick, 2, 2, vp);
-    glMultMatrixf(proj);
-
-    scene.Render();
-
-    int nhits = glRenderMode(GL_RENDER);
-
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-
-    if(nhits == 0) idRB = -1;
-    else 
+    if (selection && selectedObjectID != -1)
     {
-        int minZnear = hbuff[1];
-        idRB = hbuff[0];
-        for (int i = 0; nhits > 0; i+=4, nhits--)
-            if (minZnear > (int)hbuff[i+1]) 
-            {
-                minZnear = hbuff[i+1];
-                idRB = hbuff[i];
-            }
-        glEnable(GL_COLOR_LOGIC_OP);
-        glLogicOp(GL_XOR);
-        setAutoBufferSwap(false);
-        glDrawBuffer(GL_FRONT);
-        glDisable(GL_DEPTH_TEST);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        rubber_banding = true;
-
-        scene.novaRef(idRB);
-        scene.RenderNovaRef();
+        scene.setDeselected();
+        emit objectSelected(false);
     }
-    
-    glEnable(GL_LIGHTING);
-}
-
-void GLWidget::cancelaCopia()
-{
-    scene.cancelaMoviment();
-    glLogicOp(GL_COPY);
-    glDisable(GL_COLOR_LOGIC_OP);
-    glDrawBuffer(GL_BACK);
-    setAutoBufferSwap(true);
-    glEnable(GL_DEPTH_TEST);
-    glPolygonMode(GL_FRONT_AND_BACK, polMode);
-    rubber_banding = false;
+    selection = !selection;
 }
 
 void GLWidget::selectObj()
@@ -452,16 +367,17 @@ void GLWidget::selectObj()
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
-    if(nhits == 0) idRB = -1;
+    if(nhits == 0) selectedObjectID = -1;
     else 
     {
         int minZnear = hbuff[1];
-        idRB = hbuff[0];
-        for (int i = 0; nhits > 0; i+=4, nhits--)
-            if (minZnear > (int)hbuff[i+1]) 
+        selectedObjectID = hbuff[3];
+        nhits--;
+        for (int i = 5; nhits > 0; i+=4, nhits--)
+            if (minZnear > (int)hbuff[i]) 
             {
-                minZnear = hbuff[i+1];
-                idRB = hbuff[i];
+                minZnear = hbuff[i];
+                selectedObjectID = hbuff[i+2];
             }
     }
     glEnable(GL_LIGHTING);
@@ -484,8 +400,4 @@ void GLWidget::repeatWrapT(int tWrap)
     scene.repeatWrapT(tWrap);
 }
 
-void GLWidget::initProjectiveTextureMapping(bool b)
-{
-    scene.initProjectiveMode(b);
-}
 

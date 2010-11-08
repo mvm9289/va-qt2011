@@ -8,50 +8,58 @@ Scene::Scene() {}
 void Scene::Init()
 {
     renderMode = 0;
-    projective = false;    
-
+    selectedObjectID = -1;
+    
     Object o("Model");
-    o.readObj("../models/cotxe.obj", matlib);
+    o.readObj("../models/queen.obj", matlib);
     AddObject(o);
+    updateBoundingBox();
 }
 
 void Scene::Render()
 {
-    if(projective)
+    for (unsigned int i = 0; i < objects.size(); i++)
     {
-     initializeProj();
-     drawCube();
-
-     glDisable(GL_LIGHT1);
+        glPushName(i);
+        objects[i].render(renderMode);
+        glPopName();
     }
-
-    std::vector<Object>::iterator ito;
-    for (ito = objects.begin(); ito != objects.end(); ito++)
-        (*ito).render(renderMode);
 }
 
 void Scene::AddObject(Object &o)
 {
     o.initGL();
     objects.push_back(o);
+    updateBoundingBox();
+}
+
+void Scene::updateBoundingBox()
+{
+    boundingBox = Box();
+    for (unsigned int i = 0; i < objects.size(); i++)
+    {
+        Box aux = objects[i].boundingBox();
+        boundingBox.update(aux.minb);
+        boundingBox.update(aux.maxb);
+    }
 }
 
 Point Scene::center()
 {
-    return objects[0].boundingBox().center();///////////////////////////////////////////////////////////////////PODER AÑADIR MAS
+    return boundingBox.center();
 }
 
 float Scene::radius()
 {
-    Vector rad = objects[0].boundingBox().maxb - objects[0].boundingBox().center();///////////////////////////////////////////////////////////////////PODER AÑADIR MAS
-    
-    return (rad.length());
+    return ((boundingBox.maxb - boundingBox.minb).length()/2.0);
 }
 
 void Scene::OpenModel(const char* filename)
 {
-    objects[0].readObj(filename, matlib);///////////////////////////////////////////////////////////////////PODER AÑADIR MAS
-    objects[0].initGL();
+    Object o("Model");
+    o.readObj(filename, matlib);
+    AddObject(o);
+    updateBoundingBox();
 }
 
 void Scene::ChangeRenderMode(int mode)
@@ -59,150 +67,57 @@ void Scene::ChangeRenderMode(int mode)
     renderMode = mode;
 }
 
-vector<int> Scene::numTrianglesQuads_Model()
+vector<int> Scene::numTrianglesQuads()
 {
-    return objects[0].numTrianglesQuads();
+    vector<int> info(2, 0);
+    for (unsigned int i = 0; i < objects.size(); i++)
+    {
+        vector<int> aux = objects[i].numTrianglesQuads();
+        info[0] += aux[0];
+        info[1] += aux[1];
+    }
+    
+    return info;
 }
 
 void Scene::setTexture(int textureID)
 {
-    objects[0].setTexture(textureID);
+    objects[selectedObjectID].setTexture(textureID);
 }
 
 void Scene::repeatWrapS(int sWrap)
 {
-    objects[0].repeatWrapS(sWrap);
+    objects[selectedObjectID].repeatWrapS(sWrap);
 }
 
 void Scene::repeatWrapT(int tWrap)
 {
-    objects[0].repeatWrapT(tWrap);
+    objects[selectedObjectID].repeatWrapT(tWrap);
 }
 
-void Scene::novaRef(int id)
+void Scene::redistributeSelectedObject(float incX, float incY)
 {
-    Object nwRef = objects[id];
-    objects.push_back(nwRef);
-}
-
-void Scene::esborraNovaRef(int id)
-{
-    objects[id] = objects[objects.size()-1];
-    objects.pop_back();
-}
-
-void Scene::cancelaMoviment()
-{
-    objects.pop_back();
-}
-
-void Scene::RenderNovaRef()
-{
-    objects[objects.size()-1].render(renderMode);
-}
-
-void Scene::IncPosNovaRef(float incX, float incY)
-{
-    Point p = objects[objects.size()-1].getPos();
+    Point p = objects[selectedObjectID].getPos();
     p.x += incX;
     p.z += incY;
-    objects[objects.size()-1].setPos(p);
+    objects[selectedObjectID].setPos(p);
 }
 
 void Scene::setSelected(int id)
 {
-    idSel = id;
+    selectedObjectID = id;
+    objects[id].setSelected();
 }
 
-
-void Scene::initProjectiveMode(bool b)
+void Scene::setDeselected()
 {
-    projective = b;
+    objects[selectedObjectID].setDeselected();
+    selectedObjectID = -1;
 }
 
-
-void Scene::drawCube()
+void Scene::deleteSelectedModel()
 {
-
-	glCullFace(GL_FRONT);
-  glEnable(GL_CULL_FACE);
-
-  glBegin(GL_QUADS);
-
-  glNormal3f(-1.0, 0.0, 0.0);
-  glColor3f(0.80, 0.50, 0.50);
-  glVertex3f(-1.5, -1.5, -1.5);
-  glVertex3f(-1.5, -1.5, 1.5);
-  glVertex3f(-1.5, 1.5, 1.5);
-  glVertex3f(-1.5, 1.5, -1.5);
-
-  glNormal3f(1.0, 0.0, 0.0);
-  glColor3f(0.50, 0.80, 0.50);
-  glVertex3f(1.5, 1.5, 1.5);
-  glVertex3f(1.5, -1.5, 1.5);
-  glVertex3f(1.5, -1.5, -1.5);
-  glVertex3f(1.5, 1.5, -1.5);
-
-  glNormal3f(0.0, -1.0, 0.0);
-  glColor3f(0.50, 0.50, 0.80);
-  glVertex3f(-1.5, -1.5, -1.5);
-  glVertex3f(1.5, -1.5, -1.5);
-  glVertex3f(1.5, -1.5, 1.5);
-  glVertex3f(-1.5, -1.5, 1.5);
-
-  glNormal3f(0.0, 1.0, 0.0);
-  glColor3f(0.50, 0.80, 0.80);
-  glVertex3f(1.5, 1.5, 1.5);
-  glVertex3f(1.5, 1.5, -1.5);
-  glVertex3f(-1.5, 1.5, -1.5);
-  glVertex3f(-1.5, 1.5, 1.5);
-
-  glNormal3f(0.0, 0.0, -1.0);
-  glColor3f(0.80, 0.50, 0.80);
-  glVertex3f(-1.5, -1.5, -1.5);
-  glVertex3f(-1.5, 1.5, -1.5);
-  glVertex3f(1.5, 1.5, -1.5);
-  glVertex3f(1.5, -1.5, -1.5);
-
-  glNormal3f(0.0, 0.0, 1.0);
-  glColor3f(1.00, 0.80, 0.50);
-  glVertex3f(1.5, 1.5, 1.5);
-  glVertex3f(-1.5, 1.5, 1.5);
-  glVertex3f(-1.5, -1.5, 1.5);
-  glVertex3f(1.5, -1.5, 1.5);
-  glEnd();
-
-	glCullFace(GL_BACK);
-  glEnable(GL_CULL_FACE);
-
-
-}
-
-
-void Scene::initializeProj()
-{
-  GLfloat light0Pos[4] =
-  {0.3, 0.3, 0.0, 1.0};
-  GLfloat matAmb[4] =
-  {0.01, 0.01, 0.01, 1.00};
-  GLfloat matDiff[4] =
-  {0.65, 0.65, 0.65, 1.00};
-  GLfloat matSpec[4] =
-  {0.30, 0.30, 0.30, 1.00};
-  GLfloat matShine = 10.0;
-
-  /* Setup Lighting */
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, matAmb);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, matDiff);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, matSpec);
-  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, matShine);
-
-  glEnable(GL_COLOR_MATERIAL);
-
-  glLightfv(GL_LIGHT1, GL_POSITION, light0Pos);
-  glEnable(GL_LIGHT1);
-
-  /*glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-  glEnable(GL_LIGHTING);*/
-
+    objects[selectedObjectID] = objects[objects.size() - 1];
+    objects.pop_back();
+    selectedObjectID = -1;
 }

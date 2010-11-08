@@ -39,6 +39,8 @@ class Object
         unsigned int wrapS;
         unsigned int wrapT;
     
+        bool selected;
+    
     public:
         vector<Vertex> vertices;
         vector<Face> faces;
@@ -52,13 +54,14 @@ class Object
         void recreateTexCoordArray();
         inline void immediateRender();
         inline void vertexArraysRender();
+        inline void selectedRender();
     
     public:
         Object(std::string);
         ~Object();
         void readObj(const char* filename, MaterialLib& matlib);
         void computeBoundingBox();
-        Box boundingBox() const;
+        Box boundingBox();
         
         Point getPos();
         void setPos(Point p);
@@ -71,6 +74,9 @@ class Object
         void setTexture(int textureID);
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
+    
+        void setSelected();
+        void setDeselected();
 };
 
 #endif

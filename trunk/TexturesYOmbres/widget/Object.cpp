@@ -6,7 +6,7 @@
 #include "Box.h"
 #include "Scene.h"
 
-Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1)
+Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1), selected(false)
 {
     vertexTriangles = NULL;
     vertexQuads = NULL;
@@ -18,26 +18,30 @@ Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), text
 
 Object::~Object() {}
 
-Box Object::boundingBox() const
+Box Object::boundingBox()
 {
-    return _boundingBox;
+    Vector translation = pos - center;
+    Box currentBBox;
+    currentBBox.update(_boundingBox.maxb + translation);
+    currentBBox.update(_boundingBox.minb + translation);
+    
+    return currentBBox;
 }
 
 void Object::computeBoundingBox()
 {
-    if (vertices.size())
-    {
-        Point p = vertices[0].coord;
-        _boundingBox=Box(p, p);
-        for (unsigned int i = 1; i<vertices.size(); i++)
-            _boundingBox.update(vertices[i].coord);
-    }
+	if (vertices.size())
+	{
+		Point p = vertices[0].coord;
+		_boundingBox=Box(p, p);
+		for (unsigned int i=1; i<vertices.size(); i++)
+			_boundingBox.update(vertices[i].coord);
+	}
 }
 
 void Object::initGL()
 {
-    pos = center = boundingBox().center();
-		pos.x += 0.5;
+    pos = center = _boundingBox.center();
     createDisplayList();
     createVertexArrays();
 }
@@ -110,7 +114,6 @@ void Object::createVertexArrays()
     normals = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*3);
     texCoords = (GLfloat *)malloc(sizeof(GLfloat)*vertices.size()*2);
     
-    Point center = boundingBox().center();
     for (unsigned int i = 0; i < vertices.size(); i++)
     {
         vertices2[i*3] = vertices[i].coord.x;
@@ -136,7 +139,6 @@ void Object::createVertexArrays()
 
 void Object::recreateTexCoordArray()
 {
-    Point center = boundingBox().center();
     for (unsigned int i = 0; i < vertices.size(); i++)
     {
         Vector P = vertices[i].coord - center;
@@ -153,19 +155,23 @@ void Object::render(int mode)
     glTranslatef(pos.x,pos.y,pos.z);
     glTranslatef(-center.x,-center.y,-center.z);
     
-    switch (mode)
+    if (selected) selectedRender();
+    else
     {
-        case IMMEDIATE:
-            immediateRender();
-            break;
-        case DISPLAY_LIST:
-            glCallList(DLindex);
-            break;
-        case VERTEX_ARRAYS:
-            vertexArraysRender();
-            break;
-        default:
-            break;
+        switch (mode)
+        {
+            case IMMEDIATE:
+                immediateRender();
+                break;
+            case DISPLAY_LIST:
+                glCallList(DLindex);
+                break;
+            case VERTEX_ARRAYS:
+                vertexArraysRender();
+                break;
+            default:
+                break;
+        }
     }
     
     glPopMatrix();
@@ -229,6 +235,37 @@ inline void Object::vertexArraysRender()
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+void Object::selectedRender()
+{
+    if (texture != -1)
+    {
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, (GLuint)texture);
+    }
+    for(unsigned int i=0; i<faces.size(); i++)
+    {
+        glBegin (GL_POLYGON);
+                Material material = Scene::matlib.material(faces[i].material);
+                glColor3f(material.kd.r-0.4, material.kd.g-0.4, material.kd.b+0.8);
+                for(unsigned int j=0; j<faces[i].vertices.size(); j++)
+                { 
+                    glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+                    vertices[faces[i].vertices[j]].normal.y,
+                    vertices[faces[i].vertices[j]].normal.z);
+
+                    Vector P = vertices[faces[i].vertices[j]].coord - center;
+                    P.normalize();
+                    glTexCoord2f((atan2(P.x, P.z)/(2*M_PI))*wrapS, ((asin(P.y)/M_PI) + 0.5)*wrapT);
+
+                    glVertex3f(vertices[faces[i].vertices[j]].coord.x,
+                    vertices[faces[i].vertices[j]].coord.y,
+                    vertices[faces[i].vertices[j]].coord.z);
+                }
+        glEnd();
+    }
+    glDisable(GL_TEXTURE_2D);
+}
+
 void Object::updateNormals()
 {
     for(unsigned int i=0; i<faces.size(); ++i)
@@ -274,6 +311,20 @@ Point Object::getPos()
 {
     return pos;
 }
+
+void Object::setSelected()
+{
+    selected = true;
+}
+
+void Object::setDeselected()
+{
+    selected = false;
+}
+
+
+
+
 
 
 /*
