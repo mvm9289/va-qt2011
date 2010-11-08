@@ -183,6 +183,14 @@ void GLWidget::keyPressEvent(QKeyEvent *e)
             computeInitialCamera();
             updateGL();
             break;
+        case Qt::Key_A:
+            if(selection && e->modifiers()&Qt::ControlModifier) 
+              {
+                scene.selectAll();
+                selectedObjectID = -9;
+                emit objectSelected(true);
+              }
+            break;
         case 'h': case 'H': case '?':
             help();
             break;
@@ -416,7 +424,7 @@ void GLWidget::initProjectiveTextureMapping()
             texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
             texture.setWrapMode(GL_REPEAT, GL_REPEAT);
             texture.sendToGL();
-            scene.setTexture(texture.getTextureID());
+            scene.setProjectorTexture(texture.getTextureID());
             emit newTexture(filename);
         }
         else cout << "Error: Can not open the texture" << endl;
@@ -425,6 +433,7 @@ void GLWidget::initProjectiveTextureMapping()
     emit objectSelected(true);
 		emit setChecked(true);
 
+    Point center = scene.center();
 
     // Pas 1: Modificar la TEXTURE MATRIX
     glMatrixMode(GL_TEXTURE);
@@ -432,15 +441,27 @@ void GLWidget::initProjectiveTextureMapping()
     glTranslated(0.5, 0.5,0.5); 
     glScaled(0.5, 0.5, 0.5);  
     gluPerspective(anglecam, ra, anterior, posterior);
-		Point center = scene.center();
-    gluLookAt(1.0,1.0,1.0,center.x,center.y,center.z,0.0,1.0,0.0);
+    glTranslatef(0, 0, -dist);
+    glRotatef(-angleZ, 0, 0, 1);
+    glRotatef(angleX, 1, 0, 0);
+    glRotatef(-angleY, 0, 1, 0);
+    glTranslatef(-VRP.x, -VRP.y, -VRP.z);
 
-    /*GLfloat model[16];
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glLoadIdentity();
+		glTranslated(center.x,center.y,center.z);
+		glTranslated(-center.x,-center.y,center.z);
+    GLfloat model[16];
     glGetFloatv(GL_MODELVIEW_MATRIX, model);
+		glPopMatrix();
 
-    glMultMatrixf(model);*/
+    glMatrixMode(GL_TEXTURE);
+    glMultMatrixf(model);
+
     glMatrixMode(GL_MODELVIEW);    
 
     scene.initProjectiveMode(true);
+
 }
 

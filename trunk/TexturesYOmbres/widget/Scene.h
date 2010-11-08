@@ -17,6 +17,8 @@ class Scene
         int selectedObjectID;
         bool projective;
 
+        int projectorTexture;
+
     public:
         static MaterialLib matlib;
     
@@ -43,9 +45,11 @@ class Scene
         void setDeselected();
         void redistributeSelectedObject(float incX, float incY);
         void deleteSelectedModel();
+        void selectAll();
 
         void initProjectiveMode(bool b);
         void initializeProj();
+        void setProjectorTexture(int textureID);
         void drawCube();
 };
 

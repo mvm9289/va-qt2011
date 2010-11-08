@@ -89,7 +89,14 @@ vector<int> Scene::numTrianglesQuads()
 
 void Scene::setTexture(int textureID)
 {
-    objects[selectedObjectID].setTexture(textureID);
+		if(selectedObjectID != -9) objects[selectedObjectID].setTexture(textureID);
+    else {
+      for (unsigned int i = 0; i < objects.size(); i++)
+      {
+        objects[i].setTexture(textureID);
+      }
+    } 
+    
 }
 
 void Scene::repeatWrapS(int sWrap)
@@ -118,14 +125,24 @@ void Scene::setSelected(int id)
 
 void Scene::setDeselected()
 {
-    objects[selectedObjectID].setDeselected();
+    if(selectedObjectID != -9)
+      objects[selectedObjectID].setDeselected();
+    else
+      for (unsigned int i = 0; i < objects.size(); i++)
+        objects[i].setDeselected();
+ 
     selectedObjectID = -1;
 }
 
 void Scene::deleteSelectedModel()
 {
-    objects[selectedObjectID] = objects[objects.size() - 1];
-    objects.pop_back();
+    if(selectedObjectID != -9)
+    {
+      objects[selectedObjectID] = objects[objects.size() - 1];
+      objects.pop_back();
+    }
+    else while(objects.size() > 0) objects.pop_back();
+
     selectedObjectID = -1;
 }
 
@@ -136,7 +153,7 @@ void Scene::initProjectiveMode(bool b)
 
 void Scene::initializeProj()
 {
-  GLfloat light0Pos[4] =
+/* GLfloat light0Pos[4] =
   {0.3, 0.3, 0.0, 1.0};
   GLfloat matAmb[4] =
   {0.01, 0.01, 0.01, 1.00};
@@ -144,10 +161,10 @@ void Scene::initializeProj()
   {0.65, 0.65, 0.65, 1.00};
   GLfloat matSpec[4] =
   {0.30, 0.30, 0.30, 1.00};
-  GLfloat matShine = 10.0;
+  GLfloat matShine = 10.0;*/
 
   /* Setup Lighting */
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, matAmb);
+/*  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, matAmb);
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, matDiff);
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, matSpec);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, matShine);
@@ -156,22 +173,36 @@ void Scene::initializeProj()
 
   glLightfv(GL_LIGHT1, GL_POSITION, light0Pos);
   glEnable(GL_LIGHT1);
-
+*/
   /*glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
   glEnable(GL_LIGHTING);*/
 
-  /*glTexGenf(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+
+  //glBindTexture(GL_TEXTURE_2D, (GLuint)projectorTexture);
+
+  glTexGenf(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
   glTexGenf(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
   glTexGenf(GL_R, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
   glTexGenf(GL_Q, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-  GLfloat s[4] ={1.0f, 0.0f, 0.0f, 0.0f};
-  GLfloat t[4] ={0.0f, 1.0f, 0.0f, 0.0f};
-  GLfloat r[4] ={0.0f, 0.0f, 1.0f, 0.0f};
-  GLfloat q[4] ={0.0f, 0.0f, 0.0f, 1.0f};
-  glTexGenf(GL_S, GL_OBJECT_PLANE, s);
-  glTexGenf(GL_T, GL_OBJECT_PLANE, t);
-  glTexGenf(GL_R, GL_OBJECT_PLANE, r);
-  glTexGenf(GL_Q, GL_OBJECT_PLANE, q);*/
+  GLfloat s[4] = {1.0f, 0.0f, 0.0f, 0.0f};
+  GLfloat t[4] = {0.0f, 1.0f, 0.0f, 0.0f};
+  GLfloat r[4] = {0.0f, 0.0f, 1.0f, 0.0f};
+  GLfloat q[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+  glTexGenfv(GL_S, GL_OBJECT_PLANE, s);
+  glTexGenfv(GL_T, GL_OBJECT_PLANE, t);
+  glTexGenfv(GL_R, GL_OBJECT_PLANE, r);
+  glTexGenfv(GL_Q, GL_OBJECT_PLANE, q);
+
+  glEnable(GL_TEXTURE_GEN_S);
+  glEnable(GL_TEXTURE_GEN_T);
+  glEnable(GL_TEXTURE_GEN_R);
+  glEnable(GL_TEXTURE_GEN_Q);
+
+  /*glDisable(GL_TEXTURE_GEN_S);
+  glDisable(GL_TEXTURE_GEN_T);
+  glDisable(GL_TEXTURE_GEN_R);
+  glDisable(GL_TEXTURE_GEN_Q);*/
+
 }
 
 
@@ -229,4 +260,20 @@ void Scene::drawCube()
 	glCullFace(GL_BACK);
   glEnable(GL_CULL_FACE);
 
+}
+
+
+void Scene::setProjectorTexture(int textureID)
+{
+    projectorTexture = textureID;
+}
+
+
+void Scene::selectAll()
+{
+    selectedObjectID = -9; // pk el -9 me parecía un buen numero xDD
+    for (unsigned int i = 0; i < objects.size(); i++)
+    {
+        objects[i].setSelected();
+    }    
 }
