@@ -15,6 +15,7 @@ class Scene
         vector<Object> objects;
         int renderMode;
         int selectedObjectID;
+        bool projective;
 
     public:
         static MaterialLib matlib;
@@ -42,6 +43,10 @@ class Scene
         void setDeselected();
         void redistributeSelectedObject(float incX, float incY);
         void deleteSelectedModel();
+
+        void initProjectiveMode(bool b);
+        void initializeProj();
+        void drawCube();
 };
 
 #endif

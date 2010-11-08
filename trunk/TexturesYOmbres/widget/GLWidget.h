@@ -69,6 +69,7 @@ class GLWidget:public QGLWidget
         void numQuads(double);
         void newTexture(QString name);
         void objectSelected(bool);
+        void setChecked(bool);
     
     public slots:
         void help();
@@ -82,6 +83,7 @@ class GLWidget:public QGLWidget
         void setTexture(QString name);
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
+        void initProjectiveTextureMapping();
 };
 
 #endif

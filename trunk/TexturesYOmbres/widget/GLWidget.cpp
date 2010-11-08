@@ -401,3 +401,46 @@ void GLWidget::repeatWrapT(int tWrap)
 }
 
 
+void GLWidget::initProjectiveTextureMapping()
+{
+
+    timer.stop();
+    QString filename = QFileDialog::getOpenFileName(this, "Select a texture...", "../textures", "Image (*.bmp *.gif *.jpg *.jpeg *.png *.pbm *.pgm *.ppm *.tiff *.xbm *.xpm)");
+    timer.start(0);
+
+    if (filename != "") 
+    {
+        Texture texture;
+        if (texture.loadTexture(filename) == string(filename.toLatin1().data()))
+        {
+            texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
+            texture.setWrapMode(GL_REPEAT, GL_REPEAT);
+            texture.sendToGL();
+            scene.setTexture(texture.getTextureID());
+            emit newTexture(filename);
+        }
+        else cout << "Error: Can not open the texture" << endl;
+    }
+
+    emit objectSelected(true);
+		emit setChecked(true);
+
+
+    // Pas 1: Modificar la TEXTURE MATRIX
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+    glTranslated(0.5, 0.5,0.5); 
+    glScaled(0.5, 0.5, 0.5);  
+    gluPerspective(anglecam, ra, anterior, posterior);
+		Point center = scene.center();
+    gluLookAt(1.0,1.0,1.0,center.x,center.y,center.z,0.0,1.0,0.0);
+
+    /*GLfloat model[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, model);
+
+    glMultMatrixf(model);*/
+    glMatrixMode(GL_MODELVIEW);    
+
+    scene.initProjectiveMode(true);
+}
+
