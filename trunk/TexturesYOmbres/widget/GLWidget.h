@@ -38,8 +38,13 @@ class GLWidget:public QGLWidget
         bool movement;
 
         bool selection;
-        bool redistribution;
         int selectedObjectID;
+        
+        bool projector;
+        Point projectorVRP, projectorOBS;
+        Vector projectorUP;
+        double projectorScope;
+        int projectorTexture;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -62,6 +67,9 @@ class GLWidget:public QGLWidget
         void showNumTrianglesQuads();
     
         void selectObj();
+    
+        void computeInitialProjector();
+        void setTextureMatrix();
 
     signals:
         void framerate(double);
@@ -69,7 +77,7 @@ class GLWidget:public QGLWidget
         void numQuads(double);
         void newTexture(QString name);
         void objectSelected(bool);
-        void setChecked(bool);
+        void projectiveActivated(bool);
     
     public slots:
         void help();
@@ -83,7 +91,7 @@ class GLWidget:public QGLWidget
         void setTexture(QString name);
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
-        void initProjectiveTextureMapping();
+        void projectiveTextureMapping();
 };
 
 #endif

@@ -56,6 +56,8 @@ class Object
         inline void vertexArraysRender();
         inline void selectedRender();
     
+        void projectorRender();
+    
     public:
         Object(std::string);
         ~Object();
@@ -69,14 +71,13 @@ class Object
         vector<int> numTrianglesQuads();
         
         void initGL();
-        void render(int mode);
+        void render(int mode, bool projector = false);
         void updateNormals();
         void setTexture(int textureID);
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
     
-        void setSelected();
-        void setDeselected();
+        void setSelected(bool _selected);
 };
 
 #endif

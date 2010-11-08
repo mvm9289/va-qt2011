@@ -73,3 +73,76 @@ Point Box::center()
 {
     return (Point((maxb.x+minb.x)/2.,(maxb.y+minb.y)/2.,(maxb.z+minb.z)/2.));
 }
+
+void Box::renderRoom(int face, float scale)
+{
+    Point min = minb*scale;
+    Point max = maxb*scale;
+
+    Point A(min.x, max.y, max.z);
+    Point B(min.x, max.y, min.z);
+    Point C(max.x, max.y, min.z);
+    Point D(max.x, max.y, max.z);
+    Point E(min.x, min.y, max.z);
+    Point F(min.x, min.y, min.z);
+    Point G(max.x, min.y, min.z);
+    Point H(max.x, min.y, max.z);
+
+    glBegin(GL_QUADS);
+
+        switch(face)
+        {
+            case 0:
+                glNormal3f(1.0, 0.0, 0.0);
+                glVertex3f(A.x, A.y, A.z);
+                glVertex3f(E.x, E.y, E.z);
+                glVertex3f(F.x, F.y, F.z);
+                glVertex3f(B.x, B.y, B.z);
+                break;
+
+            case 1:
+                glNormal3f(-1.0, 0.0, 0.0);
+                glVertex3f(D.x, D.y, D.z);
+                glVertex3f(C.x, C.y, C.z);
+                glVertex3f(G.x, G.y, G.z);
+                glVertex3f(H.x, H.y, H.z);
+                break;
+
+            case 2:
+                glNormal3f(0.0, 0.0, 1.0);
+                glVertex3f(B.x, B.y, B.z);
+                glVertex3f(F.x, F.y, F.z);
+                glVertex3f(G.x, G.y, G.z);
+                glVertex3f(C.x, C.y, C.z);
+                break;
+
+            case 3:
+                glNormal3f(0.0, 1.0, 0.0);
+                glVertex3f(E.x, E.y, E.z);
+                glVertex3f(H.x, H.y, H.z);
+                glVertex3f(G.x, G.y, G.z);
+                glVertex3f(F.x, F.y, F.z);
+                break;
+
+            case 4:
+                glNormal3f(0.0, -1.0, 0.0);
+                glVertex3f(A.x, A.y, A.z);
+                glVertex3f(B.x, B.y, B.z);
+                glVertex3f(C.x, C.y, C.z);
+                glVertex3f(D.x, D.y, D.z);
+                break;
+
+            case 5:
+                glNormal3f(0.0, 0.0, -1.0);
+                glVertex3f(A.x, A.y, A.z);
+                glVertex3f(D.x, D.y, D.z);
+                glVertex3f(H.x, H.y, H.z);
+                glVertex3f(E.x, E.y, E.z);
+                break;
+
+            default:
+                break;
+        }
+
+    glEnd();
+}

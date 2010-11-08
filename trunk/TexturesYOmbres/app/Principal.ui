@@ -510,7 +510,7 @@
          </layout>
         </widget>
        </widget>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="projectiveTextureMappingTab">
         <attribute name="title">
          <string>ProjTextMapp</string>
         </attribute>
@@ -523,39 +523,17 @@
            <height>541</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="submenuCountainer_3" stretch="0,0,0">
+         <layout class="QVBoxLayout" name="submenuCountainer_3" stretch="0,0">
           <property name="margin">
            <number>11</number>
           </property>
           <item>
-           <widget class="QPushButton" name="openTextureButton_2">
+           <widget class="QCheckBox" name="projectiveMappingBox">
             <property name="enabled">
              <bool>true</bool>
             </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>35</height>
-             </size>
-            </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="text">
-             <string>Open &amp;texture...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkBox">
-            <property name="enabled">
-             <bool>false</bool>
             </property>
             <property name="text">
              <string>Projective Mode</string>
@@ -679,8 +657,8 @@
    <slot>resetCamera()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
      <x>425</x>
@@ -695,8 +673,8 @@
    <slot>startStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>484</y>
     </hint>
     <hint type="destinationlabel">
      <x>432</x>
@@ -711,8 +689,8 @@
    <slot>changeRenderMode(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>232</y>
     </hint>
     <hint type="destinationlabel">
      <x>428</x>
@@ -763,8 +741,8 @@
      <y>298</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>294</y>
     </hint>
    </hints>
   </connection>
@@ -779,8 +757,8 @@
      <y>337</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>356</y>
     </hint>
    </hints>
   </connection>
@@ -791,8 +769,8 @@
    <slot>repeatWrapS(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>191</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
@@ -807,8 +785,8 @@
    <slot>repeatWrapT(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>253</y>
     </hint>
     <hint type="destinationlabel">
      <x>452</x>
@@ -827,8 +805,8 @@
      <y>370</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>341</y>
     </hint>
    </hints>
   </connection>
@@ -839,8 +817,8 @@
    <slot>selectionMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>90</y>
+     <x>851</x>
+     <y>443</y>
     </hint>
     <hint type="destinationlabel">
      <x>622</x>
@@ -859,8 +837,8 @@
      <y>257</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -891,8 +869,8 @@
      <y>92</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>191</y>
     </hint>
    </hints>
   </connection>
@@ -907,8 +885,8 @@
      <y>201</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>253</y>
     </hint>
    </hints>
   </connection>
@@ -923,8 +901,8 @@
      <y>690</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>587</y>
     </hint>
    </hints>
   </connection>
@@ -935,8 +913,8 @@
    <slot>deleteModel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>144</y>
     </hint>
     <hint type="destinationlabel">
      <x>581</x>
@@ -955,8 +933,8 @@
      <y>453</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>341</y>
     </hint>
    </hints>
   </connection>
@@ -967,8 +945,8 @@
    <slot>setTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>341</y>
     </hint>
     <hint type="destinationlabel">
      <x>595</x>
@@ -977,50 +955,50 @@
    </hints>
   </connection>
   <connection>
-   <sender>openTextureButton_2</sender>
+   <sender>projectiveMappingBox</sender>
    <signal>pressed()</signal>
    <receiver>gLWidget1</receiver>
-   <slot>initProjectiveTextureMapping()</slot>
+   <slot>projectiveTextureMapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>703</x>
-     <y>93</y>
+     <x>714</x>
+     <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>516</x>
-     <y>92</y>
+     <x>555</x>
+     <y>151</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>gLWidget1</sender>
-   <signal>objectSelected(bool)</signal>
-   <receiver>checkBox</receiver>
+   <signal>projectiveActivated(bool)</signal>
+   <receiver>openTextureButton</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>544</x>
-     <y>181</y>
+     <x>592</x>
+     <y>118</y>
     </hint>
     <hint type="destinationlabel">
-     <x>710</x>
-     <y>125</y>
+     <x>709</x>
+     <y>94</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>gLWidget1</sender>
-   <signal>setChecked(bool)</signal>
-   <receiver>checkBox</receiver>
-   <slot>setChecked(bool)</slot>
+   <signal>projectiveActivated(bool)</signal>
+   <receiver>loadedTexturesList</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>588</x>
-     <y>246</y>
+     <x>607</x>
+     <y>417</y>
     </hint>
     <hint type="destinationlabel">
-     <x>766</x>
-     <y>126</y>
+     <x>750</x>
+     <y>326</y>
     </hint>
    </hints>
   </connection>

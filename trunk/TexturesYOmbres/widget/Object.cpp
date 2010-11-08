@@ -147,14 +147,15 @@ void Object::recreateTexCoordArray()
     }
 }
 
-void Object::render(int mode)
+void Object::render(int mode, bool projector)
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(pos.x,pos.y,pos.z);
     glTranslatef(-center.x,-center.y,-center.z);
     
-    if (selected) selectedRender();
+    if (projector) projectorRender();
+    else if (selected) selectedRender();
     else
     {
         switch (mode)
@@ -311,14 +312,35 @@ Point Object::getPos()
     return pos;
 }
 
-void Object::setSelected()
+void Object::setSelected(bool _selected)
 {
-    selected = true;
+    selected = _selected;
 }
 
-void Object::setDeselected()
+void Object::projectorRender()
 {
-    selected = false;
+    glMatrixMode(GL_MODELVIEW);
+    for(unsigned int i=0; i<faces.size(); i++)
+    {
+        glBegin (GL_POLYGON);
+                Material material = Scene::matlib.material(faces[i].material);
+                glColor3f(material.kd.r-0.4, material.kd.g-0.4, material.kd.b+0.8);
+                for(unsigned int j=0; j<faces[i].vertices.size(); j++)
+                { 
+                    glNormal3f(vertices[faces[i].vertices[j]].normal.x,
+                    vertices[faces[i].vertices[j]].normal.y,
+                    vertices[faces[i].vertices[j]].normal.z);
+
+                    glTexCoord3f(vertices[faces[i].vertices[j]].coord.x,
+                    vertices[faces[i].vertices[j]].coord.y,
+                    vertices[faces[i].vertices[j]].coord.z);
+                    
+                    glVertex3f(vertices[faces[i].vertices[j]].coord.x,
+                    vertices[faces[i].vertices[j]].coord.y,
+                    vertices[faces[i].vertices[j]].coord.z);
+                }
+        glEnd();
+    }
 }
 
 

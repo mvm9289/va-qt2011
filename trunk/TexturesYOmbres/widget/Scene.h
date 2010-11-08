@@ -6,6 +6,9 @@
 
 #include "Object.h"
 
+#define ALL_OBJECTS -10
+#define NONE_OBJECT -1
+
 using namespace std;
 
 class Scene
@@ -17,8 +20,6 @@ class Scene
         int selectedObjectID;
         bool projective;
 
-        int projectorTexture;
-
     public:
         static MaterialLib matlib;
     
@@ -26,7 +27,7 @@ class Scene
         Scene();
 
         void Init();
-        void Render();
+        void Render(bool projector = false);
         void AddObject(Object &);
     
         void updateBoundingBox();
@@ -41,16 +42,9 @@ class Scene
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
         
-        void setSelected(int id);
-        void setDeselected();
-        void redistributeSelectedObject(float incX, float incY);
+        void setSelected(int id, bool selected);
+        void redistributeSelectedObject(Point inc);
         void deleteSelectedModel();
-        void selectAll();
-
-        void initProjectiveMode(bool b);
-        void initializeProj();
-        void setProjectorTexture(int textureID);
-        void drawCube();
 };
 
 #endif
