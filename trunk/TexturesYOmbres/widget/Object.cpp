@@ -21,22 +21,21 @@ Object::~Object() {}
 Box Object::boundingBox()
 {
     Vector translation = pos - center;
-    Box currentBBox;
-    currentBBox.update(_boundingBox.maxb + translation);
-    currentBBox.update(_boundingBox.minb + translation);
+    Point minb = _boundingBox.minb + translation;
+    Point maxb = _boundingBox.maxb + translation;
     
-    return currentBBox;
+    return Box(minb, maxb);
 }
 
 void Object::computeBoundingBox()
 {
-	if (vertices.size())
-	{
-		Point p = vertices[0].coord;
-		_boundingBox=Box(p, p);
-		for (unsigned int i=1; i<vertices.size(); i++)
-			_boundingBox.update(vertices[i].coord);
-	}
+    if (vertices.size())
+    {
+        Point p = vertices[0].coord;
+        _boundingBox=Box(p, p);
+        for (unsigned int i=1; i<vertices.size(); i++)
+            _boundingBox.update(vertices[i].coord);
+    }
 }
 
 void Object::initGL()

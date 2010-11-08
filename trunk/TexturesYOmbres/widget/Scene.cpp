@@ -35,12 +35,16 @@ void Scene::AddObject(Object &o)
 
 void Scene::updateBoundingBox()
 {
-    boundingBox = Box();
-    for (unsigned int i = 0; i < objects.size(); i++)
+    if (objects.size())
     {
-        Box aux = objects[i].boundingBox();
-        boundingBox.update(aux.minb);
-        boundingBox.update(aux.maxb);
+        Box aux = objects[0].boundingBox();
+        boundingBox = Box(aux.minb, aux.maxb);
+        for (unsigned int i = 1; i < objects.size(); i++)
+        {
+            Box aux = objects[i].boundingBox();
+            boundingBox.update(aux.minb);
+            boundingBox.update(aux.maxb);
+        }
     }
 }
 
