@@ -40,10 +40,9 @@ class GLWidget:public QGLWidget
         bool selection;
         int selectedObjectID;
         
+        GLfloat projectorProjection[4][4];
+        GLfloat projectorModelView[4][4];
         bool projector;
-        Point projectorVRP, projectorOBS;
-        Vector projectorUP;
-        double projectorScope;
         int projectorTexture;
 
     public:
@@ -68,7 +67,6 @@ class GLWidget:public QGLWidget
     
         void selectObj();
     
-        void computeInitialProjector();
         void setTextureMatrix();
 
     signals:

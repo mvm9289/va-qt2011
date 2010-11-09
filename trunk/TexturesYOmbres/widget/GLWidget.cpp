@@ -39,7 +39,6 @@ void GLWidget::initializeGL()
     selection = false;
     selectedObjectID = NONE_OBJECT;
     
-    computeInitialProjector();
     projector = false;
     projectorTexture = -1;
         
@@ -114,8 +113,9 @@ void GLWidget::paintGL( void )
         glBindTexture(GL_TEXTURE_2D, projectorTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        setTextureMatrix();
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
         scene.Render(true);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glDisable(GL_TEXTURE_2D);
@@ -418,6 +418,7 @@ void GLWidget::selectObj()
     glEnable(GL_LIGHTING);
 }
 
+
 void GLWidget::setTexture(QString name)
 {
     Texture texture;
@@ -439,27 +440,16 @@ void GLWidget::repeatWrapT(int tWrap)
     scene.repeatWrapT(tWrap);
 }
 
-void GLWidget::computeInitialProjector()
-{
-    scene.updateBoundingBox();
-    
-    projectorVRP = scene.center();
-    projectorOBS = VRP;
-    projectorOBS.y*=20.0;
-    projectorUP = Vector(0.0, 0.0, -1.0);
-    projectorScope = 3*scene.radius();
-}
-
 void GLWidget::setTextureMatrix()
 {
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
     glTranslated(0.5, 0.5,0.5);
     glScaled(0.5, 0.5, 0.5);
-    gluPerspective(30., 1, 0.001, projectorScope);
-    gluLookAt(projectorOBS.x, projectorOBS.y, projectorOBS.z,
-        projectorVRP.x, projectorVRP.y, projectorVRP.z,
-        projectorUP.x, projectorUP.y, projectorUP.z);
+    /*glMultMatrixf(&projectorProjection[0][0]);
+    glMultMatrixf(&projectorModelView[0][0]);*/
+    gluPerspective(30, 1, 0.01, 500);
+    glTranslatef(0, 0, 2);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -472,6 +462,7 @@ void GLWidget::projectiveTextureMapping()
         {
             projector = true;
             emit projectiveActivated(true);
+            setTextureMatrix();
         }
     }
     else

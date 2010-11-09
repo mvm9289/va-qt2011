@@ -319,12 +319,17 @@ void Object::setSelected(bool _selected)
 
 void Object::projectorRender()
 {
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glTranslatef(pos.x,pos.y,pos.z);
+    glTranslatef(-center.x,-center.y,-center.z);
     glMatrixMode(GL_MODELVIEW);
+    
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
                 Material material = Scene::matlib.material(faces[i].material);
-                glColor3f(material.kd.r-0.4, material.kd.g-0.4, material.kd.b+0.8);
+                glColor3f(material.kd.r, material.kd.g, material.kd.b);
                 for(unsigned int j=0; j<faces[i].vertices.size(); j++)
                 { 
                     glNormal3f(vertices[faces[i].vertices[j]].normal.x,
@@ -341,6 +346,10 @@ void Object::projectorRender()
                 }
         glEnd();
     }
+    
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }
 
 
