@@ -8,11 +8,19 @@ Texture::~Texture()
     if (bitMap != NULL) delete bitMap;
 }
 
-int Texture::getTextureID(string filename)
+int Texture::getTextureID(string filename, bool projector)
 {
-    map<string, unsigned int>::iterator it = loadedTextures.find(filename);
-    if (it != loadedTextures.end()) return (int)(it->second);
-    
+    if (projector)
+    {
+        map<string, unsigned int>::iterator it = loadedProjectorTextures.find(filename);
+        if (it != loadedProjectorTextures.end()) return (int)(it->second);
+    }
+    else
+    {
+        map<string, unsigned int>::iterator it = loadedTextures.find(filename);
+        if (it != loadedTextures.end()) return (int)(it->second);
+    }
+        
     return -1;
 }
 
@@ -56,7 +64,7 @@ void Texture::setWrapMode(int wrapS, int wrapT)
     wrappingT = wrapT;
 }
 
-void Texture::sendToGL()
+void Texture::sendToGL(bool projector)
 {
     glGenTextures(1, (GLuint *)(&textureID));
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -65,9 +73,17 @@ void Texture::sendToGL()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrappingT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minificationFilter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnificationFilter);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    if (projector)
+    {
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        loadedProjectorTextures[textureFilename] = textureID;
+    }
+    else
+    {
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        loadedTextures[textureFilename] = textureID;
+    }
     
-    loadedTextures[textureFilename] = textureID;
     delete bitMap;
     bitMap = NULL;
 }

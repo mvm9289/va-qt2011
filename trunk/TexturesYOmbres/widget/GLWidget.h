@@ -40,8 +40,6 @@ class GLWidget:public QGLWidget
         bool selection;
         int selectedObjectID;
         
-        GLfloat projectorProjection[4][4];
-        GLfloat projectorModelView[4][4];
         bool projector;
         int projectorTexture;
 
@@ -73,9 +71,15 @@ class GLWidget:public QGLWidget
         void framerate(double);
         void numTriangles(double);
         void numQuads(double);
-        void newTexture(QString name);
-        void objectSelected(bool);
-        void projectiveActivated(bool);
+	
+	void enableDeleteObjectButton(bool);
+	void enableOpenTextureButton(bool);
+	void enableTextureSpins(bool);
+        void newTexture(QString);
+	void enableTextureBox(bool);
+	void newProjectorTexture(QString);
+	void enableProjectorTextureBox(bool);
+	void setProjectorChecked(bool);
     
     public slots:
         void help();

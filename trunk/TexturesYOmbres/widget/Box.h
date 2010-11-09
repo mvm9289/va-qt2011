@@ -26,7 +26,7 @@ class Box
         void update(const Point& p);
         void Render();
         Point center();
-        void renderRoom(int face, float scale);
+        void renderRoom(float extra_size = 0.0);
 };
 
 #endif

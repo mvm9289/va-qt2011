@@ -11,7 +11,7 @@ void Scene::Init()
     selectedObjectID = NONE_OBJECT;
     
     Object o("Model");
-    o.readObj("../models/queen.obj", matlib);
+    o.readObj("../models/teapot.obj", matlib);
     AddObject(o);
     updateBoundingBox();
 }
@@ -24,6 +24,8 @@ void Scene::Render(bool projector)
         objects[i].render(renderMode, projector);
         glPopName();
     }
+    
+    if (projector) boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM);
 }
 
 void Scene::AddObject(Object &o)

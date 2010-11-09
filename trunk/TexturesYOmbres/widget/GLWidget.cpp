@@ -63,12 +63,12 @@ void GLWidget::setProjection()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(anglecam, ra, anterior, posterior);
+    if (projector) gluPerspective(anglecam, ra, 0.001, posterior*3);
+    else gluPerspective(anglecam, ra, anterior, posterior);
 }
 
 void GLWidget::computeInitialCamera()
 {
-    scene.updateBoundingBox();
     Point center = scene.center();
     double radius = scene.radius();
     VRP = center;
@@ -111,13 +111,7 @@ void GLWidget::paintGL( void )
     {
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, projectorTexture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
         scene.Render(true);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glDisable(GL_TEXTURE_2D);
     }
 
@@ -165,19 +159,29 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
             if (selectedObjectID != NONE_OBJECT)
             {
                 scene.setSelected(selectedObjectID, false);
-                emit objectSelected(false);
+                emit enableOpenTextureButton(projector);
+                emit enableTextureSpins(false);
+                emit enableTextureBox(false);
+                emit enableDeleteObjectButton(false);
+                selectedObjectID = NONE_OBJECT;
             }
             selectObj();
             if (selectedObjectID != NONE_OBJECT)
             {
                 scene.setSelected(selectedObjectID, true);
-                emit objectSelected(true);
+                emit enableOpenTextureButton(!projector);
+                emit enableTextureSpins(!projector);
+                emit enableTextureBox(!projector);
+                emit enableDeleteObjectButton(true);
             }
         }
         else if (e->button()&Qt::RightButton && selectedObjectID != NONE_OBJECT)
         {
             scene.setSelected(selectedObjectID, false);
-            emit objectSelected(false);
+            emit enableOpenTextureButton(projector);
+            emit enableTextureSpins(false);
+            emit enableTextureBox(false);
+            emit enableDeleteObjectButton(false);
             selectedObjectID = NONE_OBJECT;
         }
         DoingInteractive = SELECT;
@@ -205,7 +209,10 @@ void GLWidget::keyPressEvent(QKeyEvent *e)
             {
                 scene.setSelected(ALL_OBJECTS, true);
                 selectedObjectID = ALL_OBJECTS;
-                emit objectSelected(true);
+                emit enableOpenTextureButton(!projector);
+                emit enableTextureSpins(!projector);
+                emit enableTextureBox(!projector);
+                emit enableDeleteObjectButton(true);
             }
             break;
         case 'h': case 'H': case '?':
@@ -241,6 +248,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
             u.y = m[1][1];
             u.z = m[2][1];
             scene.redistributeSelectedObject(x*s + y*u);
+        scene.updateBoundingBox();
         }
     }
     else if (DoingInteractive == ROTATE)
@@ -310,6 +318,7 @@ void GLWidget::openModel()
     if (filename != "") 
     {
         scene.OpenModel(filename.toLatin1().data());
+        scene.updateBoundingBox();
         computeInitialCamera();
     }
 }
@@ -317,7 +326,11 @@ void GLWidget::openModel()
 void GLWidget::deleteModel()
 {
     scene.deleteSelectedModel();
-    emit objectSelected(false);
+    scene.updateBoundingBox();
+    emit enableOpenTextureButton(projector);
+    emit enableTextureSpins(false);
+    emit enableTextureBox(false);
+    emit enableDeleteObjectButton(false);
 }
 
 void GLWidget::openTexture()
@@ -332,11 +345,20 @@ void GLWidget::openTexture()
         if (texture.loadTexture(filename) == string(filename.toLatin1().data()))
         {
             texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
-            texture.setWrapMode(GL_REPEAT, GL_REPEAT);
-            texture.sendToGL();
-            if (projectorTexture == -1 || projector) projectorTexture = texture.getTextureID();
-            else scene.setTexture(texture.getTextureID());
-            emit newTexture(filename);
+            if (projectorTexture == -1 || projector)
+            {
+                texture.setWrapMode(GL_CLAMP, GL_CLAMP);
+                texture.sendToGL(true);
+                projectorTexture = texture.getTextureID();
+                emit newProjectorTexture(filename);
+            }
+            else
+            {
+                texture.setWrapMode(GL_REPEAT, GL_REPEAT);
+                texture.sendToGL();
+                scene.setTexture(texture.getTextureID());
+                emit newTexture(filename);
+            }
         }
         else cout << "Error: Can not open the texture" << endl;
     }
@@ -371,7 +393,11 @@ void GLWidget::selectionMode()
     if (selection && selectedObjectID != NONE_OBJECT)
     {
         scene.setSelected(selectedObjectID, false);
-        emit objectSelected(false);
+        emit enableOpenTextureButton(projector);
+        emit enableTextureSpins(false);
+        emit enableTextureBox(false);
+        emit enableDeleteObjectButton(false);
+        selectedObjectID = NONE_OBJECT;
     }
     selection = !selection;
 }
@@ -422,7 +448,7 @@ void GLWidget::selectObj()
 void GLWidget::setTexture(QString name)
 {
     Texture texture;
-    int textureID = texture.getTextureID(string(name.toLatin1().data()));
+    int textureID = texture.getTextureID(string(name.toLatin1().data()), projector);
     if (textureID != -1)
     {
         if (!projector) scene.setTexture(textureID);
@@ -446,10 +472,12 @@ void GLWidget::setTextureMatrix()
     glLoadIdentity();
     glTranslated(0.5, 0.5,0.5);
     glScaled(0.5, 0.5, 0.5);
-    /*glMultMatrixf(&projectorProjection[0][0]);
-    glMultMatrixf(&projectorModelView[0][0]);*/
-    gluPerspective(30, 1, 0.01, 500);
-    glTranslatef(0, 0, 2);
+    gluPerspective(anglecam, ra, anterior, posterior);
+    glTranslatef(0, 0, -dist);
+    glRotatef(-angleZ, 0, 0, 1);
+    glRotatef(angleX, 1, 0, 0);
+    glRotatef(-angleY, 0, 1, 0);
+    glTranslatef(-VRP.x, -VRP.y, -VRP.z);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -461,14 +489,36 @@ void GLWidget::projectiveTextureMapping()
         if (projectorTexture != -1)
         {
             projector = true;
-            emit projectiveActivated(true);
+            emit enableOpenTextureButton(true);
+            emit enableProjectorTextureBox(true);
+            emit enableTextureBox(false);
+            emit enableTextureSpins(false);
             setTextureMatrix();
         }
+        else emit setProjectorChecked(false);
+    }
+    else if (projector)
+    {
+        projector = false;
+        
+        emit enableOpenTextureButton(selectedObjectID != NONE_OBJECT);
+        emit enableProjectorTextureBox(false);
+        emit enableTextureBox(selectedObjectID != NONE_OBJECT);
+        emit enableTextureSpins(selectedObjectID != NONE_OBJECT);
+        
+        glMatrixMode(GL_TEXTURE);
+        glLoadIdentity();
     }
     else
     {
-        projector = !projector;
-        emit projectiveActivated(projector);
+        projector = true;
+        
+        emit enableOpenTextureButton(true);
+        emit enableProjectorTextureBox(true);
+        emit enableTextureBox(false);
+        emit enableTextureSpins(false);
+        
+        setTextureMatrix();
     }
 }
 

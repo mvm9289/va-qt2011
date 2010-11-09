@@ -10,6 +10,7 @@
 using namespace std;
 
 static map<string, unsigned int> loadedTextures;
+static map<string, unsigned int> loadedProjectorTextures;
 
 class Texture
 {
@@ -27,13 +28,13 @@ class Texture
         Texture();
         ~Texture();
     
-        int getTextureID(string filename);
+        int getTextureID(string filename, bool projector=false);
         
         int getTextureID();
         string loadTexture(QString filename);
         void doMipMapping();
         void setMinMagFilter(int minFilter, int magFilter);
         void setWrapMode(int wrapS, int wrapT);
-        void sendToGL();
+        void sendToGL(bool projector=false);
 };
 #endif

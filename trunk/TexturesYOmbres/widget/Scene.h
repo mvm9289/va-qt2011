@@ -8,6 +8,7 @@
 
 #define ALL_OBJECTS -10
 #define NONE_OBJECT -1
+#define EXTRA_SIZE_OF_ROOM 10
 
 using namespace std;
 
