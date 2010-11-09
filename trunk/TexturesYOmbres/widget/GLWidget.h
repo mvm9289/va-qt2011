@@ -80,6 +80,7 @@ class GLWidget:public QGLWidget
 	void newProjectorTexture(QString);
 	void enableProjectorTextureBox(bool);
 	void setProjectorChecked(bool);
+        void enableResetProjector(bool);
     
     public slots:
         void help();
@@ -94,6 +95,7 @@ class GLWidget:public QGLWidget
         void repeatWrapS(int sWrap);
         void repeatWrapT(int tWrap);
         void projectiveTextureMapping();
+        void resetProjector();
 };
 
 #endif

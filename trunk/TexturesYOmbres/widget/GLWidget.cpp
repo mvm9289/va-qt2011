@@ -493,6 +493,7 @@ void GLWidget::projectiveTextureMapping()
             emit enableProjectorTextureBox(true);
             emit enableTextureBox(false);
             emit enableTextureSpins(false);
+            emit enableResetProjector(true);
             setTextureMatrix();
         }
         else emit setProjectorChecked(false);
@@ -505,6 +506,7 @@ void GLWidget::projectiveTextureMapping()
         emit enableProjectorTextureBox(false);
         emit enableTextureBox(selectedObjectID != NONE_OBJECT);
         emit enableTextureSpins(selectedObjectID != NONE_OBJECT);
+        emit enableResetProjector(false);
         
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
@@ -517,8 +519,13 @@ void GLWidget::projectiveTextureMapping()
         emit enableProjectorTextureBox(true);
         emit enableTextureBox(false);
         emit enableTextureSpins(false);
+        emit enableResetProjector(true);
         
         setTextureMatrix();
     }
 }
 
+void GLWidget::resetProjector()
+{
+    setTextureMatrix();
+}
