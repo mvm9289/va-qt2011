@@ -19,7 +19,8 @@ HEADERS		    += 	Object.h \
                                 MaterialLib.h \
                                 Point.h \
                                 Scene.h \
-				Texture.h
+				Texture.h \
+				Light.h
        
 SOURCES		    += 	Object.cpp \
                                 Face.cpp \
@@ -30,5 +31,6 @@ SOURCES		    += 	Object.cpp \
                                 MaterialLib.cpp \
                                 Point.cpp \
                                 Scene.cpp \
-				Texture.cpp
+				Texture.cpp \
+				Light.cpp
                                 

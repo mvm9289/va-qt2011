@@ -5,6 +5,7 @@
 #include <QtOpenGL/qgl.h>
 
 #include "Object.h"
+#include "Light.h"
 
 #define ALL_OBJECTS -10
 #define NONE_OBJECT -1
@@ -17,12 +18,16 @@ class Scene
     private:
         Box boundingBox;
         vector<Object> objects;
+        Light light;
         int renderMode;
         int selectedObjectID;
-        bool projective;
+        bool shadows;
 
     public:
         static MaterialLib matlib;
+    
+    private:
+        void renderObjects(bool projector);
     
     public:
         Scene();
@@ -46,6 +51,13 @@ class Scene
         void setSelected(int id, bool selected);
         void redistributeSelectedObject(Point inc);
         void deleteSelectedModel();
+        
+        void setShadows();
+        
+        
+        
+        void paintRoom(int cares);
+        void paintObject(Object *obj);
 };
 
 #endif

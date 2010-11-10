@@ -41,6 +41,8 @@ void GLWidget::initializeGL()
     
     projector = false;
     projectorTexture = -1;
+    
+    shadows = false;
         
     remainingFrames = FRAMERATE_RANGE;
     timeb t;
@@ -63,7 +65,7 @@ void GLWidget::setProjection()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    if (projector) gluPerspective(anglecam, ra, 0.001, posterior*3);
+    if (projector || shadows) gluPerspective(anglecam, ra, 0.001, posterior*3);
     else gluPerspective(anglecam, ra, anterior, posterior);
 }
 
@@ -106,7 +108,7 @@ void GLWidget::paintGL( void )
     glColor3f(0,0,1); glVertex3f(0,0,0); glVertex3f(0,0,20);
     glEnd();*/
 
-    if (!projector) scene.Render();
+    if (!projector) scene.Render(false);
     else
     {
         glEnable(GL_TEXTURE_2D);
@@ -528,4 +530,15 @@ void GLWidget::projectiveTextureMapping()
 void GLWidget::resetProjector()
 {
     setTextureMatrix();
+}
+
+void GLWidget::setShadows()
+{
+    if (!shadows)
+    {
+        computeInitialCamera();
+        setModelview();
+    }
+    scene.setShadows();
+    shadows = !shadows;
 }

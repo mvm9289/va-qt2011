@@ -42,6 +42,8 @@ class GLWidget:public QGLWidget
         
         bool projector;
         int projectorTexture;
+	
+	bool shadows;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -96,6 +98,7 @@ class GLWidget:public QGLWidget
         void repeatWrapT(int tWrap);
         void projectiveTextureMapping();
         void resetProjector();
+        void setShadows();
 };
 
 #endif
