@@ -349,7 +349,7 @@ void GLWidget::openTexture()
             texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
             if (projectorTexture == -1 || projector)
             {
-                texture.setWrapMode(GL_CLAMP, GL_CLAMP);
+                texture.setWrapMode(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
                 texture.sendToGL(true);
                 projectorTexture = texture.getTextureID();
                 emit newProjectorTexture(filename);

@@ -121,6 +121,11 @@ vector<float> Box::renderRoom(float extra_size, int face)
     Point H(max.x, min.y, max.z);
     
     vector<float> result;
+    
+    /*float ambientMat[4] = {0.4, 0.4, 0.4, 1};
+    float diffuseMat[4] = {1.0, 1.0, 0.7, 1};
+    float specularMat[4] = {0.0, 0.0, 0.0, 1};
+    glMaterialfv(*/
 
     glBegin(GL_QUADS);
         if (face == ALL_FACES || face == 0)
