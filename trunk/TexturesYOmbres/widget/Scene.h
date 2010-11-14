@@ -27,7 +27,8 @@ class Scene
         static MaterialLib matlib;
     
     private:
-        void renderObjects(bool projector);
+        void renderObjects(bool projector = false);
+        void renderShadows();
     
     public:
         Scene();
@@ -53,11 +54,6 @@ class Scene
         void deleteSelectedModel();
         
         void setShadows();
-        
-        
-        
-        void paintRoom(int cares);
-        void paintObject(Object *obj);
 };
 
 #endif

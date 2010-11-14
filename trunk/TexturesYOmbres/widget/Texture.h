@@ -36,5 +36,6 @@ class Texture
         void setMinMagFilter(int minFilter, int magFilter);
         void setWrapMode(int wrapS, int wrapT);
         void sendToGL(bool projector=false);
+        void resendToGL(bool projector=false);
 };
 #endif

@@ -5,22 +5,27 @@
 
 Light::Light() {}
 
-Light::Light(GLuint id, float rad)
+Light::Light(GLuint id, Point P)
 {
     lightID = id;
-    radius = firstRadius = rad;
+    radius = firstRadius = 0;
+    firstPos = P;
     latitude = 90;
-    longitude = 0;
+    longitude = 90;
     updatePosition();
+
+    float defaultLight[4] = {1, 1, 1, 1};
+    glLightfv(id, GL_DIFFUSE, defaultLight);
+    glLightfv(id, GL_SPECULAR, defaultLight);
 }
 
 Light::~Light() {}
 
 void Light::updatePosition()
 {
-    pos.x = radius*sin((latitude*M_PI)/180.0)*cos((longitude*M_PI)/180.0);
-    pos.y = radius*sin((latitude*M_PI)/180.0)*sin((longitude*M_PI)/180.0);
-    pos.z = radius*cos((latitude*M_PI)/180.0);
+    pos.x = radius*sin((latitude*M_PI)/180.0)*cos((longitude*M_PI)/180.0) + firstPos.x;
+    pos.y = radius*sin((latitude*M_PI)/180.0)*sin((longitude*M_PI)/180.0) + firstPos.y;
+    pos.z = radius*cos((latitude*M_PI)/180.0) + firstPos.z;
 }
 
 void Light::setLatitude(float lat)
@@ -44,6 +49,12 @@ void Light::setRadius(float rad)
 Point Light::getPos()
 {
     return pos;
+}
+
+void Light::setPos(Point P)
+{
+    firstPos = P;
+    radius = firstRadius = 0;
 }
 
 void Light::sendPositionToGL()

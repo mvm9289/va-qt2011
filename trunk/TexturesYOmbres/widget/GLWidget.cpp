@@ -30,10 +30,6 @@ void GLWidget::initializeGL()
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
     
-    scene.Init();
-    computeInitialCamera();
-    showNumTrianglesQuads();
-    
     movement = false;
     
     selection = false;
@@ -43,7 +39,11 @@ void GLWidget::initializeGL()
     projectorTexture = -1;
     
     shadows = false;
-        
+    
+    scene.Init();
+    computeInitialCamera();
+    showNumTrianglesQuads();
+    
     remainingFrames = FRAMERATE_RANGE;
     timeb t;
     ftime(&t);
@@ -75,10 +75,20 @@ void GLWidget::computeInitialCamera()
     double radius = scene.radius();
     VRP = center;
 
-    dist = 2*radius;
-    anglecam = 60;
-    anteriorIni = anteriorAux = anterior = radius;
-    posteriorIni = posteriorAux = posterior = 3*radius;
+    if (shadows)
+    {
+        dist = 5*radius;
+        anglecam = 60;
+        anteriorIni = anteriorAux = anterior = radius;
+        posteriorIni = posteriorAux = posterior = 4*radius;
+    }
+    else
+    {
+        dist = 2*radius;
+        anglecam = 60;
+        anteriorIni = anteriorAux = anterior = radius;
+        posteriorIni = posteriorAux = posterior = 3*radius;
+    }
 
     angleX = 0;
     angleY = 0;
@@ -347,12 +357,13 @@ void GLWidget::openTexture()
         if (texture.loadTexture(filename) == string(filename.toLatin1().data()))
         {
             texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
-            if (projectorTexture == -1 || projector)
+            if (projector)
             {
                 texture.setWrapMode(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
                 texture.sendToGL(true);
                 projectorTexture = texture.getTextureID();
                 emit newProjectorTexture(filename);
+                oldProjectorTexture = filename;
             }
             else
             {
@@ -360,6 +371,7 @@ void GLWidget::openTexture()
                 texture.sendToGL();
                 scene.setTexture(texture.getTextureID());
                 emit newTexture(filename);
+                oldObjectTexture = filename;
             }
         }
         else cout << "Error: Can not open the texture" << endl;
@@ -453,8 +465,21 @@ void GLWidget::setTexture(QString name)
     int textureID = texture.getTextureID(string(name.toLatin1().data()), projector);
     if (textureID != -1)
     {
-        if (!projector) scene.setTexture(textureID);
-        else projectorTexture = textureID;
+        texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
+        if (!projector)
+        {
+            texture.setWrapMode(GL_REPEAT, GL_REPEAT);
+            texture.resendToGL();
+            scene.setTexture(textureID);
+            oldObjectTexture = name;
+        }
+        else
+        {
+            texture.setWrapMode(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
+            texture.resendToGL(true);
+            projectorTexture = textureID;
+            oldProjectorTexture = name;
+        }
     }
 }
 
@@ -487,10 +512,16 @@ void GLWidget::projectiveTextureMapping()
 {
     if (projectorTexture == -1)
     {
+        if (shadows)
+        {
+            setShadows();
+            emit setShadowsChecked(false);
+        }
+            
+        projector = true;
         openTexture();
         if (projectorTexture != -1)
         {
-            projector = true;
             emit enableOpenTextureButton(true);
             emit enableProjectorTextureBox(true);
             emit enableTextureBox(false);
@@ -498,7 +529,11 @@ void GLWidget::projectiveTextureMapping()
             emit enableResetProjector(true);
             setTextureMatrix();
         }
-        else emit setProjectorChecked(false);
+        else
+        {
+            projector = false;
+            emit setProjectorChecked(false);
+        }
     }
     else if (projector)
     {
@@ -512,9 +547,17 @@ void GLWidget::projectiveTextureMapping()
         
         glMatrixMode(GL_TEXTURE);
         glLoadIdentity();
+        
+        setTexture(oldObjectTexture);
     }
     else
     {
+        if (shadows)
+        {
+            setShadows();
+            emit setShadowsChecked(false);
+        }
+        
         projector = true;
         
         emit enableOpenTextureButton(true);
@@ -524,6 +567,8 @@ void GLWidget::projectiveTextureMapping()
         emit enableResetProjector(true);
         
         setTextureMatrix();
+        
+        setTexture(oldProjectorTexture);
     }
 }
 
@@ -536,9 +581,21 @@ void GLWidget::setShadows()
 {
     if (!shadows)
     {
+        if (projector)
+        {
+            projectiveTextureMapping();
+            emit setProjectorChecked(false);
+        }
+        
+        shadows = true;
         computeInitialCamera();
-        setModelview();
+        //setModelview();
+    }
+    else
+    {
+        shadows = false;
+        computeInitialCamera();
+        //setModelview();
     }
     scene.setShadows();
-    shadows = !shadows;
 }

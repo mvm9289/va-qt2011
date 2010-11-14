@@ -19,130 +19,11 @@ void Scene::Init()
 
 void Scene::Render(bool projector)
 {
-    if (shadows)
-    {
-	//~glMatrixMode(GL_MODELVIEW);
-	//~ //glColor4f(0, 0, 0, 0.5);
-	
-	//~ Object o = objects.front();
-
-	//~ int indexCara[6] = {1, 2, 4, 8, 16, 32};
-		
-	//~ glPushMatrix();	
-		//~ //Pintar sombres
-		//~ for (int k = 0; k < 6; k++) {
-			//~ glEnable(GL_LIGHTING);
-			//~ glClear(GL_STENCIL_BUFFER_BIT);
-			//~ glEnable(GL_STENCIL_TEST);
-			//~ glStencilFunc(GL_ALWAYS, 1, 1);
-			//~ glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-			//~ //paintRoom(indexCara[k]);
-			//~ vector<float> pC = boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM, k);
-			
-			//~ glDisable(GL_DEPTH_TEST);
-			//~ glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-			//~ glStencilFunc(GL_EQUAL, 1, 1);
-			//~ glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
-			//~ glPushMatrix();
-				//~ //calcular punt actual
-				//~ float lx = light.getPos().x;//float lx = 0;
-				//~ float ly =light.getPos().y;//float ly = -s;
-				//~ float lz = light.getPos().z;//float lz = 0;
-            //~ float eq[6][4] = {{-1, 0, 0, -50}, {1, 0, 0, -50},
-	//~ {0, 0, -1, -50}, {0, -1, 0, -50},
-	//~ {0, 1, 0, -50}, {0, 0, 1, -50}};
-				//~ GLfloat MatriuProjeccio[16] = {-pC[3] - pC[1]*ly - pC[2]*lz, pC[0]*ly, pC[0]*lz, pC[0],
-					//~ pC[1]*lx, -pC[3] - pC[0]*lx - pC[2]*lz, pC[1]*lz, pC[1],
-					//~ pC[2]*lx, pC[2]*ly, -pC[3] - pC[0]*lx - pC[1]*ly, pC[2],
-					//~ pC[3]*lx, pC[3]*ly, pC[3]*lz, -pC[0]*lx - pC[1]*ly - pC[2]*lz};
-				//~ glMultMatrixf(MatriuProjeccio);
-				//~ renderObjects(projector);
-			//~ glPopMatrix();
-
-			//~ glEnable(GL_BLEND);
-			//~ glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
-			//~ glColor4f(0, 0, 0, 0.5);
-			//~ glEnable(GL_DEPTH_TEST);
-			//~ glDepthFunc(GL_LEQUAL);
-			//~ glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			//~ glDisable(GL_LIGHTING);
-			//~ glStencilFunc(GL_EQUAL, 0, 1);
-			//~ boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM, k);
-			//~ glDisable(GL_BLEND);
-
-			//~ glEnable(GL_LIGHTING);
-			//~ glDepthFunc(GL_LESS);
-			//~ glDisable(GL_STENCIL_TEST);
-			//~ renderObjects(projector);
-			
-		//~ }
-		//~ glPushMatrix();
-				//~ float lx = light.getPos().x;//float lx = 0;
-				//~ float ly =light.getPos().y;//float ly = -s;
-				//~ float lz = light.getPos().z;//float lz = 0;
-			//~ glTranslatef(lx, ly, lz);
-			//~ glDisable(GL_LIGHTING);
-			//~ gluSphere(gluNewQuadric(), 1, 10, 10);
-			//~ glEnable(GL_LIGHTING);
-		//~ glPopMatrix();
-	
-        glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-        for (int i = 0; i < 6; i++)
-        {
-            glEnable(GL_LIGHTING);
-			glClear(GL_STENCIL_BUFFER_BIT);
-			glEnable(GL_STENCIL_TEST);
-			glStencilFunc(GL_ALWAYS, 1, 1);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-			glColor3f(0.8, 0.8, 0);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			vector<float> pC = boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM, i);
-			
-			glDisable(GL_DEPTH_TEST);
-			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-			glStencilFunc(GL_EQUAL, 1, 1);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
-			glPushMatrix();
-                Point P = light.getPos();
-				GLfloat projectionMatrix[16] = {-pC[3] - pC[1]*P.y - pC[2]*P.z, pC[0]*P.y, pC[0]*P.z, pC[0],
-					pC[1]*P.x, -pC[3] - pC[0]*P.x - pC[2]*P.z, pC[1]*P.z, pC[1],
-					pC[2]*P.x, pC[2]*P.y, -pC[3] - pC[0]*P.x - pC[1]*P.y, pC[2],
-					pC[3]*P.x, pC[3]*P.y, pC[3]*P.z, -pC[0]*P.x - pC[1]*P.y - pC[2]*P.z};
-                /*GLfloat projectionMatrix[16] ={ -pC[3] - pC[1]*P.y - pC[2]*P.z, pC[1]*P.x, pC[2]*P.x, pC[3]*P.x,
-                                                                pC[0]*P.y, -pC[3] - pC[0]*P.x - pC[2]*P.z, pC[2]*P.y, pC[3]*P.y,
-                                                                pC[0]*P.z, pC[1]*P.z, -pC[3] - pC[0]*P.x - pC[2]*P.y, pC[3]*P.z,
-                                                                pC[0], pC[1], pC[2], -pC[0]*P.x - pC[1]*P.y - pC[2]*P.z };*/
-				glMultMatrixf(projectionMatrix);
-				renderObjects(projector);
-			glPopMatrix();
-
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor4f(0, 0, 0, 0.8);
-			glEnable(GL_DEPTH_TEST);
-			glDepthFunc(GL_LEQUAL);
-			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			glDisable(GL_LIGHTING);
-			glStencilFunc(GL_EQUAL, 0, 1);
-			boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM, i);
-			glDisable(GL_BLEND);
-
-			glEnable(GL_LIGHTING);
-			glDepthFunc(GL_LESS);
-			glDisable(GL_STENCIL_TEST);
-			renderObjects(projector);
-        }
-        glPushMatrix();
-			glTranslatef(light.getPos().x, light.getPos().y, light.getPos().z);
-			glDisable(GL_LIGHTING);
-			gluSphere(gluNewQuadric(), 1, 10, 10);
-			glEnable(GL_LIGHTING);
-		glPopMatrix();
-    }
+    if (shadows) renderShadows();
     else
     {
         renderObjects(projector);
-        if (projector){glColor3f(0.6,0.2,0.3); boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM);}
+        if (projector) boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM);
     }
 }
 
@@ -273,13 +154,69 @@ void Scene::setShadows()
     if (shadows)
     {
         glDisable(GL_LIGHT1);
+        glEnable(GL_LIGHT0);
         shadows = false;
     }
     else
     {
-        glEnable(GL_LIGHT0);
-        light = Light(GL_LIGHT0, radius() + 5);
+        glDisable(GL_LIGHT0);
+        glEnable(GL_LIGHT1);
+        Point P = center();
+        P.y += 5;
+        light = Light(GL_LIGHT1, P);
         light.sendPositionToGL();
         shadows = true;
     }
+}
+
+void Scene::renderShadows()
+{
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    for (int i = 0; i < 6; i++)
+    {
+        glEnable(GL_LIGHTING);
+        glClear(GL_STENCIL_BUFFER_BIT);
+        glEnable(GL_STENCIL_TEST);
+        glStencilFunc(GL_ALWAYS, 1, 1);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        vector<float> pC = boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM, i);
+
+        glDisable(GL_DEPTH_TEST);
+        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+        glStencilFunc(GL_EQUAL, 1, 1);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
+        glPushMatrix();
+        Point P = light.getPos();
+        GLfloat projectionMatrix[16] = {-pC[3] - pC[1]*P.y - pC[2]*P.z, pC[0]*P.y, pC[0]*P.z, pC[0],
+                                                        pC[1]*P.x, -pC[3] - pC[0]*P.x - pC[2]*P.z, pC[1]*P.z, pC[1],
+                                                        pC[2]*P.x, pC[2]*P.y, -pC[3] - pC[0]*P.x - pC[1]*P.y, pC[2],
+                                                        pC[3]*P.x, pC[3]*P.y, pC[3]*P.z, -pC[0]*P.x - pC[1]*P.y - pC[2]*P.z};
+        glMultMatrixf(projectionMatrix);
+        renderObjects();
+        glPopMatrix();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(0, 0, 0, 0.8);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glDisable(GL_LIGHTING);
+        glStencilFunc(GL_EQUAL, 0, 1);
+        boundingBox.renderRoom(EXTRA_SIZE_OF_ROOM, i);
+        glDisable(GL_BLEND);
+
+        glEnable(GL_LIGHTING);
+        glDepthFunc(GL_LESS);
+        glDisable(GL_STENCIL_TEST);
+        renderObjects();
+    }
+    glPushMatrix();
+    glTranslatef(light.getPos().x, light.getPos().y, light.getPos().z);
+    glDisable(GL_LIGHTING);
+    glColor3f(0, 0, 0);
+    gluSphere(gluNewQuadric(), (5*radius())/100, 10, 10);
+    glEnable(GL_LIGHTING);
+    glPopMatrix();
 }

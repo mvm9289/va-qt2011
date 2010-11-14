@@ -42,6 +42,8 @@ class GLWidget:public QGLWidget
         
         bool projector;
         int projectorTexture;
+	QString oldObjectTexture;
+	QString oldProjectorTexture;
 	
 	bool shadows;
 
@@ -83,6 +85,7 @@ class GLWidget:public QGLWidget
 	void enableProjectorTextureBox(bool);
 	void setProjectorChecked(bool);
         void enableResetProjector(bool);
+	void setShadowsChecked(bool);
     
     public slots:
         void help();
