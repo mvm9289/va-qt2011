@@ -30,19 +30,19 @@ void Light::updatePosition()
 
 void Light::setLatitude(float lat)
 {
-    latitude = lat;
+    latitude = lat/2.0;
     updatePosition();
 }
 
 void Light::setLongitude(float lon)
 {
-    longitude = lon;
+    longitude = lon/2.0;
     updatePosition();
 }
 
 void Light::setRadius(float rad)
 {
-    radius = ((rad/130) + 1)*firstRadius;
+    radius = rad/5.0*firstRadius;
     updatePosition();
 }
 
