@@ -8,7 +8,7 @@ Light::Light() {}
 Light::Light(GLuint id, Point P)
 {
     lightID = id;
-    radius = firstRadius = 0;
+    radius = firstRadius = 1;
     firstPos = P;
     latitude = 90;
     longitude = 90;
@@ -54,7 +54,7 @@ Point Light::getPos()
 void Light::setPos(Point P)
 {
     firstPos = P;
-    radius = firstRadius = 0;
+    radius = firstRadius = 1;
 }
 
 void Light::sendPositionToGL()

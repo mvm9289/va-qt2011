@@ -86,6 +86,9 @@ class GLWidget:public QGLWidget
 	void setProjectorChecked(bool);
         void enableResetProjector(bool);
 	void setShadowsChecked(bool);
+  void setLightSettingsEnabled(bool);
+  void setLatLonDefaultValue(double);
+  void setRadiusDefaultValue(double);
     
     public slots:
         void help();
@@ -102,6 +105,10 @@ class GLWidget:public QGLWidget
         void projectiveTextureMapping();
         void resetProjector();
         void setShadows();
+        void setLightRadius(double r);
+        void setLightLongitude(double lon);
+        void setLightLatitude(double lat);
+        //void setLightPos();
 };
 
 #endif

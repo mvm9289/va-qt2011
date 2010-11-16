@@ -589,13 +589,43 @@ void GLWidget::setShadows()
         
         shadows = true;
         computeInitialCamera();
+        emit setLatLonDefaultValue(90.0);
+        emit setRadiusDefaultValue(1.0);
+        emit setLightSettingsEnabled(true);
         //setModelview();
     }
     else
     {
         shadows = false;
         computeInitialCamera();
+        emit setLightSettingsEnabled(false);
         //setModelview();
     }
     scene.setShadows();
 }
+
+
+
+void GLWidget::setLightRadius(double rad)
+{
+  scene.setLightRadius((float)rad);
+}
+void GLWidget::setLightLongitude(double lon)
+{
+  scene.setLightLongitude((float)lon);
+}
+void GLWidget::setLightLatitude(double lat)
+{
+  scene.setLightLatitude((float)lat);
+}
+
+/*
+void GLWidget::setLightPos()
+{
+  scene.setLightPos();
+}*/
+
+
+
+
+

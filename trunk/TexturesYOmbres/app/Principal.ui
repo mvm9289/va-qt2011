@@ -577,19 +577,166 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>211</width>
-           <height>541</height>
+           <width>221</width>
+           <height>772</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="submenuCountainer_3" stretch="0,0">
+         <layout class="QVBoxLayout" name="submenuCountainer_3" stretch="0,0,0">
           <property name="margin">
            <number>11</number>
           </property>
           <item>
            <widget class="QCheckBox" name="shadowsBox">
             <property name="text">
-             <string>CheckBox</string>
+             <string>Shadow Mode</string>
             </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="LighSettings">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>160</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Light Settings:</string>
+            </property>
+            <widget class="QFrame" name="frame">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>9</x>
+               <y>19</y>
+               <width>181</width>
+               <height>131</height>
+              </rect>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <widget class="QSplitter" name="splitter_4">
+              <property name="geometry">
+               <rect>
+                <x>23</x>
+                <y>20</y>
+                <width>133</width>
+                <height>90</height>
+               </rect>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <widget class="QSplitter" name="splitter">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Longitude</string>
+                </property>
+               </widget>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                <property name="minimumSize">
+                 <size>
+                  <width>63</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>63</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="maximum">
+                 <double>999.990000000000009</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.500000000000000</double>
+                </property>
+                <property name="value">
+                 <double>90.000000000000000</double>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QSplitter" name="splitter_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Latitude</string>
+                </property>
+               </widget>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>63</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>63</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="maximum">
+                 <double>999.990000000000009</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.500000000000000</double>
+                </property>
+                <property name="value">
+                 <double>90.000000000000000</double>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QSplitter" name="splitter_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Radius</string>
+                </property>
+               </widget>
+               <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>63</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>63</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="minimum">
+                 <double>1.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.500000000000000</double>
+                </property>
+                <property name="value">
+                 <double>1.000000000000000</double>
+                </property>
+               </widget>
+              </widget>
+             </widget>
+            </widget>
            </widget>
           </item>
           <item>
@@ -672,7 +819,19 @@
    <extends>QWidget</extends>
    <header>GLWidget.h</header>
    <slots>
+    <signal>CotxeCarregat(bool)</signal>
+    <signal>inicialitzaZF(int)</signal>
     <slot>openModel()</slot>
+    <slot>DefaultCamera()</slot>
+    <slot>opendialog()</slot>
+    <slot>aturamou()</slot>
+    <slot>reorienta(int)</slot>
+    <slot>setVel(int)</slot>
+    <slot>setCamera(bool)</slot>
+    <slot>obreWindowLlums()</slot>
+    <slot>suavitzatArestes(bool)</slot>
+    <slot>tanca()</slot>
+    <slot>setZF1Pers(int)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -725,8 +884,8 @@
    <slot>repeatWrapT(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>861</x>
-     <y>253</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>452</x>
@@ -745,8 +904,8 @@
      <y>370</y>
     </hint>
     <hint type="destinationlabel">
-     <x>861</x>
-     <y>315</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -757,8 +916,8 @@
    <slot>setTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>861</x>
-     <y>315</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>595</x>
@@ -773,8 +932,8 @@
    <slot>repeatWrapS(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>861</x>
-     <y>191</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>607</x>
@@ -809,8 +968,8 @@
      <y>201</y>
     </hint>
     <hint type="destinationlabel">
-     <x>861</x>
-     <y>191</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -825,8 +984,8 @@
      <y>292</y>
     </hint>
     <hint type="destinationlabel">
-     <x>861</x>
-     <y>253</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -841,8 +1000,8 @@
      <y>421</y>
     </hint>
     <hint type="destinationlabel">
-     <x>861</x>
-     <y>315</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -853,8 +1012,8 @@
    <slot>projectiveTextureMapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>861</x>
-     <y>367</y>
+     <x>751</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>578</x>
@@ -873,8 +1032,8 @@
      <y>444</y>
     </hint>
     <hint type="destinationlabel">
-     <x>861</x>
-     <y>429</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -885,8 +1044,8 @@
    <slot>setTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>861</x>
-     <y>429</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>554</x>
@@ -905,8 +1064,8 @@
      <y>129</y>
     </hint>
     <hint type="destinationlabel">
-     <x>851</x>
-     <y>144</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -933,8 +1092,8 @@
    <slot>deleteModel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>851</x>
-     <y>144</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>576</x>
@@ -949,8 +1108,8 @@
    <slot>changeRenderMode(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>851</x>
-     <y>232</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>578</x>
@@ -969,8 +1128,8 @@
      <y>288</y>
     </hint>
     <hint type="destinationlabel">
-     <x>851</x>
-     <y>294</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -985,8 +1144,8 @@
      <y>337</y>
     </hint>
     <hint type="destinationlabel">
-     <x>851</x>
-     <y>356</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -997,8 +1156,8 @@
    <slot>selectionMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>851</x>
-     <y>443</y>
+     <x>751</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>511</x>
@@ -1013,8 +1172,8 @@
    <slot>startStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>851</x>
-     <y>484</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>517</x>
@@ -1029,8 +1188,8 @@
    <slot>resetCamera()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>851</x>
-     <y>525</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>529</x>
@@ -1049,8 +1208,8 @@
      <y>558</y>
     </hint>
     <hint type="destinationlabel">
-     <x>851</x>
-     <y>587</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -1065,8 +1224,8 @@
      <y>554</y>
     </hint>
     <hint type="destinationlabel">
-     <x>861</x>
-     <y>429</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -1081,8 +1240,8 @@
      <y>397</y>
     </hint>
     <hint type="destinationlabel">
-     <x>861</x>
-     <y>367</y>
+     <x>751</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -1097,8 +1256,8 @@
      <y>524</y>
     </hint>
     <hint type="destinationlabel">
-     <x>756</x>
-     <y>446</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -1109,8 +1268,8 @@
    <slot>resetProjector()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>700</x>
-     <y>458</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>487</x>
@@ -1131,6 +1290,134 @@
     <hint type="destinationlabel">
      <x>460</x>
      <y>160</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setShadowsChecked(bool)</signal>
+   <receiver>shadowsBox</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>585</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>683</x>
+     <y>80</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setLightLongitude(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>790</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>460</x>
+     <y>392</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox_2</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setLightLatitude(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>793</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>531</x>
+     <y>353</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox_3</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setLightRadius(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>803</x>
+     <y>224</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>547</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setLightSettingsEnabled(bool)</signal>
+   <receiver>frame</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>540</x>
+     <y>220</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>681</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setLatLonDefaultValue(double)</signal>
+   <receiver>doubleSpinBox</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>581</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>787</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setLatLonDefaultValue(double)</signal>
+   <receiver>doubleSpinBox_2</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>564</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>821</x>
+     <y>189</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setRadiusDefaultValue(double)</signal>
+   <receiver>doubleSpinBox_3</receiver>
+   <slot>setValue(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>604</x>
+     <y>449</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>797</x>
+     <y>221</y>
     </hint>
    </hints>
   </connection>

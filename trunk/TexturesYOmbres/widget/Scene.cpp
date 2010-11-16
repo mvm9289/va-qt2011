@@ -220,3 +220,25 @@ void Scene::renderShadows()
     glEnable(GL_LIGHTING);
     glPopMatrix();
 }
+
+
+void Scene::setLightRadius(float rad)
+{
+  light.setRadius(rad);
+  light.sendPositionToGL();
+}
+void Scene::setLightLongitude(float lon)
+{
+  light.setLongitude(lon);
+  light.sendPositionToGL();
+}
+void Scene::setLightLatitude(float lat)
+{
+  light.setLatitude(lat);
+  light.sendPositionToGL();
+}
+
+/*void Scene::setLightPos()
+{
+  light.setPos();
+}*/
