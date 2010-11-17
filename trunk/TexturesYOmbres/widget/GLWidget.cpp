@@ -597,7 +597,7 @@ void GLWidget::setShadows()
         shadows = true;
         computeInitialCamera();
         emit setLatLonDefaultValue(90);
-        emit setRadiusDefaultValue(200);
+        emit setRadiusDefaultValue(100);
         emit setLightSettingsEnabled(true);
     }
     else
@@ -618,9 +618,11 @@ void GLWidget::setLightRadius(int rad)
 void GLWidget::setLightLongitude(int lon)
 {
     scene.setLightLongitude((float)lon);
+    setLCDLongitude(lon);
 }
 
 void GLWidget::setLightLatitude(int lat)
 {
     scene.setLightLatitude((float)lat);
+    setLCDLatitude(lat);
 }

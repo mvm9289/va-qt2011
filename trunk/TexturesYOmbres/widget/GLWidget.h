@@ -93,6 +93,8 @@ class GLWidget:public QGLWidget
         void setRadiusDefaultValue(int);
         void selectionModeChecked(bool);
         void setLCDRadius(double);
+        void setLCDLatitude(double);
+        void setLCDLongitude(double);
     
     public slots:
         void help();
