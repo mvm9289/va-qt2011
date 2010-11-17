@@ -161,9 +161,7 @@ void Scene::setShadows()
     {
         glDisable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
-        Point P = center();
-        P.y += 5;
-        light = Light(GL_LIGHT1, center(), (P - center()).length());
+        light = Light(GL_LIGHT1, center(), 2*radius());
         light.sendPositionToGL();
         shadows = true;
     }
