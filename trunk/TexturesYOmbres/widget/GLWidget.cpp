@@ -332,6 +332,7 @@ void GLWidget::openModel()
         scene.OpenModel(filename.toLatin1().data());
         scene.updateBoundingBox();
         computeInitialCamera();
+        showNumTrianglesQuads();
     }
 }
 
@@ -343,6 +344,14 @@ void GLWidget::deleteModel()
     emit enableTextureSpins(false);
     emit enableTextureBox(false);
     emit enableDeleteObjectButton(false);
+
+    showNumTrianglesQuads();
+    //if(selectedObjectID == ALL_OBJECTS)
+    //{
+      selectionMode();
+      emit selectionModeChecked(false);
+
+    //}
 }
 
 void GLWidget::openTexture()
@@ -372,6 +381,8 @@ void GLWidget::openTexture()
                 scene.setTexture(texture.getTextureID());
                 emit newTexture(filename);
                 oldObjectTexture = filename;
+                selectionMode();
+                emit selectionModeChecked(false);
             }
         }
         else cout << "Error: Can not open the texture" << endl;
@@ -589,8 +600,8 @@ void GLWidget::setShadows()
         
         shadows = true;
         computeInitialCamera();
-        emit setLatLonDefaultValue(90*2);
-        emit setRadiusDefaultValue(1*5);
+        emit setLatLonDefaultValue(90*10);
+        emit setRadiusDefaultValue(1*10);
         emit setLightSettingsEnabled(true);
         //setModelview();
     }

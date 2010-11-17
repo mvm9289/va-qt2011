@@ -89,6 +89,7 @@ class GLWidget:public QGLWidget
   void setLightSettingsEnabled(bool);
   void setLatLonDefaultValue(int);
   void setRadiusDefaultValue(int);
+  void selectionModeChecked(bool);
     
     public slots:
         void help();
