@@ -76,21 +76,17 @@ Point Box::center()
 
 vector<float> Box::planeCoefficients(Point A, Point B, Point C)
 {
-    /*float a = A.y*(B.z - C.z) + B.y*(C.z - A.z) + C.y*(A.z - B.z);
-    float b = A.z*(B.x - C.x) + B.z*(C.x - A.x) + C.z*(A.x - B.x);
-    float c = A.x*(B.y - C.y) + B.x*(C.y - A.y) + C.x*(A.y - B.y);
-    float d = -A.x*(B.y*C.z - C.y*B.z) - B.x*(C.y*A.z - A.y*C.z) - C.x*(A.y*B.z - B.y*A.z);*/
-	float BAx = A.x - B.x;
-	float BAy = A.y - B.y;
-	float BAz = A.z - B.z;
-	float BCx = C.x - B.x;
-	float BCy = C.y - B.y;
-	float BCz = C.z - B.z;
+    float BAx = A.x - B.x;
+    float BAy = A.y - B.y;
+    float BAz = A.z - B.z;
+    float BCx = C.x - B.x;
+    float BCy = C.y - B.y;
+    float BCz = C.z - B.z;
 	
-	float a = BAy*BCz - BAz*BCy;
-	float b = BAz*BCx - BAx*BCz;
-	float c = BAx*BCy - BAy*BCx;
-	float d = -B.x*a - B.y*b - B.z*c;
+    float a = BAy*BCz - BAz*BCy;
+    float b = BAz*BCx - BAx*BCz;
+    float c = BAx*BCy - BAy*BCx;
+    float d = -B.x*a - B.y*b - B.z*c;
     
     vector<float> result;
     result.push_back(a);

@@ -42,10 +42,10 @@ class GLWidget:public QGLWidget
         
         bool projector;
         int projectorTexture;
-	QString oldObjectTexture;
-	QString oldProjectorTexture;
-	
-	bool shadows;
+    QString oldObjectTexture;
+    QString oldProjectorTexture;
+    
+    bool shadows;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -75,21 +75,24 @@ class GLWidget:public QGLWidget
         void framerate(double);
         void numTriangles(double);
         void numQuads(double);
-	
-	void enableDeleteObjectButton(bool);
-	void enableOpenTextureButton(bool);
-	void enableTextureSpins(bool);
+
+        void enableDeleteObjectButton(bool);
+
+        void enableOpenTextureButton(bool);
+        void enableTextureSpins(bool);
         void newTexture(QString);
-	void enableTextureBox(bool);
-	void newProjectorTexture(QString);
-	void enableProjectorTextureBox(bool);
-	void setProjectorChecked(bool);
+        void enableTextureBox(bool);
+        void newProjectorTexture(QString);
+        void enableProjectorTextureBox(bool);
+        void setProjectorChecked(bool);
         void enableResetProjector(bool);
-	void setShadowsChecked(bool);
-  void setLightSettingsEnabled(bool);
-  void setLatLonDefaultValue(int);
-  void setRadiusDefaultValue(int);
-  void selectionModeChecked(bool);
+
+        void setShadowsChecked(bool);
+        void setLightSettingsEnabled(bool);
+        void setLatLonDefaultValue(int);
+        void setRadiusDefaultValue(int);
+        void selectionModeChecked(bool);
+        void setLCDRadius(double);
     
     public slots:
         void help();
@@ -109,7 +112,6 @@ class GLWidget:public QGLWidget
         void setLightRadius(int r);
         void setLightLongitude(int lon);
         void setLightLatitude(int lat);
-        //void setLightPos();
 };
 
 #endif

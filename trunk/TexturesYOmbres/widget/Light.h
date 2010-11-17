@@ -18,14 +18,13 @@ class Light
     
     public:
         Light();
-        Light(GLuint id, Point P);
+        Light(GLuint id, Point P, float r);
         ~Light();
     
         void setLatitude(float lat);
         void setLongitude(float lon);
         void setRadius(float rad);
         Point getPos();
-        void setPos(Point P);
         void sendPositionToGL();
 };
 

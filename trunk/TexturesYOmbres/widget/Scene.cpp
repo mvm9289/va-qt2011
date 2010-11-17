@@ -163,7 +163,7 @@ void Scene::setShadows()
         glEnable(GL_LIGHT1);
         Point P = center();
         P.y += 5;
-        light = Light(GL_LIGHT1, P);
+        light = Light(GL_LIGHT1, center(), (P - center()).length());
         light.sendPositionToGL();
         shadows = true;
     }
@@ -224,22 +224,17 @@ void Scene::renderShadows()
 
 void Scene::setLightRadius(float rad)
 {
-  float sceneRadius = radius();
-  light.setRadius(rad*sceneRadius/10.0);
-  light.sendPositionToGL();
+    float sceneRadius = radius();
+    light.setRadius(rad);
+    light.sendPositionToGL();
 }
 void Scene::setLightLongitude(float lon)
 {
-  light.setLongitude(lon);
-  light.sendPositionToGL();
+    light.setLongitude(lon);
+    light.sendPositionToGL();
 }
 void Scene::setLightLatitude(float lat)
 {
-  light.setLatitude(lat);
-  light.sendPositionToGL();
+    light.setLatitude(lat);
+    light.sendPositionToGL();
 }
-
-/*void Scene::setLightPos()
-{
-  light.setPos();
-}*/

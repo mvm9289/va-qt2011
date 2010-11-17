@@ -346,12 +346,8 @@ void GLWidget::deleteModel()
     emit enableDeleteObjectButton(false);
 
     showNumTrianglesQuads();
-    //if(selectedObjectID == ALL_OBJECTS)
-    //{
-      selectionMode();
-      emit selectionModeChecked(false);
-
-    //}
+    selectionMode();
+    emit selectionModeChecked(false);
 }
 
 void GLWidget::openTexture()
@@ -600,43 +596,31 @@ void GLWidget::setShadows()
         
         shadows = true;
         computeInitialCamera();
-        emit setLatLonDefaultValue(90*10);
-        emit setRadiusDefaultValue(1*10);
+        emit setLatLonDefaultValue(90);
+        emit setRadiusDefaultValue(200);
         emit setLightSettingsEnabled(true);
-        //setModelview();
     }
     else
     {
         shadows = false;
         computeInitialCamera();
         emit setLightSettingsEnabled(false);
-        //setModelview();
     }
     scene.setShadows();
 }
 
-
-
 void GLWidget::setLightRadius(int rad)
 {
-  scene.setLightRadius((float)rad);
+    scene.setLightRadius(((float)rad)/100);
+    emit setLCDRadius(((float)rad)/100);
 }
+
 void GLWidget::setLightLongitude(int lon)
 {
-  scene.setLightLongitude((float)lon);
+    scene.setLightLongitude((float)lon);
 }
+
 void GLWidget::setLightLatitude(int lat)
 {
-  scene.setLightLatitude((float)lat);
+    scene.setLightLatitude((float)lat);
 }
-
-/*
-void GLWidget::setLightPos()
-{
-  scene.setLightPos();
-}*/
-
-
-
-
-

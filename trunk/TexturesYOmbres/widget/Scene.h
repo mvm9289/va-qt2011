@@ -58,7 +58,6 @@ class Scene
         void setLightRadius(float rad);
         void setLightLongitude(float lon);
         void setLightLatitude(float lat);
-        //void setLightPos();
 };
 
 #endif
