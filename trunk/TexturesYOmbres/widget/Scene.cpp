@@ -224,7 +224,8 @@ void Scene::renderShadows()
 
 void Scene::setLightRadius(float rad)
 {
-  light.setRadius(rad);
+  float sceneRadius = radius();
+  light.setRadius(rad*sceneRadius/10.0);
   light.sendPositionToGL();
 }
 void Scene::setLightLongitude(float lon)
