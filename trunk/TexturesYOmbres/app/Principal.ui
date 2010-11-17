@@ -348,7 +348,7 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>221</width>
+           <width>211</width>
            <height>541</height>
           </rect>
          </property>
@@ -577,7 +577,7 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>221</width>
+           <width>211</width>
            <height>747</height>
           </rect>
          </property>
@@ -773,6 +773,15 @@
                  <property name="value">
                   <number>90</number>
                  </property>
+                 <property name="invertedAppearance">
+                  <bool>true</bool>
+                 </property>
+                 <property name="wrapping">
+                  <bool>true</bool>
+                 </property>
+                 <property name="notchesVisible">
+                  <bool>true</bool>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -905,6 +914,15 @@
                  </property>
                  <property name="value">
                   <number>90</number>
+                 </property>
+                 <property name="invertedAppearance">
+                  <bool>true</bool>
+                 </property>
+                 <property name="wrapping">
+                  <bool>true</bool>
+                 </property>
+                 <property name="notchesVisible">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
