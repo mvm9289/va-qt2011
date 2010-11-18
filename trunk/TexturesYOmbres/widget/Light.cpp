@@ -14,7 +14,7 @@ Light::Light(GLuint id, Point P, float r)
     longitude = 90;
     updatePosition();
 
-    float defaultLight[4] = {1, 1, 1, 1};
+    float defaultLight[4] = {1.0, 1.0, 1.0, 1};
     glLightfv(id, GL_DIFFUSE, defaultLight);
     glLightfv(id, GL_SPECULAR, defaultLight);
 }

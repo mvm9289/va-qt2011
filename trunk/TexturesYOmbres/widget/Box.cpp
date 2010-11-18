@@ -118,9 +118,10 @@ vector<float> Box::renderRoom(float extra_size, int face)
     
     vector<float> result;
     
+
     float ambientMat[4] = {0.4, 0.4, 0.4, 1};
     float diffuseMat[4] = {1.0, 1.0, 0.5, 1};
-    float specularMat[4] = {0.0, 0.0, 0.0, 1};
+    float specularMat[4] = {0.5, 0.5, 0.0, 1};
     glMaterialfv(GL_FRONT, GL_AMBIENT, ambientMat);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseMat);
     glMaterialfv(GL_FRONT, GL_SPECULAR, specularMat);

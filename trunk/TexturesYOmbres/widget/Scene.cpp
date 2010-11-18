@@ -213,7 +213,7 @@ void Scene::renderShadows()
     glPushMatrix();
     glTranslatef(light.getPos().x, light.getPos().y, light.getPos().z);
     glDisable(GL_LIGHTING);
-    glColor3f(0, 0, 0);
+    glColor3f(1, 1, 1);
     gluSphere(gluNewQuadric(), (5*radius())/100, 10, 10);
     glEnable(GL_LIGHTING);
     glPopMatrix();
