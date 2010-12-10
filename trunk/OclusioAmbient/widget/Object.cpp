@@ -427,7 +427,7 @@ nindex - third number (normal vector index)
 
 void Object::make_face ( char **words, int nwords, int currentMaterial )
 {
-    Face face;
+    Face face(this);
     for (int i = 0; i < nwords; i++) 
     {
         int vindex;

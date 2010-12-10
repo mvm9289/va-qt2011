@@ -123,7 +123,7 @@ bool rayTriangleIntersection(const Ray& ray, const Point&p0, const Point& p1, co
 }
 
 
-bool Face::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
+bool Face::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec, const vector<Vertex>& v) const
 {
 	// PRAC3
 	// aquesta l'heu d'implementar vosaltres

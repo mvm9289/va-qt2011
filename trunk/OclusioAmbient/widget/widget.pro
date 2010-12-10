@@ -11,26 +11,32 @@ SOURCES		    = GLWidgetPlugin.cpp GLWidget.cpp
 LANGUAGE	    = C++
 
 HEADERS		    += 	Object.h \
-                                Face.h \
-                                Vertex.h \
-                                Color.h \
-                                Box.h \
-                                Material.h \
-                                MaterialLib.h \
-                                Point.h \
-                                Scene.h \
-				Texture.h \
-				Light.h
+                    Face.h \
+                    Vertex.h \
+                    Color.h \
+                    Box.h \
+                    Material.h \
+                    MaterialLib.h \
+                    Point.h \
+                    Scene.h \
+                    Texture.h \
+                    Light.h \
+                    Ray.h \
+                    Directions.h \
+                    Surface.h
        
 SOURCES		    += 	Object.cpp \
-                                Face.cpp \
-                                Vertex.cpp \
-                                Color.cpp \
-                                Box.cpp \
-                                Material.cpp \
-                                MaterialLib.cpp \
-                                Point.cpp \
-                                Scene.cpp \
-				Texture.cpp \
-				Light.cpp
+                    Face.cpp \
+                    Vertex.cpp \
+                    Color.cpp \
+                    Box.cpp \
+                    Material.cpp \
+                    MaterialLib.cpp \
+                    Point.cpp \
+                    Scene.cpp \
+                    Texture.cpp \
+                    Light.cpp \
+                    Ray.cpp \
+                    Directions.cpp \
+                    Surface.cpp
                                 
