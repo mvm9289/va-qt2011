@@ -48,6 +48,7 @@ Point&operator/=(Point&, float f);
 Vector operator* (const Vector&, float f);
 Vector operator* (float f, const Vector&);
 float operator* (const Vector&, const Vector&);
+Vector operator^ (const Vector&, const Vector&);
 Vector operator/ (const Vector&, float f);
 Vector&operator/=(Vector&, float f);
 

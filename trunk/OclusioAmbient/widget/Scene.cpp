@@ -14,7 +14,6 @@ void Scene::Init()
     Object o("Model");
     o.readObj("../models/teapot.obj", matlib);
     AddObject(o);
-    updateBoundingBox();
 }
 
 void Scene::Render(bool projector)
@@ -39,7 +38,10 @@ void Scene::renderObjects(bool projector)
 
 void Scene::AddObject(Object &o)
 {
+    objects.push_back(o);
+    o.updateAmbientOcclusion(1, objects);
     o.initGL();
+    objects.pop_back();
     objects.push_back(o);
     updateBoundingBox();
 }

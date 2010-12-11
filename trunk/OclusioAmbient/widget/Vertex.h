@@ -4,14 +4,18 @@
 
 #include "Point.h"
 
+#include <vector>
+
 class Vertex
 {
     public:
         Point coord;
         Vector normal;
+        float occlusion;
     
     public:
         Vertex(const Point& coordenades);
+        vector<Vector> rays(int numDir);
 };
 
 #endif

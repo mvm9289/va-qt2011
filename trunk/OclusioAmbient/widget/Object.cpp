@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "Box.h"
 #include "Scene.h"
+#include "Surface.h"
 
 Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1), selected(false)
 {
@@ -188,9 +189,9 @@ inline void Object::immediateRender()
     {
         glBegin (GL_POLYGON);
                 Material material = Scene::matlib.material(faces[i].material);
-                glColor3f(material.kd.r, material.kd.g, material.kd.b);
                 for(unsigned int j=0; j<faces[i].vertices.size(); j++)
                 { 
+                    glColor3f(material.kd.r*vertices[faces[i].vertices[j]].occlusion, material.kd.g*vertices[faces[i].vertices[j]].occlusion, material.kd.b*vertices[faces[i].vertices[j]].occlusion);
                     glNormal3f(vertices[faces[i].vertices[j]].normal.x,
                     vertices[faces[i].vertices[j]].normal.y,
                     vertices[faces[i].vertices[j]].normal.z);
@@ -352,7 +353,46 @@ void Object::projectorRender()
     glMatrixMode(GL_MODELVIEW);
 }
 
+bool Object::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
+{
+    int n = faces.size();
+    for (int i = 0; i < n; i++)
+    {
+        rec.surface = &faces[i];
+        if (faces[i].hit(r, tmin, tmax, rec)) return true;
+    }
+    
+    return false;
+}
 
+void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
+{
+    int n = vertices.size();
+    for (int i = 0; i < n; i++)
+    {
+        vector<Vector> rayDirs = vertices[i].rays(numRays);
+        int intersections = 0;
+        Point rayOrigin = vertices[i].coord + vertices[i].normal*0.001;
+        int m = rayDirs.size();
+        for (int j = 0; j < m; j++)
+        {
+            Ray ray(rayOrigin, rayDirs[j]);
+            
+            int q = objects.size();
+            for (int k = 0; k < q; k++)
+            {
+                SurfaceHitRecord rec;
+                if (objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec))
+                {
+                    intersections++;
+                    break;
+                }
+            }
+        }
+	
+        vertices[i].occlusion = (float)intersections/(float)m;
+    }
+}
 
 
 

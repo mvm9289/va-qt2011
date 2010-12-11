@@ -3,9 +3,11 @@
 
 void randomDirections(Vector normal, int numberOfDirections, vector<Vector>& result)
 {
-	// PRAC3
-	// aquesta rutina l'heu d'implementar vosaltres 
-	exit(0);
+	for (int i = 0; i < numberOfDirections; i++)
+	{
+		if (directions320(i)*normal < 0) result.push_back(-1*directions320(i));
+		else result.push_back(directions320(i));
+	}
 }
 
 

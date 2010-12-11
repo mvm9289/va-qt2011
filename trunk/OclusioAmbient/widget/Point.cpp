@@ -163,6 +163,18 @@ float operator* (const Vector&u, const Vector&v)
     return u.x*v.x+u.y*v.y+u.z*v.z;
 }
 
+Vector operator^ (const Vector&u, const Vector&v)
+{
+	Vector r;
+
+	r.x =  u.y*v.z - u.z*v.y;
+    r.y = -u.x*v.z + u.z*v.x;
+    r.z =  u.x*v.y - u.y*v.x;
+
+    return r;
+
+}
+
 ostream& operator<< (ostream &os, const Point &p) 
 {
     os << p.x << ", " << p.y << ", " << p.z << endl;

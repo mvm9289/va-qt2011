@@ -34,6 +34,7 @@ class Box
         void Render();
         Point center();
         vector<float> renderRoom(float extra_size = 0.0, int face = ALL_FACES);
+        float diagonal();
 };
 
 #endif

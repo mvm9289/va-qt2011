@@ -2,6 +2,8 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
+#include <QtOpenGL/qgl.h>
+
 #include <vector>
 #include <cstdio>
 
@@ -10,6 +12,7 @@
 #include "Face.h"
 #include "Box.h"
 #include "MaterialLib.h"
+#include "Surface.h"
 
 #define IMMEDIATE 0
 #define DISPLAY_LIST 1
@@ -17,7 +20,7 @@
 
 using namespace std;
 
-class Object
+class Object:public Surface
 {
     private:
         std::string name;
@@ -78,6 +81,9 @@ class Object
         void repeatWrapT(int tWrap);
     
         void setSelected(bool _selected);
+    
+        virtual bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
+        void updateAmbientOcclusion(int numRays, vector<Object>& objects);
 };
 
 #endif

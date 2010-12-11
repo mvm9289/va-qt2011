@@ -223,3 +223,8 @@ vector<float> Box::renderRoom(float extra_size, int face)
     
     return result;
 }
+
+float Box::diagonal()
+{
+	return (maxb - minb).length();
+}
