@@ -12,6 +12,7 @@ class Vertex
         Point coord;
         Vector normal;
         float occlusion;
+        float obscurance;
     
     public:
         Vertex(const Point& coordenades);

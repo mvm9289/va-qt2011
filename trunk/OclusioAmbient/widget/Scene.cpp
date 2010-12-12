@@ -10,6 +10,8 @@ void Scene::Init()
     renderMode = IMMEDIATE;
     selectedObjectID = NONE_OBJECT;
     shadows = false;
+
+    p3mode = 0; // ********** 
     
     Object o("Model");
     o.readObj("../models/teapot.obj", matlib);
@@ -31,7 +33,7 @@ void Scene::renderObjects(bool projector)
     for (unsigned int i = 0; i < objects.size(); i++)
     {
         glPushName(i);
-        objects[i].render(renderMode, projector);
+        objects[i].render(renderMode, projector, p3mode);
         glPopName();
     }
 }

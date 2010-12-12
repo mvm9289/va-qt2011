@@ -58,6 +58,9 @@ class Object:public Surface
         inline void immediateRender();
         inline void vertexArraysRender();
         inline void selectedRender();
+
+        inline void immediateRenderOcclusion();
+        inline void immediateRenderObscurances();
     
         void projectorRender();
     
@@ -74,7 +77,7 @@ class Object:public Surface
         vector<int> numTrianglesQuads();
         
         void initGL();
-        void render(int mode, bool projector = false);
+        void render(int mode, bool projector = false, int p3mode = 0);   // me pedía que pusiera el default value para el 3r argument y por eso lo he puesto
         void updateNormals();
         void setTexture(int textureID);
         void repeatWrapS(int sWrap);
@@ -84,6 +87,7 @@ class Object:public Surface
     
         virtual bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
         void updateAmbientOcclusion(int numRays, vector<Object>& objects);
+        void updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects);
 };
 
 #endif
