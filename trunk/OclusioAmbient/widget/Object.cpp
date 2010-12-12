@@ -148,7 +148,7 @@ void Object::recreateTexCoordArray()
     }
 }
 
-void Object::render(int mode, bool projector, int p3mode)
+void Object::render(int mode, bool projector)
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -157,8 +157,6 @@ void Object::render(int mode, bool projector, int p3mode)
     
     if (projector) projectorRender();
     else if (selected) selectedRender();
-    else if (p3mode == 1) immediateRenderOcclusion();
-    else if (p3mode == 2) immediateRenderObscurances();
     else
     {
         switch (mode)
@@ -171,6 +169,12 @@ void Object::render(int mode, bool projector, int p3mode)
                 break;
             case VERTEX_ARRAYS:
                 vertexArraysRender();
+                break;
+            case OCCLUSION:
+                occlusionRender();
+                break;
+            case OBSCURANCE:
+                obscuranceRender();
                 break;
             default:
                 break;
@@ -195,83 +199,65 @@ inline void Object::immediateRender()
                 { 
                     glColor3f(material.kd.r, material.kd.g, material.kd.b);
                     glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                    vertices[faces[i].vertices[j]].normal.y,
-                    vertices[faces[i].vertices[j]].normal.z);
+                        vertices[faces[i].vertices[j]].normal.y,
+                        vertices[faces[i].vertices[j]].normal.z);
 
                     Vector P = vertices[faces[i].vertices[j]].coord - center;
                     P.normalize();
                     glTexCoord2f((atan2(P.x, P.z)/(2*M_PI))*wrapS, ((asin(P.y)/M_PI) + 0.5)*wrapT);
 
                     glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-                    vertices[faces[i].vertices[j]].coord.y,
-                    vertices[faces[i].vertices[j]].coord.z);
+                        vertices[faces[i].vertices[j]].coord.y,
+                        vertices[faces[i].vertices[j]].coord.z);
                 }
         glEnd();
     }
     glDisable(GL_TEXTURE_2D);
 }
 
-inline void Object::immediateRenderOcclusion()
+inline void Object::occlusionRender()
 {
-    if (texture != -1)
-    {
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, (GLuint)texture);
-    }
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
                 Material material = Scene::matlib.material(faces[i].material);
                 for(unsigned int j=0; j<faces[i].vertices.size(); j++)
                 { 
-                    glColor3f(material.kd.r*vertices[faces[i].vertices[j]].occlusion, material.kd.g*vertices[faces[i].vertices[j]].occlusion, material.kd.b*vertices[faces[i].vertices[j]].occlusion);
+                    glColor3f(material.kd.r*vertices[faces[i].vertices[j]].occlusion,
+                        material.kd.g*vertices[faces[i].vertices[j]].occlusion,
+                        material.kd.b*vertices[faces[i].vertices[j]].occlusion);
                     glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                    vertices[faces[i].vertices[j]].normal.y,
-                    vertices[faces[i].vertices[j]].normal.z);
-
-                    Vector P = vertices[faces[i].vertices[j]].coord - center;
-                    P.normalize();
-                    glTexCoord2f((atan2(P.x, P.z)/(2*M_PI))*wrapS, ((asin(P.y)/M_PI) + 0.5)*wrapT);
-
+                        vertices[faces[i].vertices[j]].normal.y,
+                        vertices[faces[i].vertices[j]].normal.z);
                     glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-                    vertices[faces[i].vertices[j]].coord.y,
-                    vertices[faces[i].vertices[j]].coord.z);
+                        vertices[faces[i].vertices[j]].coord.y,
+                        vertices[faces[i].vertices[j]].coord.z);
                 }
         glEnd();
     }
-    glDisable(GL_TEXTURE_2D);
 }
 
 
-inline void Object::immediateRenderObscurances()
+inline void Object::obscuranceRender()
 {
-    if (texture != -1)
-    {
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, (GLuint)texture);
-    }
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
                 Material material = Scene::matlib.material(faces[i].material);
                 for(unsigned int j=0; j<faces[i].vertices.size(); j++)
                 { 
-                    glColor3f(material.kd.r*vertices[faces[i].vertices[j]].obscurance, material.kd.g*vertices[faces[i].vertices[j]].obscurance, material.kd.b*vertices[faces[i].vertices[j]].obscurance);
+                    glColor3f(material.kd.r*vertices[faces[i].vertices[j]].obscurance,
+                        material.kd.g*vertices[faces[i].vertices[j]].obscurance,
+                        material.kd.b*vertices[faces[i].vertices[j]].obscurance);
                     glNormal3f(vertices[faces[i].vertices[j]].normal.x,
-                    vertices[faces[i].vertices[j]].normal.y,
-                    vertices[faces[i].vertices[j]].normal.z);
-
-                    Vector P = vertices[faces[i].vertices[j]].coord - center;
-                    P.normalize();
-                    glTexCoord2f((atan2(P.x, P.z)/(2*M_PI))*wrapS, ((asin(P.y)/M_PI) + 0.5)*wrapT);
-
+                        vertices[faces[i].vertices[j]].normal.y,
+                        vertices[faces[i].vertices[j]].normal.z);
                     glVertex3f(vertices[faces[i].vertices[j]].coord.x,
-                    vertices[faces[i].vertices[j]].coord.y,
-                    vertices[faces[i].vertices[j]].coord.z);
+                        vertices[faces[i].vertices[j]].coord.y,
+                        vertices[faces[i].vertices[j]].coord.z);
                 }
         glEnd();
     }
-    glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -335,7 +321,8 @@ void Object::selectedRender()
 
 void Object::updateNormals()
 {
-    for(unsigned int i=0; i<faces.size(); ++i)
+    int n = faces.size();
+    for(int i=0; i < n; ++i)
         faces[i].computeNormal(vertices);
 }
 
@@ -431,6 +418,26 @@ bool Object::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) co
     return false;
 }
 
+bool Object::hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
+{
+    int n = faces.size();
+    SurfaceHitRecord surfaceMin(rec);
+    surfaceMin.t = -1.0;
+    bool intersect = false;
+    for (int i = 0; i < n; i++)
+    {
+        if (faces[i].hit(r, tmin, tmax, rec) &&  (surfaceMin.t == -1.0 || rec.t < surfaceMin.t))
+        {
+            intersect = true;
+            surfaceMin.surface = &faces[i];
+            surfaceMin.t = rec.t;
+        }
+    }
+    rec = SurfaceHitRecord(surfaceMin);
+    
+    return intersect;
+}
+
 void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
 {
     int n = vertices.size();
@@ -455,16 +462,13 @@ void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
                 }
             }
         }
-	
-        vertices[i].occlusion = (float)intersections/(float)m;
+    
+        vertices[i].occlusion = 1.0 - (float)intersections/(float)m;
     }
 }
 
-
-
 void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects)  // incluir radius de la escena?
 {
-
     int n = vertices.size();
     for (int i = 0; i < n; i++)
     {
@@ -480,23 +484,15 @@ void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vecto
             for (int k = 0; k < q; k++)
             {
                 SurfaceHitRecord rec;
-                if (objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec))
-                {
-                    if(minDist == -1.0 || rec.t < minDist) minDist = rec.t;
-                }
+                if (objects[k].hitMinDist(ray, 0.001, objects[k].boundingBox().diagonal(), rec) && (minDist == -1.0 || rec.t < minDist)) minDist = rec.t;
             }
             
             if(minDist == -1.0 || minDist >= dmax) vertices[i].obscurance += 1;
-            else 
-            {
-                if(!constantImpl) vertices[i].obscurance += sqrt((minDist/dmax));
-            }         
-
+            else if(!constantImpl) vertices[i].obscurance += sqrt((minDist/dmax));  
         }
-	
-        vertices[i].occlusion /= numRays;
+    
+        vertices[i].obscurance /= numRays;
     }
-
 }
 
 

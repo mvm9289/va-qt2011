@@ -7,14 +7,12 @@ Scene::Scene() {}
 
 void Scene::Init()
 {
-    renderMode = IMMEDIATE;
+    renderMode = OCCLUSION;
     selectedObjectID = NONE_OBJECT;
     shadows = false;
-
-    p3mode = 0; // ********** 
     
     Object o("Model");
-    o.readObj("../models/teapot.obj", matlib);
+    o.readObj("../models/monkey.obj", matlib);
     AddObject(o);
 }
 
@@ -33,7 +31,7 @@ void Scene::renderObjects(bool projector)
     for (unsigned int i = 0; i < objects.size(); i++)
     {
         glPushName(i);
-        objects[i].render(renderMode, projector, p3mode);
+        objects[i].render(renderMode, projector);
         glPopName();
     }
 }
@@ -41,7 +39,7 @@ void Scene::renderObjects(bool projector)
 void Scene::AddObject(Object &o)
 {
     objects.push_back(o);
-    o.updateAmbientOcclusion(1, objects);
+    o.updateAmbientOcclusion(20, objects);
     o.initGL();
     objects.pop_back();
     objects.push_back(o);

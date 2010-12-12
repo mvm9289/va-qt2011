@@ -23,8 +23,6 @@ class Scene
         int selectedObjectID;
         bool shadows;
 
-        int p3mode;  // no sabía que nombre ponerle ---->>> 0 nada, 1 occlusion, 2 obscurances
-
     public:
         static MaterialLib matlib;
     

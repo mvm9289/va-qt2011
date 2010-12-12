@@ -17,6 +17,8 @@
 #define IMMEDIATE 0
 #define DISPLAY_LIST 1
 #define VERTEX_ARRAYS 2
+#define OCCLUSION 3
+#define OBSCURANCE 4
 
 using namespace std;
 
@@ -57,12 +59,13 @@ class Object:public Surface
         void recreateTexCoordArray();
         inline void immediateRender();
         inline void vertexArraysRender();
+    
         inline void selectedRender();
-
-        inline void immediateRenderOcclusion();
-        inline void immediateRenderObscurances();
     
         void projectorRender();
+    
+        inline void occlusionRender();
+        inline void obscuranceRender();
     
     public:
         Object(std::string);
@@ -77,7 +80,7 @@ class Object:public Surface
         vector<int> numTrianglesQuads();
         
         void initGL();
-        void render(int mode, bool projector = false, int p3mode = 0);   // me pedía que pusiera el default value para el 3r argument y por eso lo he puesto
+        void render(int mode, bool projector = false);
         void updateNormals();
         void setTexture(int textureID);
         void repeatWrapS(int sWrap);
@@ -86,6 +89,7 @@ class Object:public Surface
         void setSelected(bool _selected);
     
         virtual bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
+	virtual bool hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
         void updateAmbientOcclusion(int numRays, vector<Object>& objects);
         void updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects);
 };

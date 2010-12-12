@@ -41,10 +41,10 @@ void Face::computeNormal(vector<Vertex> &v)
     int n = vertices.size();
     for (int i = 0; i < n; i++)
     {
-        v[vertices[i]].normal.x += normal.x;
-        v[vertices[i]].normal.y += normal.y;
-        v[vertices[i]].normal.z += normal.z;
-        v[vertices[i]].normal.normalize();
+	v[vertices[i]].normal.x += normal.x;
+	v[vertices[i]].normal.y += normal.y;
+	v[vertices[i]].normal.z += normal.z;
+	v[vertices[i]].normal.normalize();
     }
 }
 
