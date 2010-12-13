@@ -38,11 +38,11 @@ void Scene::renderObjects(bool projector)
 
 void Scene::AddObject(Object &o)
 {
-    objects.push_back(o);
-    o.updateAmbientOcclusion(20, objects);
     o.initGL();
-    objects.pop_back();
     objects.push_back(o);
+    //~ o.updateAmbientOcclusion(20, objects);
+    //~ objects.pop_back();
+    //~ objects.push_back(o);
     updateBoundingBox();
 }
 

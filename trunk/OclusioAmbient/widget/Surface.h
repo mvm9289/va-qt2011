@@ -3,6 +3,7 @@
 
 #include "Box.h"
 #include "Ray.h"
+#include "Point.h"
 //#include "material.h"
 
 class Surface; // forward declaration
@@ -58,6 +59,8 @@ public:
 	//Material* _material;
 
 };
+
+bool rayTriangleIntersection(const Ray& ray, const Point&p0, const Point& p1, const Point& p2, Point& intersect, float& t, float& up, float& vp, bool twoside);
 
 
 #endif

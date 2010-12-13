@@ -23,7 +23,8 @@ HEADERS		    += 	Object.h \
                     Light.h \
                     Ray.h \
                     Directions.h \
-                    Surface.h
+                    Surface.h \
+		    Accelerator.h
        
 SOURCES		    += 	Object.cpp \
                     Face.cpp \
@@ -38,5 +39,6 @@ SOURCES		    += 	Object.cpp \
                     Light.cpp \
                     Ray.cpp \
                     Directions.cpp \
-                    Surface.cpp
+                    Surface.cpp \
+		    Accelerator.cpp
                                 

@@ -13,6 +13,7 @@
 #include "Box.h"
 #include "MaterialLib.h"
 #include "Surface.h"
+#include "Accelerator.h"
 
 #define IMMEDIATE 0
 #define DISPLAY_LIST 1
@@ -45,6 +46,8 @@ class Object:public Surface
         unsigned int wrapT;
     
         bool selected;
+    
+        Accelerator* accelerator;
     
     public:
         vector<Vertex> vertices;

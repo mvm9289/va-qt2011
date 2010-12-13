@@ -2,6 +2,7 @@
 #include <QtOpenGL/qgl.h>
 
 #include "Box.h"
+#include "Surface.h"
 
 Box::Box(const Point& minimum, const Point& maximum):minb(minimum), maxb(maximum) {}
 
@@ -82,7 +83,7 @@ vector<float> Box::planeCoefficients(Point A, Point B, Point C)
     float BCx = C.x - B.x;
     float BCy = C.y - B.y;
     float BCz = C.z - B.z;
-	
+    
     float a = BAy*BCz - BAz*BCy;
     float b = BAz*BCx - BAx*BCz;
     float c = BAx*BCy - BAy*BCx;
@@ -226,5 +227,50 @@ vector<float> Box::renderRoom(float extra_size, int face)
 
 float Box::diagonal()
 {
-	return (maxb - minb).length();
+    return (maxb - minb).length();
+}
+
+bool Box::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
+{
+    Point A(minb.x, maxb.y, maxb.z);
+    Point B(minb.x, maxb.y, minb.z);
+    Point C(maxb.x, maxb.y, minb.z);
+    Point D(maxb.x, maxb.y, maxb.z);
+    Point E(minb.x, minb.y, maxb.z);
+    Point F(minb.x, minb.y, minb.z);
+    Point G(maxb.x, minb.y, minb.z);
+    Point H(maxb.x, minb.y, maxb.z);
+    
+    float up, vp;
+    
+    bool intersect = rayTriangleIntersection(r, A, E, F, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    intersect = rayTriangleIntersection(r, E, F, B, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    
+    intersect = rayTriangleIntersection(r, D, C, G, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    intersect = rayTriangleIntersection(r, C, G, H, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    
+    intersect = rayTriangleIntersection(r, B, F, G, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    intersect = rayTriangleIntersection(r, F, G, C, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    
+    intersect = rayTriangleIntersection(r, E, H, G, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    intersect = rayTriangleIntersection(r, H, G, F, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    
+    intersect = rayTriangleIntersection(r, A, B, C, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    intersect = rayTriangleIntersection(r, B, C, D, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    
+    intersect = rayTriangleIntersection(r, A, D, H, rec.p, rec.t, up, vp, true);
+    if (intersect && rec.t > tmin && rec.t < tmax) return true;
+    intersect = rayTriangleIntersection(r, D, H, E, rec.p, rec.t, up, vp, true);
+    
+    return intersect && rec.t > tmin && rec.t < tmax;
 }

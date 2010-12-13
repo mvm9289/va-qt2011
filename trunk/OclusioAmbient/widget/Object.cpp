@@ -3,9 +3,7 @@
 #include <cmath>
 
 #include "Object.h"
-#include "Box.h"
 #include "Scene.h"
-#include "Surface.h"
 
 Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1), selected(false)
 {
@@ -42,6 +40,7 @@ void Object::computeBoundingBox()
 void Object::initGL()
 {
     pos = center = _boundingBox.center();
+    accelerator = new Accelerator(faces);
     createDisplayList();
     createVertexArrays();
 }
@@ -235,6 +234,7 @@ inline void Object::occlusionRender()
                 }
         glEnd();
     }
+    accelerator->render();
 }
 
 
@@ -416,26 +416,12 @@ bool Object::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) co
     }
     
     return false;
+    //~ return accelerator->hit(r, tmin, tmax, rec);
 }
 
 bool Object::hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
 {
-    int n = faces.size();
-    SurfaceHitRecord surfaceMin(rec);
-    surfaceMin.t = -1.0;
-    bool intersect = false;
-    for (int i = 0; i < n; i++)
-    {
-        if (faces[i].hit(r, tmin, tmax, rec) &&  (surfaceMin.t == -1.0 || rec.t < surfaceMin.t))
-        {
-            intersect = true;
-            surfaceMin.surface = &faces[i];
-            surfaceMin.t = rec.t;
-        }
-    }
-    rec = SurfaceHitRecord(surfaceMin);
-    
-    return intersect;
+    return accelerator->hitMinDist(r, tmin, tmax, rec);
 }
 
 void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)

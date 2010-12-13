@@ -5,8 +5,7 @@
 #include<vector>
 
 #include "Point.h"
-
-using namespace std;
+#include "Ray.h"
 
 #ifdef min 
 #undef min
@@ -17,6 +16,8 @@ using namespace std;
 #endif
 
 #define ALL_FACES -1
+
+class SurfaceHitRecord ;
 
 class Box
 {
@@ -35,6 +36,7 @@ class Box
         Point center();
         vector<float> renderRoom(float extra_size = 0.0, int face = ALL_FACES);
         float diagonal();
+        bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
 };
 
 #endif
