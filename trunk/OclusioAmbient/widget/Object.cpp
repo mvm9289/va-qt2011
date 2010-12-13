@@ -444,7 +444,7 @@ void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
     for (int i = 0; i < n; i++)
     {
         vector<Vector> rayDirs = vertices[i].rays(numRays);
-        int intersections = 0;
+        int sumV = 0;
         Point rayOrigin = vertices[i].coord + vertices[i].normal*0.001;
         int m = rayDirs.size();
         for (int j = 0; j < m; j++)
@@ -452,18 +452,16 @@ void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
             Ray ray(rayOrigin, rayDirs[j]);
             
             int q = objects.size();
-            for (int k = 0; k < q; k++)
+            bool intersect = false;
+            for (int k = 0; k < q && !intersect; k++)
             {
                 SurfaceHitRecord rec;
-                if (objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec))
-                {
-                    intersections++;
-                    break;
-                }
+                intersect = objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec);
             }
+	    if (!intersect) sumV++;
         }
     
-        vertices[i].occlusion = 1.0 - (float)intersections/(float)m;
+        vertices[i].occlusion = (float)sumV/(float)m;
     }
 }
 
