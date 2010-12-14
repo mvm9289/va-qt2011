@@ -32,6 +32,7 @@ void Scene::renderObjects(bool projector)
     {
         glPushName(i);
         objects[i].render(renderMode, projector);
+        //objects[i].render(4, projector);
         glPopName();
     }
 }
@@ -40,9 +41,18 @@ void Scene::AddObject(Object &o)
 {
     o.initGL();
     objects.push_back(o);
+
+    //updateBoundingBox();
+
     //~ o.updateAmbientOcclusion(20, objects);
     //~ objects.pop_back();
     //~ objects.push_back(o);
+    
+    //o.updateObscurances(5, (float)(boundingBox.diagonal()/1.5), true, objects);
+    //cout<<"dmax que he puesto: "<<(float)(boundingBox.diagonal()/1.5)<<endl;
+    //objects.pop_back();
+    //objects.push_back(o);
+
     updateBoundingBox();
 }
 
