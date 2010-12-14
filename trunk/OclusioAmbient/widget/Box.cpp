@@ -3,6 +3,7 @@
 
 #include "Box.h"
 #include "Surface.h"
+#include "Face.h"
 
 Box::Box(const Point& minimum, const Point& maximum):minb(minimum), maxb(maximum) {}
 
@@ -20,6 +21,26 @@ void Box::init(const Point& p)
 {
     minb = p;
     maxb = p;
+}
+
+void Box::updateFaces()
+{
+    Point A(minb.x, maxb.y, maxb.z);
+    Point B(minb.x, maxb.y, minb.z);
+    Point C(maxb.x, maxb.y, minb.z);
+    Point D(maxb.x, maxb.y, maxb.z);
+    Point E(minb.x, minb.y, maxb.z);
+    Point F(minb.x, minb.y, minb.z);
+    Point G(maxb.x, minb.y, minb.z);
+    Point H(maxb.x, minb.y, maxb.z);
+    
+    faces.clear();
+    faces.push_back(Face(A, B, C, D));
+    faces.push_back(Face(H, G, F, E));
+    faces.push_back(Face(A, D, H, E));
+    faces.push_back(Face(D, C, G, H));
+    faces.push_back(Face(C, B, F, G));
+    faces.push_back(Face(B, A, E, F));
 }
 
 void Box::Render()
@@ -232,45 +253,8 @@ float Box::diagonal()
 
 bool Box::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
 {
-    Point A(minb.x, maxb.y, maxb.z);
-    Point B(minb.x, maxb.y, minb.z);
-    Point C(maxb.x, maxb.y, minb.z);
-    Point D(maxb.x, maxb.y, maxb.z);
-    Point E(minb.x, minb.y, maxb.z);
-    Point F(minb.x, minb.y, minb.z);
-    Point G(maxb.x, minb.y, minb.z);
-    Point H(maxb.x, minb.y, maxb.z);
+    for (int i = 0; i < 6; i++)
+        if (faces[i].hit(r, tmin, tmax, rec)) return true;
     
-    float up, vp;
-    
-    bool intersect = rayTriangleIntersection(r, A, E, F, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    intersect = rayTriangleIntersection(r, E, F, B, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    
-    intersect = rayTriangleIntersection(r, D, C, G, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    intersect = rayTriangleIntersection(r, C, G, H, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    
-    intersect = rayTriangleIntersection(r, B, F, G, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    intersect = rayTriangleIntersection(r, F, G, C, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    
-    intersect = rayTriangleIntersection(r, E, H, G, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    intersect = rayTriangleIntersection(r, H, G, F, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    
-    intersect = rayTriangleIntersection(r, A, B, C, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    intersect = rayTriangleIntersection(r, B, C, D, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    
-    intersect = rayTriangleIntersection(r, A, D, H, rec.p, rec.t, up, vp, true);
-    if (intersect && rec.t > tmin && rec.t < tmax) return true;
-    intersect = rayTriangleIntersection(r, D, H, E, rec.p, rec.t, up, vp, true);
-    
-    return intersect && rec.t > tmin && rec.t < tmax;
+    return false;
 }

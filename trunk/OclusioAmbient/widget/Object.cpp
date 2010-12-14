@@ -4,6 +4,8 @@
 
 #include "Object.h"
 #include "Scene.h"
+#include <iostream>
+using namespace std;
 
 Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1), selected(false)
 {
@@ -40,7 +42,10 @@ void Object::computeBoundingBox()
 void Object::initGL()
 {
     pos = center = _boundingBox.center();
-    accelerator = new Accelerator(faces);
+    int n = faces.size();
+    vector<int> idxs;
+    for (int i = 0; i < n; i++) idxs.push_back(i);
+    accelerator = new Accelerator(this, idxs);
     createDisplayList();
     createVertexArrays();
 }
@@ -216,15 +221,15 @@ inline void Object::immediateRender()
 
 inline void Object::occlusionRender()
 {
+    glDisable(GL_LIGHTING);
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
-                Material material = Scene::matlib.material(faces[i].material);
                 for(unsigned int j=0; j<faces[i].vertices.size(); j++)
                 { 
-                    glColor3f(material.kd.r*vertices[faces[i].vertices[j]].occlusion,
-                        material.kd.g*vertices[faces[i].vertices[j]].occlusion,
-                        material.kd.b*vertices[faces[i].vertices[j]].occlusion);
+                    glColor3f(vertices[faces[i].vertices[j]].occlusion,
+                        vertices[faces[i].vertices[j]].occlusion,
+                        vertices[faces[i].vertices[j]].occlusion);
                     glNormal3f(vertices[faces[i].vertices[j]].normal.x,
                         vertices[faces[i].vertices[j]].normal.y,
                         vertices[faces[i].vertices[j]].normal.z);
@@ -234,7 +239,7 @@ inline void Object::occlusionRender()
                 }
         glEnd();
     }
-    accelerator->render();
+    glEnable(GL_LIGHTING);
 }
 
 
@@ -408,15 +413,7 @@ void Object::projectorRender()
 
 bool Object::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
 {
-    int n = faces.size();
-    for (int i = 0; i < n; i++)
-    {
-        rec.surface = &faces[i];
-        if (faces[i].hit(r, tmin, tmax, rec)) return true;
-    }
-    
-    return false;
-    //~ return accelerator->hit(r, tmin, tmax, rec);
+    return accelerator->hit(r, tmin, tmax, rec);
 }
 
 bool Object::hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
@@ -444,7 +441,7 @@ void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
                 SurfaceHitRecord rec;
                 intersect = objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec);
             }
-	    if (!intersect) sumV++;
+        if (!intersect) sumV++;
         }
     
         vertices[i].occlusion = (float)sumV/(float)m;

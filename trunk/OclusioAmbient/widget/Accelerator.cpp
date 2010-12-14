@@ -4,8 +4,9 @@
 #include "Vertex.h"
 #include "Point.h"
 
-Accelerator::Accelerator(const vector<Face>& f)
+Accelerator::Accelerator(Object* obj, vector<int> f)
 {
+    owner = obj;
     faces = f;
     if (faces.size() > 0)
     {
@@ -22,15 +23,17 @@ Accelerator::~Accelerator()
 
 void Accelerator::createBox()
 {
-    vector<Vertex> v = faces[0].owner->vertices;
-    box.init(v[faces[0].vertices[0]].coord);
+    vector<Vertex> v = owner->vertices;
+    vector<Face> f = owner->faces;
+    box.init(v[f[faces[0]].vertices[0]].coord);
     int n =  faces.size();
     for (int i = 0; i < n; i++)
     {
-        int m = faces[i].vertices.size();
+        int m = f[faces[i]].vertices.size();
         for (int j = 0; j < m; j++)
-            box.update(v[faces[i].vertices[j]].coord);
+            box.update(v[f[faces[i]].vertices[j]].coord);
     }
+    box.updateFaces();
 }
 
 void Accelerator::createSubnodes()
@@ -53,37 +56,43 @@ void Accelerator::createSubnodes()
         bool valid = createSubnodes(boxes[0]);
         if (!valid && incY >= incZ) valid = createSubnodes(boxes[1]);
         if (!valid)  valid = createSubnodes(boxes[2]);
+        if (valid) faces.clear();
     }
     else if (incY >= incX && incY >= incZ)
     {
         bool valid = createSubnodes(boxes[1]);
         if (!valid && incX >= incZ) valid = createSubnodes(boxes[0]);
         if (!valid)  valid = createSubnodes(boxes[2]);
+        if (valid) faces.clear();
     }
     else
     {
         bool valid = createSubnodes(boxes[2]);
         if (!valid && incX >= incY) valid = createSubnodes(boxes[0]);
         if (!valid)  valid = createSubnodes(boxes[1]);
+        if (valid) faces.clear();
     }
 }
 
 bool Accelerator::createSubnodes(Box b1)
 {
-    vector<Face> f1;
-    vector<Face> f2;
+    vector<Face> f = owner->faces;
+    vector<int> f1;
+    vector<int> f2;
+    f1.clear();
+    f2.clear();
     
     int n = faces.size();
     for (int i = 0; i < n; i++)
     {
-        if (isInterior(b1, faces[i])) f1.push_back(faces[i]);
+        if (isInterior(b1, f[faces[i]])) f1.push_back(faces[i]);
         else f2.push_back(faces[i]);
     }
     
-    if (f2.size() == 0) return false;
+    if (f1.size() == 0 || f2.size() == 0) return false;
     
-    Accelerator* n1 = new Accelerator(f1);
-    Accelerator* n2 = new Accelerator(f2);
+    Accelerator* n1 = new Accelerator(owner, f1);
+    Accelerator* n2 = new Accelerator(owner, f2);
     subnodes.push_back(n1);
     subnodes.push_back(n2);
     
@@ -119,11 +128,12 @@ bool Accelerator::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& re
         int n = subnodes.size();
         if (n == 0)
         {
+            vector<Face> f = owner->faces;
             int m = faces.size();
             for (int i = 0; i < m; i++)
             {
-                rec.surface = &faces[i];
-                if (faces[i].hit(r, tmin, tmax, rec)) return true;
+                rec.surface = &f[faces[i]];
+                if (f[faces[i]].hit(r, tmin, tmax, rec)) return true;
             }
         }
         else
@@ -136,16 +146,17 @@ bool Accelerator::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& re
 
 bool Accelerator::hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
 {
+    vector<Face> f = owner->faces;
     int n = faces.size();
     SurfaceHitRecord surfaceMin(rec);
     surfaceMin.t = -1.0;
     bool intersect = false;
     for (int i = 0; i < n; i++)
     {
-        if (faces[i].hit(r, tmin, tmax, rec) &&  (surfaceMin.t == -1.0 || rec.t < surfaceMin.t))
+        if (f[faces[i]].hit(r, tmin, tmax, rec) &&  (surfaceMin.t == -1.0 || rec.t < surfaceMin.t))
         {
             intersect = true;
-            surfaceMin.surface = &faces[i];
+            surfaceMin.surface = &f[faces[i]];
             surfaceMin.t = rec.t;
         }
     }
@@ -153,3 +164,4 @@ bool Accelerator::hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRec
     
     return intersect;
 }
+

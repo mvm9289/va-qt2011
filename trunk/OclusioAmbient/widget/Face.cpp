@@ -10,6 +10,7 @@ Face::Face(Object* obj)
     normal.x=0.0;
     normal.y=0.0;
     normal.z=0.0;
+    isBoxFace = false;
 }
 
 Face::Face(Object* obj, int i1, int i2, int i3, int i4)
@@ -22,6 +23,16 @@ Face::Face(Object* obj, int i1, int i2, int i3, int i4)
     normal.x=0.0;
     normal.y=0.0;
     normal.z=0.0;
+    isBoxFace = false;
+}
+
+Face::Face(Point a, Point b, Point c, Point d)
+{
+    isBoxFace = true;
+    A = Point(a);
+    B = Point(b);
+    C = Point(c);
+    D = Point(d);
 }
 
 void Face::computeNormal(vector<Vertex> &v)
@@ -41,10 +52,10 @@ void Face::computeNormal(vector<Vertex> &v)
     int n = vertices.size();
     for (int i = 0; i < n; i++)
     {
-	v[vertices[i]].normal.x += normal.x;
-	v[vertices[i]].normal.y += normal.y;
-	v[vertices[i]].normal.z += normal.z;
-	v[vertices[i]].normal.normalize();
+        v[vertices[i]].normal.x += normal.x;
+        v[vertices[i]].normal.y += normal.y;
+        v[vertices[i]].normal.z += normal.z;
+        v[vertices[i]].normal.normalize();
     }
 }
 
@@ -52,10 +63,19 @@ bool Face::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) cons
 {
     float up, vp;
     rec.n = normal;
-    vector<Vertex> v = owner->vertices;
     
-    bool intersect = rayTriangleIntersection(r, v[vertices[0]].coord, v[vertices[1]].coord, v[vertices[2]].coord, rec.p, rec.t, up, vp, true);
-    if (!intersect && vertices.size() > 3) intersect = rayTriangleIntersection(r, v[vertices[1]].coord, v[vertices[2]].coord, v[vertices[3]].coord, rec.p, rec.t, up, vp, true);
+    bool intersect;
+    if (isBoxFace)
+    {
+        intersect = rayTriangleIntersection(r, A, B, C, rec.p, rec.t, up, vp, true);
+        if (!intersect) intersect = rayTriangleIntersection(r, C, D, A, rec.p, rec.t, up, vp, true);
+    }
+    else
+    {
+        vector<Vertex> v = owner->vertices;
+        intersect = rayTriangleIntersection(r, v[vertices[0]].coord, v[vertices[1]].coord, v[vertices[2]].coord, rec.p, rec.t, up, vp, false);
+        if (!intersect && vertices.size() > 3) intersect = rayTriangleIntersection(r, v[vertices[2]].coord, v[vertices[3]].coord, v[vertices[0]].coord, rec.p, rec.t, up, vp, false);
+    }
     
     return intersect && rec.t > tmin && rec.t < tmax;
 }
