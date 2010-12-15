@@ -253,8 +253,12 @@ float Box::diagonal()
 
 bool Box::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
 {
-    for (int i = 0; i < 6; i++)
-        if (faces[i].hit(r, tmin, tmax, rec)) return true;
+    if (faces[0].hit(r, tmin, tmax, rec)) return true;
+    if (faces[1].hit(r, tmin, tmax, rec)) return true;
+    if (faces[2].hit(r, tmin, tmax, rec)) return true;
+    if (faces[3].hit(r, tmin, tmax, rec)) return true;
+    if (faces[4].hit(r, tmin, tmax, rec)) return true;
+    if (faces[5].hit(r, tmin, tmax, rec)) return true;
     
     return false;
 }

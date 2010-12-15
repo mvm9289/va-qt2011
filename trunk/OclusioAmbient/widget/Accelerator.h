@@ -10,19 +10,25 @@
 
 class Object;
 
+enum Axis
+{
+    X, Y, Z
+};
+
 class Accelerator
 {
     private:
         Box box;
-        vector<Accelerator*> subnodes;
+        Accelerator* subNode1;
+        Accelerator* subNode2;
         Object* owner;
         vector<int> faces;
     
     private:
         void createBox();
         void createSubnodes();
-        bool createSubnodes(Box b1);
-        bool isInterior(Box b, Face f);
+        bool createSubnodes(Axis axis, float limit);
+        bool atLeft(Axis axis, float limit, Face f);
     public:
         Accelerator(Object* obj, vector<int> f);
         ~Accelerator();

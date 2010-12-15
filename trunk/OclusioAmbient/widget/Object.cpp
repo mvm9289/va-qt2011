@@ -4,8 +4,6 @@
 
 #include "Object.h"
 #include "Scene.h"
-#include <iostream>
-using namespace std;
 
 Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1), selected(false)
 {

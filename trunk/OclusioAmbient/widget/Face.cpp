@@ -69,13 +69,15 @@ bool Face::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) cons
     {
         intersect = rayTriangleIntersection(r, A, B, C, rec.p, rec.t, up, vp, true);
         if (!intersect) intersect = rayTriangleIntersection(r, C, D, A, rec.p, rec.t, up, vp, true);
+        
+        return intersect;
     }
     else
     {
         vector<Vertex> v = owner->vertices;
         intersect = rayTriangleIntersection(r, v[vertices[0]].coord, v[vertices[1]].coord, v[vertices[2]].coord, rec.p, rec.t, up, vp, false);
         if (!intersect && vertices.size() > 3) intersect = rayTriangleIntersection(r, v[vertices[2]].coord, v[vertices[3]].coord, v[vertices[0]].coord, rec.p, rec.t, up, vp, false);
+            
+        return intersect && rec.t > tmin && rec.t < tmax;
     }
-    
-    return intersect && rec.t > tmin && rec.t < tmax;
 }
