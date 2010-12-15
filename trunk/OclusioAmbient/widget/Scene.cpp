@@ -246,3 +246,20 @@ void Scene::setLightLatitude(float lat)
     light.setLatitude(lat);
     light.sendPositionToGL();
 }
+
+
+void Scene::updateObscurance(int nRays, int dmax, bool constantImpl)
+{
+    int k = objects.size();
+    for(int i = 0; i < k; ++i)
+        objects[i].updateObscurances(nRays, (float)(boundingBox.diagonal()*((float)(dmax/100.0))), constantImpl, objects);
+}
+
+void Scene::updateOcclusion(int nRays)
+{
+    int k = objects.size();
+
+    for(int i = 0; i < k; ++i)
+        objects[i].updateAmbientOcclusion(nRays, objects);
+}
+

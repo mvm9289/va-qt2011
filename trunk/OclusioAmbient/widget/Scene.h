@@ -58,6 +58,11 @@ class Scene
         void setLightRadius(float rad);
         void setLightLongitude(float lon);
         void setLightLatitude(float lat);
+
+        void updateObscurance(int nRays, int dmax, bool constantImpl);
+        void updateOcclusion(int nRays);
+
+
 };
 
 #endif

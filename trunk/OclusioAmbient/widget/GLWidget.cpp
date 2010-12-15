@@ -39,6 +39,11 @@ void GLWidget::initializeGL()
     projectorTexture = -1;
     
     shadows = false;
+
+    nRaysObs = 1;
+    nRaysOcc = 1;
+    dmax = 50;
+    constantImpl = true;
     
     scene.Init();
     computeInitialCamera();
@@ -625,4 +630,47 @@ void GLWidget::setLightLatitude(int lat)
 {
     scene.setLightLatitude((float)lat);
     setLCDLatitude(lat);
+}
+
+
+void GLWidget::setAmbientOcclusion()
+{
+    scene.updateOcclusion(nRaysOcc);
+    scene.ChangeRenderMode(OCCLUSION);
+}
+
+void GLWidget::setObscurance()
+{
+    scene.updateObscurance(nRaysObs, dmax, constantImpl);
+    scene.ChangeRenderMode(OBSCURANCE);
+}
+
+void GLWidget::setnRaysOcc(int nrays)
+{
+    nRaysOcc = nrays;
+}
+
+void GLWidget::setnRaysObs(int nrays)
+{
+    nRaysObs = nrays;
+}
+
+void GLWidget::setDmax(int d)
+{
+    dmax = d;
+}
+
+void GLWidget::setRoFuncImpl(int selected)
+{
+    constantImpl = (selected == 0);
+}
+
+void GLWidget::renderBoxes(bool rend)
+{
+       
+}
+
+void GLWidget::setRenderBoxesLvl (int lvl)
+{
+    
 }

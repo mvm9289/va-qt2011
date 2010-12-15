@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>900</width>
-    <height>700</height>
+    <height>683</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Visualització Avançada</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <widget class="GLWidget" name="gLWidget1">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -33,13 +33,16 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="0" column="1">
     <layout class="QVBoxLayout" name="menuContainer" stretch="0,0">
      <property name="margin">
       <number>11</number>
      </property>
      <item>
       <widget class="QTabWidget" name="tabMenu">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -52,11 +55,17 @@
          <height>490</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="cursor">
         <cursorShape>ArrowCursor</cursorShape>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="mainTab">
         <attribute name="title">
@@ -67,8 +76,8 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>211</width>
-           <height>541</height>
+           <width>217</width>
+           <height>531</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="submenuContainer" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
@@ -348,7 +357,7 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>211</width>
+           <width>227</width>
            <height>541</height>
           </rect>
          </property>
@@ -577,7 +586,7 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>211</width>
+           <width>221</width>
            <height>747</height>
           </rect>
          </property>
@@ -1078,6 +1087,388 @@
          </layout>
         </widget>
        </widget>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>A. Occlusion</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBox">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Ambien occlusion</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>    # Rays</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBox">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <item>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>127</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Compute</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0">
+          <spacer name="verticalSpacer_15">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>144</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="4" column="0">
+          <widget class="QCheckBox" name="checkBox_2">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Obscurances</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>    # Rays</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBox_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>    MaxDist (% diagonal)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBox_3">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximum">
+              <number>100</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="7" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>    Ro func mode</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>90</width>
+               <height>30</height>
+              </size>
+             </property>
+             <item>
+              <property name="text">
+               <string>Constant </string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Square root</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="8" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>90</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>127</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Compute</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="9" column="0">
+          <spacer name="verticalSpacer_16">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>143</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="10" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QCheckBox" name="checkBox_4">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Render Boxes</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Level</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBox_4">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="value">
+                <number>2</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item row="11" column="0">
+          <spacer name="verticalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="12" column="0">
+          <widget class="QCheckBox" name="checkBox_3">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>OpenGL illumination</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
      <item>
@@ -1176,7 +1567,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>868</x>
-     <y>668</y>
+     <y>651</y>
     </hint>
     <hint type="destinationlabel">
      <x>798</x>
@@ -1233,22 +1624,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>loadedTexturesList</sender>
-   <signal>activated(QString)</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>setTexture(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>595</x>
-     <y>329</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>horizontalWrapSpin</sender>
    <signal>valueChanged(int)</signal>
    <receiver>gLWidget1</receiver>
@@ -1261,6 +1636,22 @@
     <hint type="destinationlabel">
      <x>607</x>
      <y>222</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loadedTexturesList</sender>
+   <signal>activated(QString)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setTexture(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>751</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>595</x>
+     <y>329</y>
     </hint>
    </hints>
   </connection>
@@ -1297,18 +1688,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>gLWidget1</sender>
-   <signal>enableTextureSpins(bool)</signal>
-   <receiver>verticalWrapSpin</receiver>
-   <slot>setEnabled(bool)</slot>
+   <sender>projectiveMappingBox</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>projectiveTextureMapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>620</x>
-     <y>292</y>
+     <x>751</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>578</x>
+     <y>476</y>
     </hint>
    </hints>
   </connection>
@@ -1329,18 +1720,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>projectiveMappingBox</sender>
-   <signal>pressed()</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>projectiveTextureMapping()</slot>
+   <sender>gLWidget1</sender>
+   <signal>enableTextureSpins(bool)</signal>
+   <receiver>verticalWrapSpin</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>90</y>
+     <x>620</x>
+     <y>292</y>
     </hint>
     <hint type="destinationlabel">
-     <x>578</x>
-     <y>476</y>
+     <x>751</x>
+     <y>95</y>
     </hint>
    </hints>
   </connection>
@@ -1473,22 +1864,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>selectionModeBox</sender>
-   <signal>pressed()</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>selectionMode()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>751</x>
-     <y>90</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>511</x>
-     <y>424</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>movementCheckbox</sender>
    <signal>pressed()</signal>
    <receiver>gLWidget1</receiver>
@@ -1501,6 +1876,22 @@
     <hint type="destinationlabel">
      <x>517</x>
      <y>467</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>selectionModeBox</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>selectionMode()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>751</x>
+     <y>90</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>511</x>
+     <y>424</y>
     </hint>
    </hints>
   </connection>
@@ -1675,8 +2066,8 @@
      <y>555</y>
     </hint>
     <hint type="destinationlabel">
-     <x>727</x>
-     <y>436</y>
+     <x>751</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -1687,8 +2078,8 @@
    <slot>setLightRadius(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>832</x>
-     <y>468</y>
+     <x>811</x>
+     <y>77</y>
     </hint>
     <hint type="destinationlabel">
      <x>544</x>
@@ -1707,8 +2098,8 @@
      <y>296</y>
     </hint>
     <hint type="destinationlabel">
-     <x>832</x>
-     <y>468</y>
+     <x>811</x>
+     <y>77</y>
     </hint>
    </hints>
   </connection>
@@ -1719,8 +2110,8 @@
    <slot>setLightLongitude(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>757</x>
-     <y>355</y>
+     <x>701</x>
+     <y>124</y>
     </hint>
     <hint type="destinationlabel">
      <x>509</x>
@@ -1739,8 +2130,8 @@
      <y>236</y>
     </hint>
     <hint type="destinationlabel">
-     <x>763</x>
-     <y>243</y>
+     <x>701</x>
+     <y>124</y>
     </hint>
    </hints>
   </connection>
@@ -1755,8 +2146,8 @@
      <y>408</y>
     </hint>
     <hint type="destinationlabel">
-     <x>759</x>
-     <y>370</y>
+     <x>701</x>
+     <y>124</y>
     </hint>
    </hints>
   </connection>
@@ -1767,8 +2158,8 @@
    <slot>setLightLatitude(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>750</x>
-     <y>264</y>
+     <x>701</x>
+     <y>124</y>
     </hint>
     <hint type="destinationlabel">
      <x>537</x>
@@ -1787,8 +2178,8 @@
      <y>332</y>
     </hint>
     <hint type="destinationlabel">
-     <x>714</x>
-     <y>311</y>
+     <x>751</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -1803,8 +2194,296 @@
      <y>222</y>
     </hint>
     <hint type="destinationlabel">
-     <x>719</x>
-     <y>192</y>
+     <x>751</x>
+     <y>90</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>712</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>737</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>807</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>846</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>821</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>867</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>821</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>867</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>771</x>
+     <y>348</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>comboBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>867</x>
+     <y>348</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>pushButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>703</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>867</x>
+     <y>153</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>pushButton_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>867</x>
+     <y>384</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setnRaysOcc(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>839</x>
+     <y>116</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>569</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setAmbientOcclusion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>797</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>565</x>
+     <y>203</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setnRaysObs(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>867</x>
+     <y>277</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>379</x>
+     <y>348</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_3</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setDmax(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>867</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>538</x>
+     <y>432</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setRoFuncImpl(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>867</x>
+     <y>348</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>573</x>
+     <y>484</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setObscurance()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>867</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>552</x>
+     <y>469</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_4</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setRenderBoxesLvl(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>830</x>
+     <y>500</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>520</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_4</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>renderBoxes(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>692</x>
+     <y>462</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>582</x>
+     <y>463</y>
     </hint>
    </hints>
   </connection>

@@ -42,10 +42,15 @@ class GLWidget:public QGLWidget
         
         bool projector;
         int projectorTexture;
-    QString oldObjectTexture;
-    QString oldProjectorTexture;
+        QString oldObjectTexture;
+        QString oldProjectorTexture;
     
-    bool shadows;
+        bool shadows;
+
+        int nRaysObs;
+        int nRaysOcc;
+        int dmax;
+        bool constantImpl;
 
     public:
         GLWidget(QWidget *parent = 0);
@@ -114,6 +119,18 @@ class GLWidget:public QGLWidget
         void setLightRadius(int r);
         void setLightLongitude(int lon);
         void setLightLatitude(int lat);
+
+        void setAmbientOcclusion();
+        void setObscurance();
+        void setnRaysOcc(int nrays);
+        void setnRaysObs(int nrays);
+        void setDmax(int d);
+        void setRoFuncImpl(int selected);
+
+        void renderBoxes(bool rend);
+        void setRenderBoxesLvl(int lvl);
+
+
 };
 
 #endif
