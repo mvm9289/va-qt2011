@@ -409,14 +409,14 @@ void Object::projectorRender()
     glMatrixMode(GL_MODELVIEW);
 }
 
+bool Object::shadowHit(const Ray& r, float tmin, float tmax) const
+{
+    return accelerator->shadowHit(r, tmin, tmax);
+}
+
 bool Object::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
 {
     return accelerator->hit(r, tmin, tmax, rec);
-}
-
-bool Object::hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
-{
-    return accelerator->hitMinDist(r, tmin, tmax, rec);
 }
 
 void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
@@ -435,11 +435,8 @@ void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
             int q = objects.size();
             bool intersect = false;
             for (int k = 0; k < q && !intersect; k++)
-            {
-                SurfaceHitRecord rec;
-                intersect = objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec);
-            }
-        if (!intersect) sumV++;
+                intersect = objects[k].shadowHit(ray, 0.001, objects[k].boundingBox().diagonal());
+            if (!intersect) sumV++;
         }
     
         vertices[i].occlusion = (float)sumV/(float)m;
@@ -463,7 +460,7 @@ void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vecto
             for (int k = 0; k < q; k++)
             {
                 SurfaceHitRecord rec;
-                if (objects[k].hitMinDist(ray, 0.001, objects[k].boundingBox().diagonal(), rec) && (minDist == -1.0 || rec.t < minDist)) minDist = rec.t;
+                if (objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec) && (minDist == -1.0 || rec.t < minDist)) minDist = rec.t;
             }
             
             if(minDist == -1.0 || minDist >= dmax) vertices[i].obscurance += 1;

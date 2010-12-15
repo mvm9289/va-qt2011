@@ -91,8 +91,8 @@ class Object:public Surface
     
         void setSelected(bool _selected);
     
+        virtual bool shadowHit(const Ray& r, float tmin, float tmax) const;
         virtual bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
-        virtual bool hitMinDist(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
         void updateAmbientOcclusion(int numRays, vector<Object>& objects);
         void updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects);
 };
