@@ -2,7 +2,7 @@
 #include "Vertex.h"
 #include "Directions.h"
 
-Vertex::Vertex(const Point& coordenades):coord(coordenades),occlusion(1)
+Vertex::Vertex(const Point& coordenades):coord(coordenades), occlusion(1), obscurance(1)
 {
     normal.x = 0;
     normal.y = 0;

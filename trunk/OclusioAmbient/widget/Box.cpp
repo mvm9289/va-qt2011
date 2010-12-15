@@ -2,7 +2,6 @@
 #include <QtOpenGL/qgl.h>
 
 #include "Box.h"
-#include "Surface.h"
 #include "Face.h"
 
 Box::Box(const Point& minimum, const Point& maximum):minb(minimum), maxb(maximum) {}
@@ -251,14 +250,14 @@ float Box::diagonal()
     return (maxb - minb).length();
 }
 
-bool Box::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const
+bool Box::shadowHit(const Ray& r, float tmin, float tmax) const
 {
-    if (faces[0].hit(r, tmin, tmax, rec)) return true;
-    if (faces[1].hit(r, tmin, tmax, rec)) return true;
-    if (faces[2].hit(r, tmin, tmax, rec)) return true;
-    if (faces[3].hit(r, tmin, tmax, rec)) return true;
-    if (faces[4].hit(r, tmin, tmax, rec)) return true;
-    if (faces[5].hit(r, tmin, tmax, rec)) return true;
+    if (faces[0].shadowHit(r, tmin, tmax)) return true;
+    if (faces[1].shadowHit(r, tmin, tmax)) return true;
+    if (faces[2].shadowHit(r, tmin, tmax)) return true;
+    if (faces[3].shadowHit(r, tmin, tmax)) return true;
+    if (faces[4].shadowHit(r, tmin, tmax)) return true;
+    if (faces[5].shadowHit(r, tmin, tmax)) return true;
     
     return false;
 }

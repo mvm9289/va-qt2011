@@ -243,15 +243,15 @@ inline void Object::occlusionRender()
 
 inline void Object::obscuranceRender()
 {
+    glDisable(GL_LIGHTING);
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
-                Material material = Scene::matlib.material(faces[i].material);
                 for(unsigned int j=0; j<faces[i].vertices.size(); j++)
                 { 
-                    glColor3f(material.kd.r*vertices[faces[i].vertices[j]].obscurance,
-                        material.kd.g*vertices[faces[i].vertices[j]].obscurance,
-                        material.kd.b*vertices[faces[i].vertices[j]].obscurance);
+                    glColor3f(vertices[faces[i].vertices[j]].obscurance,
+                        vertices[faces[i].vertices[j]].obscurance,
+                        vertices[faces[i].vertices[j]].obscurance);
                     glNormal3f(vertices[faces[i].vertices[j]].normal.x,
                         vertices[faces[i].vertices[j]].normal.y,
                         vertices[faces[i].vertices[j]].normal.z);
@@ -261,6 +261,7 @@ inline void Object::obscuranceRender()
                 }
         glEnd();
     }
+    glEnable(GL_LIGHTING);
 }
 
 
@@ -443,12 +444,13 @@ void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects)
     }
 }
 
-void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects)  // incluir radius de la escena?
+void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects)
 {
     int n = vertices.size();
     for (int i = 0; i < n; i++)
     {
         vector<Vector> rayDirs = vertices[i].rays(numRays);
+        float sumRo = 0.0;
         Point rayOrigin = vertices[i].coord + vertices[i].normal*0.001;
         int m = rayDirs.size();
         for (int j = 0; j < m; j++)
@@ -456,18 +458,18 @@ void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vecto
             Ray ray(rayOrigin, rayDirs[j]);
             
             int q = objects.size();
-            float minDist = -1.0; // inicializar al diametro de la escena y quitar la primera parte de la OR del if de abajo
+            float minDist = dmax;
             for (int k = 0; k < q; k++)
             {
                 SurfaceHitRecord rec;
-                if (objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec) && (minDist == -1.0 || rec.t < minDist)) minDist = rec.t;
+                if (objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec) && rec.t < minDist) minDist = rec.t;
             }
             
-            if(minDist == -1.0 || minDist >= dmax) vertices[i].obscurance += 1;
-            else if(!constantImpl) vertices[i].obscurance += sqrt((minDist/dmax));  
+            if(minDist >= dmax) sumRo += 1.0;
+            else if(!constantImpl) sumRo += sqrt(minDist/dmax);  
         }
     
-        vertices[i].obscurance /= numRays;
+        vertices[i].obscurance = sumRo/(float)m;
     }
 }
 

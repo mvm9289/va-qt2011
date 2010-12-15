@@ -17,7 +17,6 @@
 
 #define ALL_FACES -1
 
-class SurfaceHitRecord;
 class Face;
 
 class Box
@@ -39,7 +38,7 @@ class Box
         Point center();
         vector<float> renderRoom(float extra_size = 0.0, int face = ALL_FACES);
         float diagonal();
-        bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
+        bool shadowHit(const Ray& r, float tmin, float tmax) const;
 };
 
 #endif

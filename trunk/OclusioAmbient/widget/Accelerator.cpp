@@ -36,14 +36,12 @@ void Accelerator::createBox()
 {
     if (faces.size() > 0)
     {
-        vector<Face> f = owner->faces;
-        vector<Vertex> v = owner->vertices;
-        box.init(v[f[faces[0]].vertices[0]].coord);
+        box.init((owner->vertices[(owner->faces[faces[0]]).vertices[0]]).coord);
         for (vector<int>::iterator i = faces.begin(); i != faces.end(); i++)
         {
-            vector<int> vertices = f[(*i)].vertices;
+            vector<int> vertices = (owner->faces[(*i)]).vertices;
             for (vector<int>::iterator j = vertices.begin(); j != vertices.end(); j++)
-                box.update(v[(*j)].coord);
+                box.update((owner->vertices[(*j)]).coord);
         }
     }
 }
@@ -88,14 +86,12 @@ void Accelerator::axisPartition(vector<int>& f1, vector<int>& f2)
         float limit;
         Axis axis = findAxis(limit);
 
-        vector<Face> f = owner->faces;
-        vector<Vertex> v = owner->vertices;
         for (vector<int>::iterator i = faces.begin(); i != faces.end(); i++)
         {
-            vector<int> vertices = f[(*i)].vertices;
-            Point p1 = v[vertices[0]].coord;
-            Point p2 = v[vertices[1]].coord;
-            Point p3 = v[vertices[2]].coord;
+            vector<int> vertices = (owner->faces[(*i)]).vertices;
+            Point p1 = (owner->vertices[vertices[0]]).coord;
+            Point p2 = (owner->vertices[vertices[1]]).coord;
+            Point p3 = (owner->vertices[vertices[2]]).coord;
             float xValue = (p1.x + p2.x + p3.x)/3;
             float yValue = (p1.y + p2.y + p3.y)/3;
             float zValue = (p1.z + p2.z + p3.z)/3;
@@ -123,87 +119,47 @@ void Accelerator::axisPartition(vector<int>& f1, vector<int>& f2)
 
 bool Accelerator::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec)
 {
-    bool ret = false, ret1 = false, ret2 = false;
-    SurfaceHitRecord rec1, rec2, rec3;
-
-    if (box.hit(r, tmin, tmax, rec))
+    if (box.shadowHit(r, tmin, tmax))
     {
         if (subNode1 || subNode2)
         {
-            if (subNode1) ret1 = subNode1->hit(r, tmin, tmax, rec1);
-            if (subNode2) ret2 = subNode2->hit(r, tmin, tmax, rec2);
-
-            if (ret1 && ret2)
-            {
-
-                if (rec1.t < rec2.t) rec = rec1;
-                else rec = rec2;
-            }
-            else
-            {
-                if (ret1) rec = rec1;
-                else  rec = rec2;
-            }
-
-            ret = (ret1 || ret2);
+            bool hit = false;
+            if (subNode1 && subNode1->hit(r, tmin, tmax, rec)) hit = true;
+            if (subNode2 && subNode2->hit(r, tmin, tmax, rec)) hit = true;
+            return hit;
         }
-        else if (faces.size() != 0)
+        else if (faces.size() > 0)
         {
-            int idx;
-            bool hit = false, inter = false;
-
-            Face f(owner);
-            rec3.t = 99999999;
-
-            for (vector<int>::const_iterator itF = faces.begin(); itF != faces.end(); ++itF)
+            bool hit = false;
+            for (vector<int>::iterator i = faces.begin(); i != faces.end(); i++)
             {
-                idx = (*itF);
-                f = (owner->faces[idx]);
-                hit = f.hit(r, tmin, tmax, rec);
-
-                if (hit)
+                SurfaceHitRecord recAux;
+                if ((owner->faces[(*i)]).hit(r, tmin, tmax, recAux))
                 {
-                    inter = true;
-                    if (rec.t < rec3.t) rec3 = rec;
+                    hit = true;
+                    if (recAux.t < rec.t)  rec = SurfaceHitRecord(recAux);
                 }
             }
-            rec = rec3;
-            ret = inter;
+            return hit;
         }
     }
 
-    return ret;
+    return false;
 }
 
 bool Accelerator::shadowHit(const Ray& r, float tmin, float tmax)
 {
-    bool ret = false, ret1 = false, ret2 = false;
-    SurfaceHitRecord rec1;
-
-    if (box.hit(r, tmin, tmax, rec1))
+    if (box.shadowHit(r, tmin, tmax))
     {
         if (subNode1 || subNode2)
         {
-            if (subNode1) ret1 = subNode1->shadowHit(r, tmin, tmax); 
-            if (subNode2 && !ret1) ret2 = subNode2->shadowHit(r, tmin, tmax);
-            ret = (ret1 || ret2);
+            if (subNode1 && subNode1->shadowHit(r, tmin, tmax)) return true; 
+            if (subNode2 && subNode2->shadowHit(r, tmin, tmax)) return true;
         }
-        else if (faces.size() != 0)
-        {
-            int idx;
-            bool hit = false;
-            
-            Face f(owner);
-
-            for (vector<int>::const_iterator itF = faces.begin();  itF != faces.end() && !hit; ++itF)
-            {
-                idx = (*itF);
-                f = (owner->faces[idx]);
-                hit = f.hit(r, tmin, tmax, rec1);
-            }
-            ret = hit;
-        }
+        else if (faces.size() > 0)
+            for (vector<int>::iterator i = faces.begin();  i != faces.end(); i++)
+                if ((owner->faces[(*i)]).shadowHit(r, tmin, tmax)) return true;
     }
     
-    return ret;
+    return false;
 }
