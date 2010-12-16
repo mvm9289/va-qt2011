@@ -66,7 +66,6 @@ class Scene
         void setRenderBoxes(bool render);
         void setRenderBoxesLvl(int lvl);
         void setOpenGLIllum(bool b);
-
 };
 
 #endif

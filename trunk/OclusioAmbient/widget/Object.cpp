@@ -238,6 +238,7 @@ inline void Object::occlusionRender()
         glEnd();
     }
     glEnable(GL_LIGHTING);
+    accelerator->render();
 }
 
 

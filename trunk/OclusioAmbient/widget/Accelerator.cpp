@@ -182,3 +182,13 @@ bool Accelerator::shadowHit(const Ray& r, float tmin, float tmax)
     
     return false;
 }
+
+void Accelerator::render()
+{
+	if (faces.size() > 0) box.Render();
+	else
+	{
+		if (subNode1) subNode1->render();
+		if (subNode2) subNode2->render();
+	}
+}

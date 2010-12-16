@@ -7,9 +7,11 @@ Scene::Scene() {}
 
 void Scene::Init()
 {
-    renderMode = IMMEDIATE;
+    renderMode = OCCLUSION;
     selectedObjectID = NONE_OBJECT;
     shadows = false;
+    
+    oglIllum = false;
     
     Object o("Model");
     o.readObj("../models/monkey.obj", matlib);
@@ -38,21 +40,10 @@ void Scene::renderObjects(bool projector)
 
 void Scene::AddObject(Object &o)
 {
-    o.initGL();
+    //~ o.initGL();
     objects.push_back(o);
-
-    //updateBoundingBox();
-
-    /*o.updateAmbientOcclusion(20, objects);
-    objects.pop_back();
-    objects.push_back(o);*/
-    
-    //o.updateObscurances(5, (float)(boundingBox.diagonal()/1.5), true, objects);
-    //cout<<"dmax que he puesto: "<<(float)(boundingBox.diagonal()/1.5)<<endl;
-    //objects.pop_back();
-    //objects.push_back(o);
-
     updateBoundingBox();
+    objects[objects.size() - 1].initGL();
 }
 
 void Scene::updateBoundingBox()
@@ -252,22 +243,17 @@ void Scene::updateObscurance(int nRays, int dmax, bool constantImpl)
 {
     int k = objects.size();
     for(int i = 0; i < k; ++i)
-        objects[i].updateObscurances(nRays, (float)(boundingBox.diagonal()*((float)(dmax/100.0))), constantImpl, objects);
+        objects[i].updateObscurances(nRays, (float)(boundingBox.diagonal()*((float)(dmax/100.0))), constantImpl, objects, boundingBox.diagonal());
 }
 
 void Scene::updateOcclusion(int nRays)
-{
+{cerr<< "hi" << endl;
     int k = objects.size();
 
-cerr<<endl<<"nRays: "<<nRays<<endl;
-cerr<<"k: "<<k<<endl;
     for(int i = 0; i < k; ++i)
-    {   
-        cerr<<"  iiii: "<<i<<endl;
-        objects[i].updateAmbientOcclusion(nRays, objects);
-        cerr<<"  oooo"<<endl;
-    }
-cerr<<"i am here"<<endl;
+        objects[i].updateAmbientOcclusion(20, objects, boundingBox.diagonal());
+    
+    cerr << "bye" << endl;
 }
 
 void Scene::setRenderBoxes(bool render)
