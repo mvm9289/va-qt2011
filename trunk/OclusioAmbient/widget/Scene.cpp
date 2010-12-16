@@ -7,7 +7,7 @@ Scene::Scene() {}
 
 void Scene::Init()
 {
-    renderMode = OCCLUSION;
+    renderMode = IMMEDIATE;
     selectedObjectID = NONE_OBJECT;
     shadows = false;
     
@@ -43,9 +43,9 @@ void Scene::AddObject(Object &o)
 
     //updateBoundingBox();
 
-    o.updateAmbientOcclusion(20, objects);
+    /*o.updateAmbientOcclusion(20, objects);
     objects.pop_back();
-    objects.push_back(o);
+    objects.push_back(o);*/
     
     //o.updateObscurances(5, (float)(boundingBox.diagonal()/1.5), true, objects);
     //cout<<"dmax que he puesto: "<<(float)(boundingBox.diagonal()/1.5)<<endl;
@@ -259,7 +259,38 @@ void Scene::updateOcclusion(int nRays)
 {
     int k = objects.size();
 
+cerr<<endl<<"nRays: "<<nRays<<endl;
+cerr<<"k: "<<k<<endl;
     for(int i = 0; i < k; ++i)
+    {   
+        cerr<<"  iiii: "<<i<<endl;
         objects[i].updateAmbientOcclusion(nRays, objects);
+        cerr<<"  oooo"<<endl;
+    }
+cerr<<"i am here"<<endl;
 }
+
+void Scene::setRenderBoxes(bool render)
+{
+    /*int k = objects.size();
+
+    for(int i = 0; i < k; ++i)
+        objects[i].renderBoxes(render);*/
+}
+
+void Scene::setRenderBoxesLvl(int lvl)
+{
+    /*int k = objects.size();
+
+    for(int i = 0; i < k; ++i)
+        objects[i].renderBoxesLvl(lvl);*/
+}
+
+
+void Scene::setOpenGLIllum(bool b)
+{
+    oglIllum = b;
+}
+
+
 

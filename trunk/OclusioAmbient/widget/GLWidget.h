@@ -127,8 +127,10 @@ class GLWidget:public QGLWidget
         void setDmax(int d);
         void setRoFuncImpl(int selected);
 
-        void renderBoxes(bool rend);
+        void setRenderBoxes(bool rend);
         void setRenderBoxesLvl(int lvl);
+
+        void setOpenGLIllum(bool b);
 
 
 };

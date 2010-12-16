@@ -22,6 +22,7 @@ class Scene
         int renderMode;
         int selectedObjectID;
         bool shadows;
+        bool oglIllum;
 
     public:
         static MaterialLib matlib;
@@ -62,6 +63,9 @@ class Scene
         void updateObscurance(int nRays, int dmax, bool constantImpl);
         void updateOcclusion(int nRays);
 
+        void setRenderBoxes(bool render);
+        void setRenderBoxesLvl(int lvl);
+        void setOpenGLIllum(bool b);
 
 };
 

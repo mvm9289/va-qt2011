@@ -665,12 +665,17 @@ void GLWidget::setRoFuncImpl(int selected)
     constantImpl = (selected == 0);
 }
 
-void GLWidget::renderBoxes(bool rend)
+void GLWidget::setRenderBoxes(bool rend)
 {
-       
+    scene.setRenderBoxes(rend);
 }
 
 void GLWidget::setRenderBoxesLvl (int lvl)
 {
-    
+    scene.setRenderBoxesLvl(lvl);
+}
+
+void GLWidget::setOpenGLIllum(bool b)
+{
+    scene.setOpenGLIllum(b);
 }
