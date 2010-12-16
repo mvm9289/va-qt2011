@@ -24,8 +24,8 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>614</width>
-       <height>614</height>
+       <width>512</width>
+       <height>512</height>
       </size>
      </property>
      <property name="cursor">
@@ -44,7 +44,7 @@
         <bool>true</bool>
        </property>
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -65,7 +65,7 @@
         <cursorShape>ArrowCursor</cursorShape>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="mainTab">
         <attribute name="title">
@@ -76,8 +76,8 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>217</width>
-           <height>531</height>
+           <width>281</width>
+           <height>521</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="submenuContainer" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
@@ -357,7 +357,7 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>221</width>
+           <width>281</width>
            <height>521</height>
           </rect>
          </property>
@@ -586,8 +586,8 @@
           <rect>
            <x>10</x>
            <y>10</y>
-           <width>221</width>
-           <height>531</height>
+           <width>302</width>
+           <height>521</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="submenuCountainer_3" stretch="0,0,0,0,0">
@@ -643,7 +643,7 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>199</width>
+              <width>280</width>
               <height>340</height>
              </size>
             </property>
@@ -1522,7 +1522,7 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>101</width>
+           <width>200</width>
            <height>31</height>
           </size>
          </property>
@@ -1631,8 +1631,8 @@
    <slot>repeatWrapT(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>262</y>
     </hint>
     <hint type="destinationlabel">
      <x>452</x>
@@ -1651,8 +1651,8 @@
      <y>370</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>327</y>
     </hint>
    </hints>
   </connection>
@@ -1663,8 +1663,8 @@
    <slot>repeatWrapS(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>197</y>
     </hint>
     <hint type="destinationlabel">
      <x>607</x>
@@ -1679,8 +1679,8 @@
    <slot>setTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel">
      <x>595</x>
@@ -1715,8 +1715,8 @@
      <y>201</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>197</y>
     </hint>
    </hints>
   </connection>
@@ -1727,8 +1727,8 @@
    <slot>projectiveTextureMapping()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>90</y>
+     <x>851</x>
+     <y>382</y>
     </hint>
     <hint type="destinationlabel">
      <x>578</x>
@@ -1747,8 +1747,8 @@
      <y>421</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>327</y>
     </hint>
    </hints>
   </connection>
@@ -1763,8 +1763,8 @@
      <y>292</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>262</y>
     </hint>
    </hints>
   </connection>
@@ -1779,8 +1779,8 @@
      <y>444</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>447</y>
     </hint>
    </hints>
   </connection>
@@ -1791,8 +1791,8 @@
    <slot>setTexture(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>447</y>
     </hint>
     <hint type="destinationlabel">
      <x>554</x>
@@ -1811,8 +1811,8 @@
      <y>129</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>147</y>
     </hint>
    </hints>
   </connection>
@@ -1839,8 +1839,8 @@
    <slot>deleteModel()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>147</y>
     </hint>
     <hint type="destinationlabel">
      <x>576</x>
@@ -1855,8 +1855,8 @@
    <slot>changeRenderMode(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
      <x>578</x>
@@ -1875,8 +1875,8 @@
      <y>288</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>303</y>
     </hint>
    </hints>
   </connection>
@@ -1891,8 +1891,8 @@
      <y>337</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>368</y>
     </hint>
    </hints>
   </connection>
@@ -1903,8 +1903,8 @@
    <slot>startStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>464</y>
     </hint>
     <hint type="destinationlabel">
      <x>517</x>
@@ -1919,8 +1919,8 @@
    <slot>selectionMode()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>90</y>
+     <x>851</x>
+     <y>423</y>
     </hint>
     <hint type="destinationlabel">
      <x>511</x>
@@ -1935,8 +1935,8 @@
    <slot>resetCamera()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>505</y>
     </hint>
     <hint type="destinationlabel">
      <x>529</x>
@@ -1955,8 +1955,8 @@
      <y>558</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>570</y>
     </hint>
    </hints>
   </connection>
@@ -1971,8 +1971,8 @@
      <y>554</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>447</y>
     </hint>
    </hints>
   </connection>
@@ -1987,8 +1987,8 @@
      <y>397</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>90</y>
+     <x>851</x>
+     <y>382</y>
     </hint>
    </hints>
   </connection>
@@ -1999,12 +1999,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>524</y>
+     <x>599</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>488</y>
     </hint>
    </hints>
   </connection>
@@ -2015,8 +2015,8 @@
    <slot>resetProjector()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>751</x>
-     <y>95</y>
+     <x>851</x>
+     <y>488</y>
     </hint>
     <hint type="destinationlabel">
      <x>487</x>
@@ -2067,8 +2067,8 @@
      <y>438</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>90</y>
+     <x>851</x>
+     <y>423</y>
     </hint>
    </hints>
   </connection>
@@ -2099,8 +2099,8 @@
      <y>555</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>90</y>
+     <x>737</x>
+     <y>456</y>
     </hint>
    </hints>
   </connection>
@@ -2111,8 +2111,8 @@
    <slot>setLightRadius(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>811</x>
-     <y>77</y>
+     <x>832</x>
+     <y>480</y>
     </hint>
     <hint type="destinationlabel">
      <x>544</x>
@@ -2131,8 +2131,8 @@
      <y>296</y>
     </hint>
     <hint type="destinationlabel">
-     <x>811</x>
-     <y>77</y>
+     <x>832</x>
+     <y>480</y>
     </hint>
    </hints>
   </connection>
@@ -2143,8 +2143,8 @@
    <slot>setLightLongitude(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>701</x>
-     <y>124</y>
+     <x>787</x>
+     <y>403</y>
     </hint>
     <hint type="destinationlabel">
      <x>509</x>
@@ -2163,8 +2163,8 @@
      <y>236</y>
     </hint>
     <hint type="destinationlabel">
-     <x>701</x>
-     <y>124</y>
+     <x>787</x>
+     <y>278</y>
     </hint>
    </hints>
   </connection>
@@ -2179,8 +2179,8 @@
      <y>408</y>
     </hint>
     <hint type="destinationlabel">
-     <x>701</x>
-     <y>124</y>
+     <x>787</x>
+     <y>403</y>
     </hint>
    </hints>
   </connection>
@@ -2191,8 +2191,8 @@
    <slot>setLightLatitude(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>701</x>
-     <y>124</y>
+     <x>787</x>
+     <y>278</y>
     </hint>
     <hint type="destinationlabel">
      <x>537</x>
@@ -2211,8 +2211,8 @@
      <y>332</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>90</y>
+     <x>737</x>
+     <y>331</y>
     </hint>
    </hints>
   </connection>
@@ -2227,8 +2227,8 @@
      <y>222</y>
     </hint>
     <hint type="destinationlabel">
-     <x>751</x>
-     <y>90</y>
+     <x>737</x>
+     <y>206</y>
     </hint>
    </hints>
   </connection>
@@ -2693,22 +2693,6 @@
     <hint type="destinationlabel">
      <x>667</x>
      <y>471</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gLWidget1</sender>
-   <signal>setRenderBoxesSettinsEnabled(bool)</signal>
-   <receiver>spinBox_4</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>584</x>
-     <y>499</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>779</x>
-     <y>503</y>
     </hint>
    </hints>
   </connection>
