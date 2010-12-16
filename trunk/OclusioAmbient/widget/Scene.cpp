@@ -53,8 +53,12 @@ void Scene::AddObject(Object &o)
     //~ o.initGL();
     objects.push_back(o);
     updateBoundingBox();
-    objects[objects.size() - 1].updateFacesOwnerPointers();
-    objects[objects.size() - 1].initGL();
+    int n = objects.size();
+    for (int i = 0; i < n; i++)
+    {
+        objects[i].updateFacesOwnerPointers();
+        objects[i].initGL();
+    }
 }
 
 void Scene::updateBoundingBox()
