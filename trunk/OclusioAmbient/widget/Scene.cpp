@@ -275,10 +275,10 @@ void Scene::setRenderBoxes(bool render)
 
 void Scene::setRenderBoxesLvl(int lvl)
 {
-    /*int k = objects.size();
+    int k = objects.size();
 
     for(int i = 0; i < k; ++i)
-        objects[i].renderBoxesLvl(lvl);*/
+        objects[i].levelBoxes(lvl);
 }
 
 

@@ -478,6 +478,11 @@ void Object::renderBoxes(bool render)
     boxesRender = render;
 }
 
+void Object::levelBoxes(int level)
+{
+    boxesLevel = level;
+}
+
 void Object::updateFacesOwnerPointers()
 {
     int n = faces.size();

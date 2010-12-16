@@ -98,6 +98,7 @@ class Object:public Surface
         void updateAmbientOcclusion(int numRays, vector<Object>& objects, float sceneDiagonal);
         void updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal);
         void renderBoxes(bool render);
+        void levelBoxes(int level);
         void updateFacesOwnerPointers();
 };
 
