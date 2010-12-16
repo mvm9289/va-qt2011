@@ -123,10 +123,28 @@ bool Accelerator::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& re
     {
         if (subNode1 || subNode2)
         {
-            bool hit = false;
-            if (subNode1 && subNode1->hit(r, tmin, tmax, rec)) hit = true;
-            if (subNode2 && subNode2->hit(r, tmin, tmax, rec)) hit = true;
-            return hit;
+            bool hit1 = false;
+            bool hit2 = false;
+            SurfaceHitRecord rec1, rec2;
+            if (subNode1) hit1 = subNode1->hit(r, tmin, tmax, rec1);
+            if (subNode2) hit2 = subNode2->hit(r, tmin, tmax, rec2);
+            
+            if (hit1 && hit2)
+            {
+                if (rec1.t < rec2.t) rec.t = rec1.t;
+                else rec.t = rec2.t;
+                return true;
+            }
+            else if (hit1)
+            {
+                rec.t = rec1.t;
+                return true;
+            }
+            else if (hit2)
+            {
+                rec.t = rec2.t;
+                return true;
+            }
         }
         else if (faces.size() > 0)
         {
@@ -137,7 +155,7 @@ bool Accelerator::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& re
                 if ((owner->faces[(*i)]).hit(r, tmin, tmax, recAux))
                 {
                     hit = true;
-                    if (recAux.t < rec.t)  rec = SurfaceHitRecord(recAux);
+                    if (recAux.t < rec.t)  rec.t = recAux.t;
                 }
             }
             return hit;
