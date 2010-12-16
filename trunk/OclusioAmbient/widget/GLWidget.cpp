@@ -367,6 +367,18 @@ void GLWidget::openTexture()
         Texture texture;
         if (texture.loadTexture(filename) == string(filename.toLatin1().data()))
         {
+
+
+            emit setAOccCheckBoxChecked(false);
+            emit setAOccSettingsEnabled(false);
+            emit setObsCheckBoxChecked(false);
+            emit setObsSettingsEnabled(false);
+
+            emit setRenderBoxesSettinsEnabled(false);
+            emit setOGLIllumEnabled(false);
+
+            scene.ChangeRenderMode(IMMEDIATE);
+
             texture.setMinMagFilter(GL_LINEAR, GL_LINEAR);
             if (projector)
             {
@@ -531,6 +543,18 @@ void GLWidget::projectiveTextureMapping()
             emit setShadowsChecked(false);
         }
             
+
+        emit setAOccCheckBoxChecked(false);
+        emit setAOccSettingsEnabled(false);
+        emit setObsCheckBoxChecked(false);
+        emit setObsSettingsEnabled(false);
+
+        emit setRenderBoxesSettinsEnabled(false);
+        emit setOGLIllumEnabled(false);
+
+        scene.ChangeRenderMode(IMMEDIATE);
+
+
         projector = true;
         openTexture();
         if (projectorTexture != -1)
@@ -579,6 +603,15 @@ void GLWidget::projectiveTextureMapping()
         emit enableTextureSpins(false);
         emit enableResetProjector(true);
         
+        emit setAOccCheckBoxChecked(false);
+        emit setAOccSettingsEnabled(false);
+        emit setObsCheckBoxChecked(false);
+        emit setObsSettingsEnabled(false);
+
+        emit setRenderBoxesSettinsEnabled(false);
+        emit setOGLIllumEnabled(false);
+        scene.ChangeRenderMode(IMMEDIATE);
+
         setTextureMatrix();
         
         setTexture(oldProjectorTexture);
@@ -600,6 +633,17 @@ void GLWidget::setShadows()
             emit setProjectorChecked(false);
         }
         
+        emit setAOccCheckBoxChecked(false);
+        emit setAOccSettingsEnabled(false);
+        emit setObsCheckBoxChecked(false);
+        emit setObsSettingsEnabled(false);
+
+        emit setRenderBoxesSettinsEnabled(false);
+        emit setOGLIllumEnabled(false);
+
+        scene.ChangeRenderMode(IMMEDIATE);
+
+
         shadows = true;
         computeInitialCamera();
         emit setLatLonDefaultValue(90);
@@ -643,6 +687,19 @@ void GLWidget::setAmbientOcclusion(bool checked)
         emit setObsSettingsEnabled(false);
         emit setRenderBoxesSettinsEnabled(true);
         emit setOGLIllumEnabled(true);
+
+        if(shadows) 
+        {
+            setShadows();
+            emit setShadowsChecked(false);
+        }
+        else if(projector)
+        {
+            projectiveTextureMapping();
+            emit setProjectorChecked(false);
+        }        
+        if (selection) selectionMode();
+
     }else 
     {
         scene.ChangeRenderMode(IMMEDIATE);
@@ -661,6 +718,19 @@ void GLWidget::setObscurance(bool checked)
         emit setAOccSettingsEnabled(false);
         emit setRenderBoxesSettinsEnabled(true);
         emit setOGLIllumEnabled(true);
+
+        if(shadows) 
+        {
+            setShadows();
+            emit setShadowsChecked(false);
+        }
+        else if(projector)
+        {
+            projectiveTextureMapping();
+            emit setProjectorChecked(false);
+        }        
+        if (selection) selectionMode();
+
     }else 
     {
         scene.ChangeRenderMode(IMMEDIATE);
@@ -707,14 +777,14 @@ void GLWidget::setOpenGLIllum(bool b)
 
 void GLWidget::computeAmbientOcclusion()
 {
-    cerr<< endl << "Computing Ambient occlusion for each vertex in the scene. Please wait...";
+    cerr<< endl << "Computing ambient occlusion for each vertex in the scene. Please wait...";
     scene.updateOcclusion(nRaysOcc);
-    cerr<< "Done." << endl;
+    cerr<< " Done." << endl;
 }
 
 void GLWidget::computeObscurance()
 {
     cerr<< endl << "Computing obscurance for each vertex in the scene. Please wait...";
     scene.updateObscurance(nRaysObs, dmax, constantImpl);
-    cerr<< "Done." << endl;
+    cerr<< " Done." << endl;
 }
