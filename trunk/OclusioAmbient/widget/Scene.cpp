@@ -143,6 +143,12 @@ void Scene::redistributeSelectedObject(Point inc)
     objects[selectedObjectID].setPos(p);
 }
 
+void Scene::saveDistributeSelectedObject()
+{
+    objects[selectedObjectID].savePos();
+    objects[selectedObjectID].initGL();
+}
+
 void Scene::setSelected(int id, bool selected)
 {
     if(id != ALL_OBJECTS) objects[id].setSelected(selected);

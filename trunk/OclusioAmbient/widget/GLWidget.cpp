@@ -243,6 +243,7 @@ void GLWidget::keyPressEvent(QKeyEvent *e)
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *)
 {
+    if (DoingInteractive == SELECT) scene.saveDistributeSelectedObject();
     DoingInteractive = NONE;
 }
 
@@ -265,7 +266,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
             u.y = m[1][1];
             u.z = m[2][1];
             scene.redistributeSelectedObject(x*s + y*u);
-        scene.updateBoundingBox();
+            scene.updateBoundingBox();
         }
     }
     else if (DoingInteractive == ROTATE)

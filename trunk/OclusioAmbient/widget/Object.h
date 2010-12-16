@@ -81,6 +81,7 @@ class Object:public Surface
         
         Point getPos();
         void setPos(Point p);
+        void savePos();
     
         vector<int> numTrianglesQuads();
         

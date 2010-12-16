@@ -363,6 +363,20 @@ void Object::setPos(Point p)
     pos = p;
 }
 
+void Object::savePos()
+{
+    Vector translation = pos - center;
+    int n = vertices.size();
+    for (int i = 0; i < n; i++)
+    {
+        vertices[i].coord.x += translation.x;
+        vertices[i].coord.y += translation.y;
+        vertices[i].coord.z += translation.z;
+    }
+    computeBoundingBox();
+    pos = center;
+}
+
 Point Object::getPos()
 {
     return pos;

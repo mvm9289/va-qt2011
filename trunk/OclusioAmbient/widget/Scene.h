@@ -52,6 +52,7 @@ class Scene
         
         void setSelected(int id, bool selected);
         void redistributeSelectedObject(Point inc);
+        void saveDistributeSelectedObject();
         void deleteSelectedModel();
         
         void setShadows();
