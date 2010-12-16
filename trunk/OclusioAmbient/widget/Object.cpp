@@ -5,7 +5,7 @@
 #include "Object.h"
 #include "Scene.h"
 
-Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1), selected(false)
+Object::Object(std::string n):name(n), DLindex(-1), triangles(0), quads(0), texture(-1), wrapS(1), wrapT(1), selected(false), boxesRender(false), boxesLevel(0)
 {
     vertexTriangles = NULL;
     vertexQuads = NULL;
@@ -219,7 +219,6 @@ inline void Object::immediateRender()
 
 inline void Object::occlusionRender()
 {
-    glDisable(GL_LIGHTING);
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
@@ -237,14 +236,12 @@ inline void Object::occlusionRender()
                 }
         glEnd();
     }
-    glEnable(GL_LIGHTING);
-    accelerator->render();
+    if (boxesRender) accelerator->render(boxesLevel, 1);
 }
 
 
 inline void Object::obscuranceRender()
 {
-    glDisable(GL_LIGHTING);
     for(unsigned int i=0; i<faces.size(); i++)
     {
         glBegin (GL_POLYGON);
@@ -262,7 +259,7 @@ inline void Object::obscuranceRender()
                 }
         glEnd();
     }
-    glEnable(GL_LIGHTING);
+    if (boxesRender) accelerator->render(boxesLevel, 1);
 }
 
 
@@ -474,6 +471,17 @@ void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vecto
         
         vertices[i].obscurance = sumRo/(float)numRays;
     }
+}
+
+void Object::renderBoxes(bool render)
+{
+    boxesRender = render;
+}
+
+void Object::updateFacesOwnerPointers()
+{
+    int n = faces.size();
+    for(int i = 0; i < n; i++) faces[i].owner = this;
 }
 
 

@@ -32,7 +32,7 @@ class Accelerator
     public:
       Accelerator(Object* obj, vector<int> f);
       ~Accelerator();
-      void render();
+      void render(int level, int i);
       bool shadowHit(const Ray& r, float tmin, float tmax);
       bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec);
 };

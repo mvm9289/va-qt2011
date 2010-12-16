@@ -48,6 +48,8 @@ class Object:public Surface
         bool selected;
     
         Accelerator* accelerator;
+        bool boxesRender;
+        int boxesLevel;
     
     public:
         vector<Vertex> vertices;
@@ -95,6 +97,8 @@ class Object:public Surface
         virtual bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
         void updateAmbientOcclusion(int numRays, vector<Object>& objects, float sceneDiagonal);
         void updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal);
+        void renderBoxes(bool render);
+        void updateFacesOwnerPointers();
 };
 
 #endif

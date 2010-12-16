@@ -45,7 +45,7 @@ void Box::updateFaces()
 void Box::Render()
 {
     glLineWidth(1.0);
-    Render(1.0, 1.0, 1.0);
+    Render(1.0, 0.0, 0.0);
 }
 
 void Box::Render(double r, double g, double b)

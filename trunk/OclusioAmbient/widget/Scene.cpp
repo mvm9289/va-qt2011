@@ -7,7 +7,7 @@ Scene::Scene() {}
 
 void Scene::Init()
 {
-    renderMode = OCCLUSION;
+    renderMode = IMMEDIATE;
     selectedObjectID = NONE_OBJECT;
     shadows = false;
     
@@ -21,6 +21,16 @@ void Scene::Init()
 void Scene::Render(bool projector)
 {
     if (shadows) renderShadows();
+    else if (renderMode == OCCLUSION || renderMode == OBSCURANCE)
+    {
+        if (!oglIllum)
+        {
+            glDisable(GL_LIGHTING);
+            renderObjects();
+            glEnable(GL_LIGHTING);
+        }
+        else renderObjects();
+    }
     else
     {
         renderObjects(projector);
@@ -43,6 +53,7 @@ void Scene::AddObject(Object &o)
     //~ o.initGL();
     objects.push_back(o);
     updateBoundingBox();
+    objects[objects.size() - 1].updateFacesOwnerPointers();
     objects[objects.size() - 1].initGL();
 }
 
@@ -247,21 +258,19 @@ void Scene::updateObscurance(int nRays, int dmax, bool constantImpl)
 }
 
 void Scene::updateOcclusion(int nRays)
-{cerr<< "hi" << endl;
+{
     int k = objects.size();
 
     for(int i = 0; i < k; ++i)
-        objects[i].updateAmbientOcclusion(20, objects, boundingBox.diagonal());
-    
-    cerr << "bye" << endl;
+        objects[i].updateAmbientOcclusion(nRays, objects, boundingBox.diagonal());
 }
 
 void Scene::setRenderBoxes(bool render)
 {
-    /*int k = objects.size();
+    int k = objects.size();
 
     for(int i = 0; i < k; ++i)
-        objects[i].renderBoxes(render);*/
+        objects[i].renderBoxes(render);
 }
 
 void Scene::setRenderBoxesLvl(int lvl)
