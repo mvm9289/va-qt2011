@@ -93,9 +93,7 @@ class Object:public Surface
     
         virtual bool shadowHit(const Ray& r, float tmin, float tmax) const;
         virtual bool hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) const;
-	int sumVfunction(Vertex v, int numRays, Point rayOrigin, vector<Object>& objects, float sceneDiagonal);
         void updateAmbientOcclusion(int numRays, vector<Object>& objects, float sceneDiagonal);
-	float sumRoFunction(Vertex v, int numRays, Point rayOrigin, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal);
         void updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal);
 };
 

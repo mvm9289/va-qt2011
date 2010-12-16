@@ -166,36 +166,6 @@ bool Accelerator::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& re
     return false;
 }
 
-//~ bool Accelerator::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec)
-//~ {
-    //~ if (box.shadowHit(r, tmin, tmax))
-    //~ {
-        //~ if (subNode1 || subNode2)
-        //~ {
-            //~ bool hit = false;
-            //~ if (subNode1 && subNode1->hit(r, tmin, tmax, rec)) hit = true;
-            //~ if (subNode2 && subNode2->hit(r, tmin, tmax, rec)) hit = true;
-            //~ return hit;
-        //~ }
-        //~ else if (faces.size() > 0)
-        //~ {
-            //~ bool hit = false;
-            //~ for (vector<int>::iterator i = faces.begin(); i != faces.end(); i++)
-            //~ {
-                //~ SurfaceHitRecord recAux;
-                //~ if ((owner->faces[(*i)]).hit(r, tmin, tmax, recAux))
-                //~ {
-                    //~ hit = true;
-                    //~ if (recAux.t < rec.t)  rec = SurfaceHitRecord(recAux);
-                //~ }
-            //~ }
-            //~ return hit;
-        //~ }
-    //~ }
-
-    //~ return false;
-//~ }
-
 bool Accelerator::shadowHit(const Ray& r, float tmin, float tmax)
 {
     if (box.shadowHit(r, tmin, tmax))
