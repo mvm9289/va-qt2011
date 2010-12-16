@@ -65,7 +65,7 @@
         <cursorShape>ArrowCursor</cursorShape>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="mainTab">
         <attribute name="title">
@@ -1110,7 +1110,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Ambien occlusion</string>
+            <string>Ambient occlusion</string>
            </property>
           </widget>
          </item>
@@ -1139,12 +1139,18 @@
              </property>
              <property name="maximumSize">
               <size>
-               <width>40</width>
+               <width>50</width>
                <height>30</height>
               </size>
              </property>
              <property name="minimum">
               <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>999</number>
+             </property>
+             <property name="value">
+              <number>20</number>
              </property>
             </widget>
            </item>
@@ -1179,7 +1185,7 @@
              <property name="maximumSize">
               <size>
                <width>127</width>
-               <height>16777215</height>
+               <height>27</height>
               </size>
              </property>
              <property name="text">
@@ -1249,12 +1255,18 @@
              </property>
              <property name="maximumSize">
               <size>
-               <width>40</width>
+               <width>50</width>
                <height>30</height>
               </size>
              </property>
              <property name="minimum">
               <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>999</number>
+             </property>
+             <property name="value">
+              <number>20</number>
              </property>
             </widget>
            </item>
@@ -1285,7 +1297,7 @@
              </property>
              <property name="maximumSize">
               <size>
-               <width>40</width>
+               <width>50</width>
                <height>30</height>
               </size>
              </property>
@@ -1293,7 +1305,7 @@
               <number>100</number>
              </property>
              <property name="value">
-              <number>50</number>
+              <number>100</number>
              </property>
             </widget>
            </item>
@@ -1371,7 +1383,7 @@
              <property name="maximumSize">
               <size>
                <width>127</width>
-               <height>16777215</height>
+               <height>27</height>
               </size>
              </property>
              <property name="text">
@@ -1401,6 +1413,9 @@
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QCheckBox" name="checkBox_4">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="font">
               <font>
                <weight>75</weight>
@@ -1429,8 +1444,17 @@
                <property name="enabled">
                 <bool>false</bool>
                </property>
+               <property name="maximumSize">
+                <size>
+                 <width>90</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="maximum">
+                <number>99999</number>
+               </property>
                <property name="value">
-                <number>2</number>
+                <number>0</number>
                </property>
               </widget>
              </item>
@@ -1456,6 +1480,9 @@
          </item>
          <item row="12" column="0">
           <widget class="QCheckBox" name="checkBox_3">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -2248,7 +2275,7 @@
      <y>242</y>
     </hint>
     <hint type="destinationlabel">
-     <x>821</x>
+     <x>811</x>
      <y>277</y>
     </hint>
    </hints>
@@ -2280,7 +2307,7 @@
      <y>242</y>
     </hint>
     <hint type="destinationlabel">
-     <x>821</x>
+     <x>811</x>
      <y>313</y>
     </hint>
    </hints>
@@ -2345,7 +2372,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>867</x>
-     <y>153</y>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -2378,22 +2405,6 @@
     <hint type="destinationlabel">
      <x>569</x>
      <y>132</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>pressed()</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>setAmbientOcclusion()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>797</x>
-     <y>139</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>565</x>
-     <y>203</y>
     </hint>
    </hints>
   </connection>
@@ -2446,22 +2457,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
-   <signal>pressed()</signal>
-   <receiver>gLWidget1</receiver>
-   <slot>setObscurance()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>867</x>
-     <y>384</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>552</x>
-     <y>469</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>spinBox_4</sender>
    <signal>valueChanged(int)</signal>
    <receiver>gLWidget1</receiver>
@@ -2506,6 +2501,358 @@
     <hint type="destinationlabel">
      <x>531</x>
      <y>414</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>computeAmbientOcclusion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>806</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>567</x>
+     <y>150</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>pressed()</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>computeObscurance()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>790</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>612</x>
+     <y>376</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setAmbientOcclusion(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>684</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>542</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>gLWidget1</receiver>
+   <slot>setObscurance(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>708</x>
+     <y>228</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>519</x>
+     <y>235</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setAOccCheckBoxChecked(bool)</signal>
+   <receiver>checkBox</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>577</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>665</x>
+     <y>73</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setAOccSettingsEnabled(bool)</signal>
+   <receiver>label</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>535</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>682</x>
+     <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setAOccSettingsEnabled(bool)</signal>
+   <receiver>spinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>566</x>
+     <y>152</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>836</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setAOccSettingsEnabled(bool)</signal>
+   <receiver>pushButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>544</x>
+     <y>186</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>805</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsCheckBoxChecked(bool)</signal>
+   <receiver>checkBox_2</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>528</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>789</x>
+     <y>233</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_4</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>label_5</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>700</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>695</x>
+     <y>499</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_4</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>spinBox_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>796</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>799</x>
+     <y>510</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setRenderBoxesSettinsEnabled(bool)</signal>
+   <receiver>checkBox_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>563</x>
+     <y>479</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>667</x>
+     <y>471</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setRenderBoxesSettinsEnabled(bool)</signal>
+   <receiver>spinBox_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>584</x>
+     <y>499</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>779</x>
+     <y>503</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setRenderBoxesSettinsEnabled(bool)</signal>
+   <receiver>label_5</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>520</x>
+     <y>503</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>673</x>
+     <y>501</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsSettingsEnabled(bool)</signal>
+   <receiver>label_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>549</x>
+     <y>270</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>691</x>
+     <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsSettingsEnabled(bool)</signal>
+   <receiver>spinBox_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>546</x>
+     <y>302</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>828</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsSettingsEnabled(bool)</signal>
+   <receiver>label_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>497</x>
+     <y>305</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>664</x>
+     <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsSettingsEnabled(bool)</signal>
+   <receiver>spinBox_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>518</x>
+     <y>332</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>832</x>
+     <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsSettingsEnabled(bool)</signal>
+   <receiver>label_4</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>408</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>688</x>
+     <y>343</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsSettingsEnabled(bool)</signal>
+   <receiver>comboBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>542</x>
+     <y>346</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>828</x>
+     <y>347</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setObsSettingsEnabled(bool)</signal>
+   <receiver>pushButton_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>402</x>
+     <y>374</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>809</x>
+     <y>373</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gLWidget1</sender>
+   <signal>setOGLIllumEnabled(bool)</signal>
+   <receiver>checkBox_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>566</x>
+     <y>619</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>770</x>
+     <y>579</y>
     </hint>
    </hints>
   </connection>

@@ -40,9 +40,9 @@ void GLWidget::initializeGL()
     
     shadows = false;
 
-    nRaysObs = 1;
-    nRaysOcc = 1;
-    dmax = 50;
+    nRaysObs = 20;
+    nRaysOcc = 20;
+    dmax = 100;
     constantImpl = true;
     
     scene.Init();
@@ -633,16 +633,40 @@ void GLWidget::setLightLatitude(int lat)
 }
 
 
-void GLWidget::setAmbientOcclusion()
+void GLWidget::setAmbientOcclusion(bool checked)
 {
-    scene.updateOcclusion(nRaysOcc);
-    scene.ChangeRenderMode(OCCLUSION);
+    if(checked) 
+    {
+        scene.ChangeRenderMode(OCCLUSION);
+        emit setObsCheckBoxChecked(false);
+        emit setObsSettingsEnabled(false);
+        emit setRenderBoxesSettinsEnabled(true);
+        emit setOGLIllumEnabled(true);
+    }else 
+    {
+        scene.ChangeRenderMode(IMMEDIATE);
+        emit setAOccSettingsEnabled(false);
+        emit setRenderBoxesSettinsEnabled(false);
+        emit setOGLIllumEnabled(false);
+    }
 }
 
-void GLWidget::setObscurance()
+void GLWidget::setObscurance(bool checked)
 {
-    scene.updateObscurance(nRaysObs, dmax, constantImpl);
-    scene.ChangeRenderMode(OBSCURANCE);
+    if(checked) 
+    {
+        scene.ChangeRenderMode(OBSCURANCE);
+        emit setAOccCheckBoxChecked(false);
+        emit setAOccSettingsEnabled(false);
+        emit setRenderBoxesSettinsEnabled(true);
+        emit setOGLIllumEnabled(true);
+    }else 
+    {
+        scene.ChangeRenderMode(IMMEDIATE);
+        emit setObsSettingsEnabled(false);
+        emit setRenderBoxesSettinsEnabled(false);
+        emit setOGLIllumEnabled(false);
+    }
 }
 
 void GLWidget::setnRaysOcc(int nrays)
@@ -678,4 +702,18 @@ void GLWidget::setRenderBoxesLvl (int lvl)
 void GLWidget::setOpenGLIllum(bool b)
 {
     scene.setOpenGLIllum(b);
+}
+
+void GLWidget::computeAmbientOcclusion()
+{
+    cerr<< endl << "Computing Ambient occlusion for each vertex in the scene. Please wait...";
+    scene.updateOcclusion(nRaysOcc);
+    cerr<< "Done." << endl;
+}
+
+void GLWidget::computeObscurance()
+{
+    cerr<< endl << "Computing obscurance for each vertex in the scene. Please wait...";
+    scene.updateObscurance(nRaysObs, dmax, constantImpl);
+    cerr<< "Done." << endl;
 }

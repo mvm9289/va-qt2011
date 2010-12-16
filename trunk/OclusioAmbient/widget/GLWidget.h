@@ -100,6 +100,15 @@ class GLWidget:public QGLWidget
         void setLCDRadius(double);
         void setLCDLatitude(double);
         void setLCDLongitude(double);
+
+        void setAOccCheckBoxChecked(bool);
+        void setAOccSettingsEnabled(bool);
+        void setObsCheckBoxChecked(bool);
+        void setObsSettingsEnabled(bool);
+
+        void setRenderBoxesSettinsEnabled(bool);
+        void setOGLIllumEnabled(bool);
+
     
     public slots:
         void help();
@@ -120,8 +129,12 @@ class GLWidget:public QGLWidget
         void setLightLongitude(int lon);
         void setLightLatitude(int lat);
 
-        void setAmbientOcclusion();
-        void setObscurance();
+        void setAmbientOcclusion(bool checked);
+        void setObscurance(bool checked);
+
+        void computeAmbientOcclusion();
+        void computeObscurance();
+
         void setnRaysOcc(int nrays);
         void setnRaysObs(int nrays);
         void setDmax(int d);
