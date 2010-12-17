@@ -11,15 +11,15 @@ class Vertex
     public:
         Point coord;
         Vector normal;
-        //~ bool corner;
-        //~ vector<Vector> facesNormals;
+        bool corner;
+        vector<Vector> facesNormals;
         float occlusion;
         float obscurance;
     
     public:
         Vertex(const Point& coordenades);
         vector<Vector> rays(int numDir);
-        //~ void cornerTest();
+        void cornerTest();
 };
 
 #endif

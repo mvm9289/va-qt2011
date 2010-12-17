@@ -432,60 +432,160 @@ bool Object::hit(const Ray& r, float tmin, float tmax, SurfaceHitRecord& rec) co
     return accelerator->hit(r, tmin, tmax, rec);
 }
 
+int Object::sumVfunction(Vertex v, int numRays, Point rayOrigin, vector<Object>& objects, float sceneDiagonal)
+{
+    vector<Vector> rayDirs = v.rays(numRays);
+    int sumV = 0;
+    int m = rayDirs.size();
+    for (int j = 0; j < m; j++)
+    {
+        Ray ray(rayOrigin, rayDirs[j]);
+        
+        int q = objects.size();
+        bool intersect = false;
+        for (int k = 0; k < q && !intersect; k++)
+            intersect = objects[k].shadowHit(ray, 0.001, sceneDiagonal);
+        if (!intersect) sumV++;
+    }
+    
+    return sumV;
+}
+
 void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects, float sceneDiagonal)
 {
     int n = vertices.size();
     for (int i = 0; i < n; i++)
     {
-        vector<Vector> rayDirs = vertices[i].rays(numRays);
-        int sumV = 0;
-        Point rayOrigin = vertices[i].coord + vertices[i].normal*0.01;
-        int m = rayDirs.size();
-        for (int j = 0; j < m; j++)
+        if (vertices[i].corner)
         {
-            Ray ray(rayOrigin, rayDirs[j]);
-            
-            int q = objects.size();
-            bool intersect = false;
-            for (int k = 0; k < q && !intersect; k++)
-                intersect = objects[k].shadowHit(ray, 0.001, sceneDiagonal);
-            if (!intersect) sumV++;
+            int sumV = 0;
+            Vector N = vertices[i].normal;
+            int m = vertices[i].facesNormals.size();
+            for (int j = 0; j < m; j++)
+            {
+                vertices[i].normal = vertices[i].facesNormals[j];
+                Point rayOrigin = vertices[i].coord + N*0.01;
+                sumV += sumVfunction(vertices[i], numRays, rayOrigin, objects, sceneDiagonal);
+            }
+            vertices[i].occlusion = (float)sumV/(float)(numRays*m);
+            vertices[i].normal = N;
         }
-    
-        vertices[i].occlusion = (float)sumV/(float)m;
+        else
+        {
+            Point rayOrigin = vertices[i].coord + vertices[i].normal*0.01;
+            int sumV = sumVfunction(vertices[i], numRays, rayOrigin, objects, sceneDiagonal);
+            vertices[i].occlusion = (float)sumV/(float)numRays;
+        }
     }
 }
 
-void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal)
+//~ void Object::updateAmbientOcclusion(int numRays, vector<Object>& objects, float sceneDiagonal)
+//~ {
+    //~ int n = vertices.size();
+    //~ for (int i = 0; i < n; i++)
+    //~ {
+        //~ vector<Vector> rayDirs = vertices[i].rays(numRays);
+        //~ int sumV = 0;
+        //~ Point rayOrigin = vertices[i].coord + vertices[i].normal*0.01;
+        //~ int m = rayDirs.size();
+        //~ for (int j = 0; j < m; j++)
+        //~ {
+            //~ Ray ray(rayOrigin, rayDirs[j]);
+            
+            //~ int q = objects.size();
+            //~ bool intersect = false;
+            //~ for (int k = 0; k < q && !intersect; k++)
+                //~ intersect = objects[k].shadowHit(ray, 0.001, sceneDiagonal);
+            //~ if (!intersect) sumV++;
+        //~ }
+    
+        //~ vertices[i].occlusion = (float)sumV/(float)m;
+    //~ }
+//~ }
+
+float Object::sumRoFunction(Vertex v, int numRays, Point rayOrigin, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal)
+ {
+    vector<Vector> rayDirs = v.rays(numRays);
+    float sumRo = 0.0;
+    int m = rayDirs.size();
+    for (int j = 0; j < m; j++)
+    {
+        Ray ray(rayOrigin, rayDirs[j]);
+        
+        int q = objects.size();
+        float minDist = sceneDiagonal;
+        for (int k = 0; k < q; k++)
+        {
+            SurfaceHitRecord rec;
+            rec.t = minDist;
+            if (objects[k].hit(ray, 0.001, objects[k].boundingBox().diagonal(), rec) && rec.t < minDist) minDist = rec.t;
+        }
+        
+        if(minDist >= dmax) sumRo += 1.0;
+        else if(!constantImpl) sumRo += sqrt(minDist/dmax);
+    }
+    
+    return sumRo;
+ }
+ 
+ void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal)
 {
     int n = vertices.size();
     for (int i = 0; i < n; i++)
     {
-        vector<Vector> rayDirs = vertices[i].rays(numRays);
-        float sumRo = 0.0;
-        Point rayOrigin = vertices[i].coord + vertices[i].normal*0.01;
-        int m = rayDirs.size();
-        for (int j = 0; j < m; j++)
+        if (vertices[i].corner)
         {
-            Ray ray(rayOrigin, rayDirs[j]);
-
-            int q = objects.size();
-            float minDist = sceneDiagonal;
-            for (int k = 0; k < q; k++)
+            float sumRo = 0.0;
+            Vector N = vertices[i].normal;
+            int m = vertices[i].facesNormals.size();
+            for (int j = 0; j < m; j++)
             {
-                SurfaceHitRecord rec;
-                rec.t = minDist;
-                if (objects[k].hit(ray, 0.001, sceneDiagonal, rec) && rec.t < minDist)
-                    minDist = rec.t;
+                vertices[i].normal = vertices[i].facesNormals[j];
+                Point rayOrigin = vertices[i].coord + N*0.01;
+                sumRo += sumRoFunction(vertices[i], numRays, rayOrigin, dmax, constantImpl, objects, sceneDiagonal);
             }
-
-            if(minDist >= dmax) sumRo += 1.0;
-            else if(!constantImpl) sumRo += sqrt(minDist/dmax);
+            vertices[i].obscurance = sumRo/(float)(numRays*m);
+            vertices[i].normal = N;
         }
-        
-        vertices[i].obscurance = sumRo/(float)numRays;
+        else
+        {
+            Point rayOrigin = vertices[i].coord + vertices[i].normal*0.01;
+            float sumRo = sumRoFunction(vertices[i], numRays, rayOrigin, dmax, constantImpl, objects, sceneDiagonal);
+            vertices[i].obscurance = sumRo/(float)numRays;
+        }
     }
 }
+
+//~ void Object::updateObscurances(int numRays, float dmax, bool constantImpl, vector<Object>& objects, float sceneDiagonal)
+//~ {
+    //~ int n = vertices.size();
+    //~ for (int i = 0; i < n; i++)
+    //~ {
+        //~ vector<Vector> rayDirs = vertices[i].rays(numRays);
+        //~ float sumRo = 0.0;
+        //~ Point rayOrigin = vertices[i].coord + vertices[i].normal*0.01;
+        //~ int m = rayDirs.size();
+        //~ for (int j = 0; j < m; j++)
+        //~ {
+            //~ Ray ray(rayOrigin, rayDirs[j]);
+
+            //~ int q = objects.size();
+            //~ float minDist = sceneDiagonal;
+            //~ for (int k = 0; k < q; k++)
+            //~ {
+                //~ SurfaceHitRecord rec;
+                //~ rec.t = minDist;
+                //~ if (objects[k].hit(ray, 0.001, sceneDiagonal, rec) && rec.t < minDist)
+                    //~ minDist = rec.t;
+            //~ }
+
+            //~ if(minDist >= dmax) sumRo += 1.0;
+            //~ else if(!constantImpl) sumRo += sqrt(minDist/dmax);
+        //~ }
+        
+        //~ vertices[i].obscurance = sumRo/(float)numRays;
+    //~ }
+//~ }
 
 void Object::renderBoxes(bool render)
 {

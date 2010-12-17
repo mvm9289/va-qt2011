@@ -56,6 +56,8 @@ void Face::computeNormal(vector<Vertex> &v)
         v[vertices[i]].normal.y += normal.y;
         v[vertices[i]].normal.z += normal.z;
         v[vertices[i]].normal.normalize();
+        v[vertices[i]].facesNormals.push_back(normal);
+        v[vertices[i]].cornerTest();
     }
 }
 
